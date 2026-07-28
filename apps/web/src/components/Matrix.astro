@@ -1,0 +1,62 @@
+
+<!-- ═══ ARCH MATRIX ═══ -->
+<section class="section fade-in">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="matrix_label">Architecture Support</div>
+      <h2 data-i18n="matrix_title">Every architecture, every firmware.</h2>
+      <p data-i18n="matrix_desc">Client architectures are mapped to the correct boot binary automatically.</p>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th data-i18n="matrix_th_arch">Architecture</th>
+            <th data-i18n="matrix_th_fw">Firmware</th>
+            <th>Binary</th>
+            <th>Secure Boot</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="arch-name">BIOS x86</td>
+            <td class="arch-fw">Legacy</td>
+            <td class="arch-binary">undionly.kpxe</td>
+            <td><span class="badge-sb no">—</span></td>
+          </tr>
+          <tr>
+            <td class="arch-name">UEFI IA32</td>
+            <td class="arch-fw">EFI</td>
+            <td class="arch-binary">ipxe32.efi</td>
+            <td><span class="badge-sb no">—</span></td>
+          </tr>
+          <tr>
+            <td class="arch-name">UEFI x64</td>
+            <td class="arch-fw">EFI</td>
+            <td class="arch-binary">ipxe.efi</td>
+            <td><span class="badge-sb yes">✓ Supported</span></td>
+          </tr>
+          <tr>
+            <td class="arch-name">UEFI ARM64</td>
+            <td class="arch-fw">EFI</td>
+            <td class="arch-binary">ipxe-arm64.efi</td>
+            <td><span class="badge-sb yes">✓ Supported</span></td>
+          </tr>
+          <tr>
+            <td class="arch-name">RISC-V 64</td>
+            <td class="arch-fw">EFI</td>
+            <td class="arch-binary">ipxe-riscv64.efi</td>
+            <td><span class="badge-sb no">—</span></td>
+          </tr>
+          <tr>
+            <td class="arch-name">LoongArch64</td>
+            <td class="arch-fw">EFI</td>
+            <td class="arch-binary">ipxe-loongarch64.efi</td>
+            <td><span class="badge-sb no">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

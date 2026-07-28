@@ -1,0 +1,10 @@
+// Cloudflare Pages routing placeholder.
+// For a single-domain setup, the current recommended approach is:
+//   - Deploy apps/web/dist to the main Pages project at pxelab.io
+//   - Deploy docs/.vitepress/dist to a separate Pages project and use a
+//     CNAME/Worker rewrite, OR merge docs into a subpath during build.
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/assets/*", "/fonts/*"]
+}

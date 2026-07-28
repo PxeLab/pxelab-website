@@ -1,0 +1,21 @@
+{
+  "name": "pxelab-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PxeLab official website and documentation",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @pxelab/web dev",
+    "dev:docs": "pnpm --filter @pxelab/docs dev",
+    "build": "pnpm --filter @pxelab/web build && pnpm --filter @pxelab/docs build",
+    "build:web": "pnpm --filter @pxelab/web build",
+    "build:docs": "pnpm --filter @pxelab/docs build"
+  },
+  "devDependencies": {
+    "pnpm": "^9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,155 @@
+
+<!-- ═══ BENTO FEATURES ═══ -->
+<section class="section fade-in" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="feat_label">Core Modules</div>
+      <h2 data-i18n="feat_title">Built-in services. Modern control.</h2>
+      <p data-i18n="feat_desc">Every module is configurable through the web UI, REST API, or command line.</p>
+    </div>
+
+    <div class="bento">
+      <!-- Architecture (wide card) -->
+      <div class="bento-item span-8">
+        <div class="bento-label" data-i18n="feat_arch_label">Architecture</div>
+        <h3 data-i18n="feat_arch_title">Two-stage network boot</h3>
+        <p data-i18n="feat_arch_desc">PXE ROM loads iPXE via TFTP, then iPXE fetches the boot menu over HTTP. Custom builds with embedded scripts — no manual configuration needed.</p>
+        <div style="margin-top: 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <div class="arch-node" style="padding: 12px 16px; min-width: auto;">
+            <div class="arch-node-title" style="font-size: 12.5px;">PXE ROM</div>
+          </div>
+          <div class="arch-connector" style="flex-direction: row; padding: 0;">
+            <div class="arch-line" style="width: 32px;"></div>
+            <span class="arch-protocol" style="margin: 0 0 0 4px;">TFTP</span>
+          </div>
+          <div class="arch-node primary" style="padding: 12px 16px; min-width: auto;">
+            <div class="arch-node-title" style="font-size: 12.5px;">iPXE</div>
+          </div>
+          <div class="arch-connector" style="flex-direction: row; padding: 0;">
+            <div class="arch-line" style="width: 32px;"></div>
+            <span class="arch-protocol" style="margin: 0 0 0 4px;">HTTP</span>
+          </div>
+          <div class="arch-node" style="padding: 12px 16px; min-width: auto;">
+            <div class="arch-node-title" style="font-size: 12.5px;">Boot Menu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-arch (wide card) -->
+      <div class="bento-item span-4">
+        <div class="bento-label" data-i18n="feat_multiarch_label">Multi-Architecture</div>
+        <h3 data-i18n="feat_multiarch_title">Every platform</h3>
+        <p data-i18n="feat_multiarch_desc">BIOS x86, UEFI x64, ARM64, RISC-V 64, LoongArch64. iPXE, PXELinux, GRUB2. Secure Boot where supported.</p>
+        <div class="bento-tags" style="margin-top: 20px;">
+          <span class="bento-tag">x86</span>
+          <span class="bento-tag">x64</span>
+          <span class="bento-tag">ARM64</span>
+          <span class="bento-tag">RISC-V</span>
+          <span class="bento-tag">LoongArch</span>
+        </div>
+      </div>
+
+      <!-- DHCP -->
+      <div class="bento-item span-4">
+        <div class="bento-icon dhcp">DH</div>
+        <h3>DHCP</h3>
+        <p data-i18n="feat_dhcp_desc">Full, Proxy, and Hybrid modes. Subnet address pools, MAC reservations, conflict detection.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">:67/UDP</span>
+          <span class="bento-tag">ProxyDHCP</span>
+          <span class="bento-tag" data-i18n="feat_dhcp_tag">Whitelist</span>
+        </div>
+      </div>
+
+      <!-- TFTP -->
+      <div class="bento-item span-4">
+        <div class="bento-icon tftp">TF</div>
+        <h3>TFTP</h3>
+        <p data-i18n="feat_tftp_desc">iPXE, PXELinux, GRUB2 boot files. Architecture-aware file mapping with configurable port.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">:69/UDP</span>
+          <span class="bento-tag">PXE</span>
+          <span class="bento-tag">GRUB2</span>
+        </div>
+      </div>
+
+      <!-- NFS -->
+      <div class="bento-item span-4">
+        <div class="bento-icon nfs">NF</div>
+        <h3>NFS</h3>
+        <p data-i18n="feat_nfs_desc">Built-in NFSv3 server. Multi-mount points, IP/CIDR whitelist, read-only exports.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">NFSv3</span>
+          <span class="bento-tag">:2049</span>
+          <span class="bento-tag">CIDR ACL</span>
+        </div>
+      </div>
+
+      <!-- DNS -->
+      <div class="bento-item span-4">
+        <div class="bento-icon dns">DN</div>
+        <h3>DNS</h3>
+        <p data-i18n="feat_dns_desc">Upstream forwarding, subnet-aware resolution, auto A-record creation for PXE clients.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">:53/UDP</span>
+          <span class="bento-tag">A/AAAA</span>
+          <span class="bento-tag">CNAME</span>
+        </div>
+      </div>
+
+      <!-- Web UI -->
+      <div class="bento-item span-4">
+        <div class="bento-icon ui">UI</div>
+        <h3 data-i18n="feat_ui_title">Web UI</h3>
+        <p data-i18n="feat_ui_desc">React SPA with real-time logs, visual boot menu editor, host management, i18n support.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">:8080</span>
+          <span class="bento-tag">React 19</span>
+          <span class="bento-tag">REST API</span>
+        </div>
+      </div>
+
+      <!-- CLI -->
+      <div class="bento-item span-4">
+        <div class="bento-icon cli">CL</div>
+        <h3>CLI</h3>
+        <p data-i18n="feat_cli_desc">Full command-line control. Windows service mode for unattended deployment.</p>
+        <div class="bento-tags">
+          <span class="bento-tag">Cobra</span>
+          <span class="bento-tag" data-i18n="feat_cli_tag">Windows Svc</span>
+        </div>
+      </div>
+
+      <!-- Cross-Platform Deployment (wide card) -->
+      <div class="bento-item span-8">
+        <div class="bento-label" data-i18n="feat_deploy_label">Cross-Platform Deployment</div>
+        <h3 data-i18n="feat_deploy_title">Run anywhere. Two modes.</h3>
+        <p data-i18n="feat_deploy_desc">Single binary for Linux, macOS, and Windows. Server mode for headless infrastructure; App mode for desktop with system tray GUI. No runtime dependencies on any platform.</p>
+        <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_server_title">Server Mode</h4>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_server_desc">Headless deployment on Linux servers, VMs, and bare metal. Windows service or systemd unit. Runs in background with zero UI.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_app_title">App Mode</h4>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_app_desc">Desktop application with system tray icon on macOS and Windows. One-click start/stop, visual config, tray notifications. Ideal for workstation use.</p>
+          </div>
+        </div>
+        <div class="bento-tags" style="margin-top: 20px;">
+          <span class="bento-tag">Linux</span>
+          <span class="bento-tag">macOS</span>
+          <span class="bento-tag">Windows</span>
+          <span class="bento-tag" data-i18n="feat_deploy_tag_systemd">systemd</span>
+          <span class="bento-tag">Windows Svc</span>
+          <span class="bento-tag">System Tray</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+
+<!-- ═══ ARCHITECTURE DETAIL ═══ -->
+<section class="section fade-in" id="architecture">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="arch_label">How It Works</div>
+      <h2 data-i18n="arch_title">Two-stage network boot.</h2>
+      <p data-i18n="arch_desc">PXE ROM loads iPXE via TFTP, then iPXE fetches the full boot menu over HTTP.</p>
+    </div>
+
+    <div class="arch-visual">
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="arch-node-title">PXE ROM</div>
+          <div class="arch-node-sub" data-i18n="arch_pxe_sub">Client firmware</div>
+        </div>
+        <div class="arch-connector">
+          <div class="arch-line"></div>
+          <div class="arch-protocol">TFTP</div>
+        </div>
+        <div class="arch-node primary">
+          <div class="arch-node-title">iPXE</div>
+          <div class="arch-node-sub" data-i18n="arch_ipxe_sub">Custom build</div>
+        </div>
+        <div class="arch-connector">
+          <div class="arch-line"></div>
+          <div class="arch-protocol">HTTP</div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-node-title">Boot Menu</div>
+          <div class="arch-node-sub" data-i18n="arch_boot_sub">Kernel / WIM / Chain</div>
+        </div>
+        <div class="arch-connector">
+          <div class="arch-line"></div>
+          <div class="arch-protocol">NFS</div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-node-title" data-i18n="arch_os_title">OS Image</div>
+          <div class="arch-node-sub" data-i18n="arch_os_sub">Mounted share</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
