@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "pnpm --filter @pxelab/web dev",
     "dev:docs": "pnpm --filter @pxelab/docs dev",
-    "build": "pnpm --filter @pxelab/web build && pnpm --filter @pxelab/docs build",
+    "build": "node scripts/build.mjs",
     "build:web": "pnpm --filter @pxelab/web build",
     "build:docs": "pnpm --filter @pxelab/docs build"
   },
