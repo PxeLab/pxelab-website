@@ -67,12 +67,12 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 ### Q: 可以同时运行多个 DHCP 服务器吗？
 
-**A**: 可以。使用 `proxy` 模式叠加到现有 DHCP 环境，或使用 `hybrid` 模式智能分流。
+**A**: 可以。使用 `proxy` 模式叠加到现有 DHCP 环境，PxeLab 仅提供 PXE 引导选项，IP 地址仍由现有 DHCP 服务器分配。
 
 ### Q: 支持哪些操作系统安装？
 
 **A**: 通过 iPXE 引导支持：
-- Linux：Ubuntu、Debian、CentOS、Fedora、Arch、Gentoo 等 50+ 发行版
+- Linux：Ubuntu、Debian、CentOS、Fedora、Arch、Gentoo 等 64 个发行版
 - Windows：通过 WDS 仿真或 wimboot
 - BSD：FreeBSD、OpenBSD、NetBSD
 - Live CD：Kali、GParted、SystemRescue 等

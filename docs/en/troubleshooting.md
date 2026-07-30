@@ -67,12 +67,12 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 ### Q: Can I run multiple DHCP servers simultaneously?
 
-**A**: Yes. Use `proxy` mode to overlay onto existing DHCP, or `hybrid` mode for intelligent routing.
+**A**: Yes. Use `proxy` mode to overlay onto the existing DHCP environment — PxeLab only provides PXE boot options while IP addresses are still assigned by the existing DHCP server.
 
 ### Q: What OS installations are supported?
 
 **A**: Via iPXE boot:
-- Linux: Ubuntu, Debian, CentOS, Fedora, Arch, Gentoo, and 50+ other distros
+- Linux: Ubuntu, Debian, CentOS, Fedora, Arch, Gentoo, and more — 64 distros in total
 - Windows: Via WDS emulation or wimboot
 - BSD: FreeBSD, OpenBSD, NetBSD
 - Live CD: Kali, GParted, SystemRescue, etc.

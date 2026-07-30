@@ -14,8 +14,8 @@
 
 | OS | Architecture | Notes |
 |----|-------------|-------|
-| Linux | amd64, arm64 | Recommended for production |
-| Windows | amd64 | Windows 10+ required |
+| Linux | amd64, arm64, armv7 | Recommended for production |
+| Windows | amd64, arm64 | Windows 10+ required |
 | macOS | arm64, amd64 | macOS 12+ required |
 
 ### Q: What dependencies do I need to install?
@@ -74,9 +74,8 @@ sudo systemctl enable --now pxelab
 
 | Scenario | Recommended Mode | Notes |
 |----------|-----------------|-------|
-| Standalone network, no existing DHCP | **full** | PxeLab as complete DHCP server |
+| Standalone network, no existing DHCP | **server** | PxeLab as complete DHCP server |
 | Existing DHCP server | **proxy** | Overlay PXE functionality |
-| Partial PXE needed | **hybrid** | Hybrid mode |
 | TFTP/HTTP only | **off** | Disable DHCP, configure clients manually |
 
 ### Q: What's the difference between ProxyDHCP and Full DHCP?
@@ -96,7 +95,7 @@ ProxyDHCP is ideal for environments with existing DHCP servers — no changes to
 dhcp:
   interfaces:
     - name: eth0
-      mode: full
+      mode: server
       subnet: 192.168.1.0/24
     - name: eth1
       mode: proxy

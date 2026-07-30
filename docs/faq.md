@@ -14,8 +14,8 @@
 
 | 操作系统 | 架构 | 说明 |
 |---------|------|------|
-| Linux | amd64, arm64 | 推荐用于生产环境 |
-| Windows | amd64 | 支持 Windows 10+ |
+| Linux | amd64, arm64, armv7 | 推荐用于生产环境 |
+| Windows | amd64, arm64 | 支持 Windows 10+ |
 | macOS | arm64, amd64 | 支持 macOS 12+ |
 
 ### Q: 需要安装什么依赖？
@@ -74,9 +74,8 @@ sudo systemctl enable --now pxelab
 
 | 场景 | 推荐模式 | 说明 |
 |------|---------|------|
-| 独立网络，无现有 DHCP | **full** | PxeLab 作为完整 DHCP 服务器 |
+| 独立网络，无现有 DHCP | **server** | PxeLab 作为完整 DHCP 服务器 |
 | 已有 DHCP 服务器 | **proxy** | 叠加 PXE 功能，不影响现有 DHCP |
-| 部分接口需要 PXE | **hybrid** | 混合模式 |
 | 仅使用 TFTP/HTTP | **off** | 关闭 DHCP，手动配置客户端 |
 
 ### Q: ProxyDHCP 和 Full DHCP 有什么区别？
@@ -96,7 +95,7 @@ ProxyDHCP 适合已有 DHCP 服务器的环境，无需修改现有 DHCP 配置�
 dhcp:
   interfaces:
     - name: eth0
-      mode: full
+      mode: server
       subnet: 192.168.1.0/24
     - name: eth1
       mode: proxy

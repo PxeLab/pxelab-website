@@ -1,4 +1,4 @@
-﻿# iPXE 引导脚本配置使用说明
+# iPXE 引导脚本配置使用说明
 
 ## 概述
 
@@ -214,7 +214,7 @@ set keep-san 1
 ```yaml
 interfaces:
   - name: eth0
-    dhcp: full
+    dhcp: server
     bootloader: grub2
     chain_to_ipxe: true
 ```

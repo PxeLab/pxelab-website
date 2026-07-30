@@ -8,8 +8,8 @@
 
 ## DHCP (/services/dhcp)
 
-- **Subnet Config**: Per-subnet DHCP mode (full/proxy/hybrid/off), address pool range, gateway, DNS, lease time
-- **Reservations (Tab)**: IP + MAC binding, conflict detection, only available for full-mode subnets
+- **Subnet Config**: Per-subnet DHCP mode (server/proxy/off), address pool range, gateway, DNS, lease time
+- **Reservations (Tab)**: IP + MAC binding, conflict detection, only available for server-mode subnets
 - **Lease List (Tab)**: View active leases, delete and batch cleanup
 
 See [DHCP Config Guide](dhcp.md).

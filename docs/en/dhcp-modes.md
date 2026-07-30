@@ -1,23 +1,22 @@
 # DHCP Modes
 
-PxeLab supports 4 DHCP modes, configured via the `dhcp` field in interface settings.
+PxeLab supports 3 DHCP modes, configured via the `dhcp` field in interface settings.
 
 ## Quick Reference
 
 | Mode | Assigns IP | Provides PXE Options | Non-PXE Clients | Use Case |
 |------|-----------|---------------------|-----------------|----------|
-| **full** | ✅ | ✅ | ✅ Normal assignment | PxeLab as sole DHCP server |
+| **server** | ✅ | ✅ | ✅ Normal assignment | PxeLab as sole DHCP server (default mode) |
 | **proxy** | ❌ yiaddr=0 throughout | ✅ | ❌ Ignored | Overlay onto existing DHCP |
-| **hybrid** | ✅ | ✅ (PXE clients only) | ✅ IP only, no PXE options | Default mode, best of both |
 | **off** | ❌ | ❌ | ❌ Ignored | DHCP fully disabled |
 
 ---
 
 ## Mode Details
 
-### full (Full DHCP)
+### server (Full DHCP)
 
-PxeLab acts as the **sole DHCP server** on the network, responding to all clients regardless of PXE requests.
+PxeLab acts as the **sole DHCP server** on the network, responding to all clients regardless of PXE requests. This is the default mode.
 
 **Behavior:**
 - Manages the full DHCP lifecycle: Discover → Offer → Request → Ack
@@ -48,24 +47,6 @@ PxeLab **only provides PXE-related options**. IP addresses are assigned by the e
 
 ---
 
-### hybrid (Hybrid)
-
-PxeLab **responds as proxy for PXE clients and full for other clients**. This is the default mode.
-
-**Behavior:**
-- PXE clients (detected via Option 60 "PXEClient"): proxy mode (yiaddr=0.0.0.0 + PXE options)
-- iPXE clients: proxy mode (yiaddr=0.0.0.0 + script URL)
-- Non-PXE clients: full mode (IP assignment + standard DHCP options, no PXE options)
-
-**Key Point:** A single interface handles both roles simultaneously — ProxyDHCP for PXE clients, standard DHCP for regular clients.
-
-**Use Cases:**
-- Small networks where PxeLab handles DHCP and PXE together
-- When you don't want to run two DHCP servers
-- **Recommended default mode** for most deployments
-
----
-
 ### off (Disabled)
 
 PxeLab **completely disables DHCP** on this interface, not processing any DHCP requests.
@@ -92,13 +73,11 @@ DHCP Request Received
     ├─ Is it a PXE/iPXE client?
     │   ├─ Yes → Check interface DHCP mode
     │   │       ├─ proxy → Handle as proxy mode
-    │   │       ├─ hybrid → Handle as proxy mode
-    │   │       ├─ full → Handle as full mode
+    │   │       ├─ server → Handle as server mode
     │   │       └─ off → Ignore
     │   │
     │   └─ No → Check interface DHCP mode
-    │           ├─ full → Handle as full mode (assign IP)
-    │           ├─ hybrid → Handle as full mode (assign IP, no PXE options)
+    │           ├─ server → Handle as server mode (assign IP)
     │           ├─ proxy → Ignore (non-PXE clients ignored in proxy mode)
     │           └─ off → Ignore
     │
@@ -122,12 +101,12 @@ DHCP Request Received
            Non-PXE clients unaffected by PxeLab
 ```
 
-### Example 2: New Network, PxeLab Does Everything
+### Example 2: New Network, PxeLab Does Everything (Default)
 
 ```
     PxeLab (192.168.1.100)
        │
-       │  dhcp: full
+       │  dhcp: server (default)
        │  bootloader: ipxe
        │
        ├── PXE clients: IP + boot options
@@ -135,25 +114,13 @@ DHCP Request Received
        └── No other DHCP conflicts
 ```
 
-### Example 3: Hybrid Default Mode
-
-```
-    PxeLab (192.168.1.100)
-       │
-       │  dhcp: hybrid (default)
-       │
-       ├── PXE clients → proxy mode (yiaddr=0.0.0.0 + boot options)
-       ├── Regular clients → full mode (IP assignment)
-       └── Smart dual-mode operation
-```
-
-### Example 4: Dual Interface — Management + Business
+### Example 3: Dual Interface — Management + Business
 
 ```yaml
 interfaces:
   - name: eth0       # Management
     ip: 10.0.0.1
-    dhcp: full       # Management segment DHCP
+    dhcp: server     # Management segment DHCP
     subnets:
       - cidr: 10.0.0.0/24
         pool: 10.0.0.100-10.0.0.200
@@ -165,7 +132,7 @@ interfaces:
       - cidr: 192.168.1.0/24
 ```
 
-### Example 5: File Serving Only
+### Example 4: File Serving Only
 
 ```yaml
 interfaces:

@@ -17,7 +17,7 @@ features:
   - title: 一体化服务
     details: 内置 DHCP、TFTP、HTTP、DNS、NFS 五大服务，开箱即用
   - title: 多架构支持
-    details: 支持 x86 BIOS、EFI x86-64、ARM64 等 11 种架构，含 Secure Boot
+    details: 支持 x86 BIOS、EFI x86-64、ARM64 等 11 种可引导客户端架构，含 Secure Boot
   - title: Web 管理界面
     details: 现代化 React UI，中英双语，暗色主题，实时事件监控
   - title: REST API

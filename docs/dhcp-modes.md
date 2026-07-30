@@ -1,23 +1,22 @@
-﻿# DHCP 模式说明
+# DHCP 模式说明
 
-PxeLab 支持 4 种 DHCP 模式，在接口配置中通过 `dhcp` 字段设置。
+PxeLab 支持 3 种 DHCP 模式，在接口配置中通过 `dhcp` 字段设置。
 
 ## 快速对照
 
 | 模式 | 分配 IP | 提供 PXE 选项 | 非 PXE 客户端 | 适用场景 |
 |------|---------|---------------|---------------|----------|
-| **full** | ✅ | ✅ | ✅ 正常分配 | PxeLab 作为唯一 DHCP 服务器 |
+| **server** | ✅ | ✅ | ✅ 正常分配 | PxeLab 作为唯一 DHCP 服务器（默认模式） |
 | **proxy** | ❌ 全程 yiaddr=0 | ✅ | ❌ 忽略 | 叠加到现有 DHCP 环境 |
-| **hybrid** | ✅ | ✅（仅 PXE 客户端） | ✅ 仅分配 IP，不含 PXE 选项 | 默认模式，兼顾两方 |
 | **off** | ❌ | ❌ | ❌ 忽略 | 完全关闭 DHCP 功能 |
 
 ---
 
 ## 各模式详解
 
-### full（完整 DHCP）
+### server（完整 DHCP）
 
-PxeLab 作为该网络的**唯一 DHCP 服务器**，对所有客户端（无论是否 PXE 请求）响应。
+PxeLab 作为该网络的**唯一 DHCP 服务器**，对所有客户端（无论是否 PXE 请求）响应。这是默认模式。
 
 **行为：**
 
@@ -95,47 +94,6 @@ DHCP Discover ──► 现有 DHCP + PxeLab
 
 ---
 
-### hybrid（混合）
-
-PxeLab **对 PXE 客户端以 proxy 模式响应，对其他客户端以 full 模式响应**。这是默认模式。
-
-**行为：**
-
-```
-DHCP Discover ──► PxeLab
-    │
-    ├─ PXE 客户端（检测到 Option 60 "PXEClient" 等）：
-    │   └─ 以 proxy 模式处理：yiaddr=0.0.0.0 + PXE 选项
-    │
-    ├─ iPXE 客户端：
-    │   └─ 以 proxy 模式处理：yiaddr=0.0.0.0 + 脚本 URL
-    │
-    └─ 非 PXE 客户端：
-        └─ 以 full 模式处理：分配 IP + 标准 DHCP 选项（无 PXE 选项）
-```
-
-在代码中判定逻辑（`handler.go:147-151`）：
-
-```
-detect PXE client? → proxy 模式
-  └─ 非 PXE? → 检查接口 DHCP 模式
-      ├─ hybrid → full 模式（分配 IP）
-      └─ full → full 模式
-```
-
-**特点：**
-- **一个接口同时承担两种角色**：对 PXE 客户端是 ProxyDHCP，对普通客户端是标准 DHCP
-- 不需要两台 DHCP 服务器，也不需要 DHCP 中继
-- 普通客户端获得完整网络配置（IP、网关、DNS）
-- PXE 客户端获得引导选项但不影响 IP 分配
-
-**适用场景：**
-- 小型网络，PxeLab 承担 DHCP 服务但同时要叠加 PXE
-- 不想架设两台 DHCP 服务器的场景
-- **推荐默认模式**，兼顾各方需求
-
----
-
 ### off（关闭）
 
 PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求。
@@ -162,13 +120,11 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
     ├─ 是否为 PXE/iPXE 客户端？
     │   ├─ 是 → 检查接口 DHCP 模式
     │   │       ├─ proxy → proxy 模式处理
-    │   │       ├─ hybrid → proxy 模式处理
-    │   │       ├─ full → full 模式处理
+    │   │       ├─ server → server 模式处理
     │   │       └─ off → 不处理
     │   │
     │   └─ 否 → 检查接口 DHCP 模式
-    │           ├─ full → full 模式处理（分配 IP）
-    │           ├─ hybrid → full 模式处理（分配 IP，不附加 PXE 选项）
+    │           ├─ server → server 模式处理（分配 IP）
     │           ├─ proxy → 不处理（非 PXE 客户端在 proxy 下被忽略）
     │           └─ off → 不处理
     │
@@ -192,12 +148,12 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
            非 PXE 客户端不受 PxeLab 影响
 ```
 
-### 示例 2：新网络，PxeLab 一机包办
+### 示例 2：新网络，PxeLab 一机包办（默认）
 
 ```
     PxeLab (192.168.1.100)
        │
-       │  dhcp: full
+       │  dhcp: server（默认）
        │  bootloader: ipxe
        │
        ├── PXE 客户端：分配 IP + 引导选项
@@ -205,25 +161,13 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
        └── 无其他 DHCP 冲突
 ```
 
-### 示例 3：hybrid 默认模式
-
-```
-    PxeLab (192.168.1.100)
-       │
-       │  dhcp: hybrid（默认）
-       │
-       ├── PXE 客户端 → proxy 模式（yiaddr=0.0.0.0 + 引导选项）
-       ├── 普通客户端 → full 模式（分配 IP）
-       └── 相当于"智能双模"
-```
-
-### 示例 4：双接口，管理口 + 业务口
+### 示例 3：双接口，管理口 + 业务口
 
 ```yaml
 interfaces:
   - name: eth0       # 管理口
     ip: 10.0.0.1
-    dhcp: full       # 管理网段自建 DHCP
+    dhcp: server     # 管理网段自建 DHCP
     subnets:
       - cidr: 10.0.0.0/24
         pool: 10.0.0.100-10.0.0.200
@@ -235,7 +179,7 @@ interfaces:
       - cidr: 192.168.1.0/24
 ```
 
-### 示例 5：仅提供文件服务
+### 示例 4：仅提供文件服务
 
 ```yaml
 interfaces:

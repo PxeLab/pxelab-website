@@ -1,4 +1,4 @@
-﻿# Boot Architecture
+# Boot Architecture
 
 ## Overview
 
@@ -20,7 +20,7 @@ Stage 1                    Stage 2
 
 1. Client PXE ROM sends DHCP Discover
 2. PxeLab DHCP 服务器响应 Offer/Ack，包含:
-   - IP 地址（full/hybrid 模式）
+   - IP 地址（server 模式）
    - next-server（TFTP 服务器地址）
    - bootfile（NBP 文件名）
    - Option 175.178（iPXE 引导脚本 URL）
@@ -64,7 +64,7 @@ Stage 1                    Stage 2
 | `sanboot` | iSCSI SAN 启动 | 无盘工作站 |
 | `local` | 从本地硬盘启动 | 跳过网络引导 |
 
-### 2. PXELinux (SYSLINUX) — 部分实现
+### 2. PXELinux (SYSLINUX) — 已支持
 
 PXELinux 配置文件解析器位于 `internal/boot/pxelinux/`，功能包括：
 
@@ -72,17 +72,17 @@ PXELinux 配置文件解析器位于 `internal/boot/pxelinux/`，功能包括：
 - **AST** — 抽象语法树
 - **Generator** — AST → iPXE 脚本转换
 
-**当前状态：已完成解析器和生成器，但未接入服务器 HTTP 端点。** 需要有额外的 HTTP 端点如 `GET /boot/pxelinux.cfg/{identifier}` 来提供实时翻译。
+**当前状态：已完整支持。** 服务器 HTTP 端点已接入 PXELinux 处理：当客户端（`pxelinux.0` / `pxelinux.efi`）请求 `pxelinux.cfg/default` 或按 MAC 请求 `pxelinux.cfg/01-<mac>` 时，PxeLab 会拦截该请求，根据主机绑定的 Profile 实时生成对应的 PXELinux 配置（`internal/httpd/server.go` + `internal/boot/configgen`）。同时支持 ChainLoad 场景：PXELinux 配置文件可被实时翻译后继续链式加载 iPXE。
 
-启用方式：如需要此功能，需在 `internal/httpd/server.go` 中添加 pxelinux 处理路由。
+随二进制内置的 NBP 文件：`pxelinux.0`（BIOS）、`pxelinux.efi`（UEFI），以及配套的 `ldlinux.c32` / `ldlinux.e64`、`menu.c32`、`memdisk`。
 
-### 3. GRUB2 — 未实现
+### 3. GRUB2 — 已支持
 
-GRUB2 的网络引导（HTTP Boot / PXE）暂不支持。要支持 GRUB2：
+GRUB2 网络引导已支持：
 
-- 需要编写 GRUB2 配置文件的解析器
-- 或者直接让 iPXE chain-load GRUB2 的 boot image（`chain grub2.efi`）
-- 后者更简单——GRUB2 作为独立引导器通过 `chain` 类型即可加载
+- 内置 GRUB2 NBP：`grubx64.efi`（UEFI x64）、`grubaa64.efi`（UEFI ARM64）
+- 客户端请求 `grub.cfg`（或按 MAC 的 `grub.cfg-01-<mac>`）时，HTTP 端点拦截请求并根据 Profile 实时生成 GRUB2 配置（`configgen.FormatGRUB2`）
+- 也可以通过 iPXE 以 `chain` 类型链式加载 GRUB2 引导镜像（`chain grub2.efi`），GRUB2 作为独立引导器使用
 
 ## Boot File Mapping
 
@@ -100,6 +100,6 @@ GRUB2 的网络引导（HTTP Boot / PXE）暂不支持。要支持 GRUB2：
 
 | Mode | 行为 | 适用场景 |
 |------|------|---------|
-| `full` | DHCP 服务器分配 IP + PXE 选项 | 独立网络，PxeLab 作为唯一 DHCP |
+| `server` | DHCP 服务器分配 IP + PXE 选项 | 独立网络，PxeLab 作为唯一 DHCP（默认模式） |
 | `proxy` | 仅提供 PXE 选项，不分配 IP | 现有 DHCP 环境中叠加 PXE 服务 |
-| `hybrid` | PXE 客户端用 proxy，其他用 full | 混合环境，默认模式 |
+| `off` | 不处理 DHCP 请求 | 仅提供 TFTP/HTTP 文件服务 |

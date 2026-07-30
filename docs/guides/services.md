@@ -8,8 +8,8 @@
 
 ## DHCP（/services/dhcp）
 
-- **子网配置**：每个子网独立设置 DHCP 模式（full/proxy/hybrid/off）、地址池范围、网关、DNS、租期
-- **预留管理（Tab）**：IP + MAC 绑定，冲突检测，仅 full 模式子网可用
+- **子网配置**：每个子网独立设置 DHCP 模式（server/proxy/off）、地址池范围、网关、DNS、租期
+- **预留管理（Tab）**：IP + MAC 绑定，冲突检测，仅 server 模式子网可用
 - **租约列表（Tab）**：查看当前活跃租约，支持删除和批量清理
 
 详见 [DHCP 配置指南](dhcp.md)。

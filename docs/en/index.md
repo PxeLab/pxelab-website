@@ -17,7 +17,7 @@ features:
   - title: All-in-One Services
     details: Built-in DHCP, TFTP, HTTP, DNS, NFS — ready to use out of the box
   - title: Multi-Architecture
-    details: Supports x86 BIOS, EFI x86-64, ARM64 and 11 architectures with Secure Boot
+    details: Supports x86 BIOS, EFI x86-64, ARM64 — 11 bootable client architectures with Secure Boot
   - title: Web Management UI
     details: Modern React interface with bilingual support, dark theme, real-time monitoring
   - title: REST API

@@ -18,7 +18,7 @@
 | **Target Users** | IT ops, IDC engineers, system administrators |
 | **Core Scenarios** | Batch deployment, diskless workstations, OS installation, server maintenance |
 | **Tech Stack** | Go 1.23+ / React 19 / TypeScript / Tailwind CSS 4 / SQLite |
-| **Platform Support** | Windows / Linux / macOS |
+| **Platform Support** | Server runtime: Windows 10+ / Linux / macOS 12+ (amd64 / arm64; Linux also armv7); bootable clients span 11 architectures |
 
 ### Comparison with Other Solutions
 
@@ -26,9 +26,9 @@
 |---------|--------|---------------------------|-----------------|
 | Setup complexity | Single binary, zero deps | Manual multi-service config | Heavy dependencies |
 | iPXE support | Built-in custom compilation | Self-compile required | Self-integration required |
-| Multi-arch | 11 CPU architectures + Secure Boot | Usually x86 only | Limited |
+| Multi-arch | 11 bootable client architectures + Secure Boot | Usually x86 only | Limited |
 | Web management | Built-in, full-featured | None | Yes, but complex |
-| DHCP modes | full / proxy / hybrid / off | Usually one mode | Limited |
+| DHCP modes | server / proxy / off | Usually one mode | Limited |
 | NFS | Built-in NFSv3 | External needed | External needed |
 
 ---
@@ -37,7 +37,7 @@
 
 ### Network Services
 
-- **DHCP Server** — Supports full / proxy / hybrid / off modes, per-interface configuration
+- **DHCP Server** — Supports server / proxy / off modes, per-interface configuration
 - **ProxyDHCP** — Port 4011, overlays onto existing DHCP environments
 - **TFTP Server** — Configurable port and timeout, serves NBP files
 - **HTTP Server** — Serves boot scripts, Web UI, SPA, boot files
@@ -46,7 +46,7 @@
 
 ### Boot Capabilities
 
-- **iPXE** — Custom-compiled, embedded boot scripts, 11 architectures
+- **iPXE** — Custom-compiled, embedded boot scripts, 11 client architectures
 - **Secure Boot** — x86_64 and ARM64 UEFI Secure Boot support
 - **Boot Types** — direct (kernel+initrd), chain (chain-load), wds (Windows WIM), sanboot (iSCSI SAN), local (local disk)
 - **PXELinux** — Config parser + AST + iPXE script generator
@@ -97,7 +97,7 @@ Stage 1                           Stage 2
 
 1. Client PXE ROM sends DHCP Discover
 2. PxeLab DHCP responds with Offer/Ack containing:
-   - IP address (full/hybrid mode)
+   - IP address (server mode)
    - next-server (TFTP server address)
    - bootfile (NBP filename, e.g., `ipxe.efi`)
    - Option 175.178 (iPXE boot script URL)

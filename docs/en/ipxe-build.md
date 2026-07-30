@@ -47,11 +47,11 @@ Script logic:
 1. **DHCP first** — Runs `dhcp` to get IP, also receives ProxyDHCP OFFER if present
 2. **isset proxydhcp/next-server** — Checks if ProxyDHCP data exists (note: `isset` parameter is the setting name, don't wrap with `${}`)
 3. **Proxy mode** — `proxydhcp/next-server` exists → use it as PxeLab address (the siaddr field from ProxyDHCP)
-4. **Full/Server mode** — No proxy data → use `${dhcp-server}` (PxeLab itself is the DHCP server)
+4. **Server mode** — No proxy data → use `${dhcp-server}` (PxeLab itself is the DHCP server)
 5. **TFTP fallback** — Falls back to TFTP if HTTP chain-load fails
 6. **DHCP failure** — Drops to iPXE shell for manual debugging
 
-**Advantage**: No hardcoded IPs, no dependency on `${next-server}` scope priority, no dependency on `PXE_STACK` compile option. Both Proxy and Full modes share the same script.
+**Advantage**: No hardcoded IPs, no dependency on `${next-server}` scope priority, no dependency on `PXE_STACK` compile option. Both Proxy and Server modes share the same script.
 
 ### PXE_STACK Note
 

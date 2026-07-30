@@ -10,7 +10,7 @@
 
 | 服务 | 端口 | 说明 |
 |------|------|------|
-| **DHCP** | 67 | 支持 full / proxy / hybrid / off 四种模式，每个接口独立配置 |
+| **DHCP** | 67 | 支持 server / proxy / off 三种模式，每个接口独立配置 |
 | **ProxyDHCP** | 4011 | 叠加到现有 DHCP 环境，不影响客户端配置 |
 | **TFTP** | 69 | 可配置端口和超时，提供 NBP 文件下载 |
 | **HTTP** | 8080 | 提供引导脚本、Web UI、SPA、引导文件 |
@@ -24,7 +24,7 @@
 ### iPXE 支持
 
 - 自定义编译 iPXE，嵌入式引导脚本
-- 11 种 CPU 架构：x86 BIOS、EFI x86-64、ARM64 等
+- 11 种可引导客户端 CPU 架构：x86 BIOS、EFI x86-64、ARM64 等
 - Secure Boot 支持（x86_64 和 ARM64）
 - 架构自动检测：根据 DHCP Option 93 客户端架构自动选择引导文件
 

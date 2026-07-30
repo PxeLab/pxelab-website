@@ -1,4 +1,4 @@
-﻿# iPXE 编译指南
+# iPXE 编译指南
 
 ## 概述
 
@@ -47,11 +47,11 @@ shell
 1. **DHCP 优先** — 执行 `dhcp` 获取 IP，同时接收 ProxyDHCP OFFER（如存在）
 2. **isset proxydhcp/next-server** — 检测 ProxyDHCP 数据是否存在（注意：`isset` 参数是设置名，不要用 `${}` 包裹）
 3. **Proxy 模式** — `proxydhcp/next-server` 存在 → 使用它作为 PxeLab 地址（即 ProxyDHCP 的 siaddr 字段）
-4. **Full/Server 模式** — 无 proxy 数据 → 使用 `${dhcp-server}`（PxeLab 本身就是 DHCP 服务器）
+4. **Server 模式** — 无 proxy 数据 → 使用 `${dhcp-server}`（PxeLab 本身就是 DHCP 服务器）
 5. **TFTP 兜底** — HTTP 链式加载失败时尝试 TFTP
 6. **DHCP 失败** — 进入 iPXE shell 以便手动排查
 
-**优势**：无需硬编码 IP、不依赖 `${next-server}` 的 scope 优先级、不依赖 `PXE_STACK` 编译选项。Proxy 和 Full 两种模式共用同一份脚本。
+**优势**：无需硬编码 IP、不依赖 `${next-server}` 的 scope 优先级、不依赖 `PXE_STACK` 编译选项。Proxy 和 Server 两种模式共用同一份脚本。
 
 ### PXE_STACK 说明
 

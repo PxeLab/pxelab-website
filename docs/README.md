@@ -1,4 +1,4 @@
-﻿# PxeLab Documentation
+# PxeLab Documentation
 
 > PxeLab 用户文档 — 快速开始、功能指南、配置参考与故障排查。
 
@@ -26,7 +26,7 @@
 | 文档 | 说明 |
 |------|------|
 | [服务配置](guides/services.md) | DHCP / DNS / NFS / TFTP / Boot Settings / Netboot 目录 |
-| [DHCP 配置](guides/dhcp.md) | 四种 DHCP 模式、多接口部署、IP 预留、访问控制 |
+| [DHCP 配置](guides/dhcp.md) | 三种 DHCP 模式、多接口部署、IP 预留、访问控制 |
 | [引导配置](guides/boot-config.md) | iPXE 决策树、引导菜单类型、Profile 管理、自定义脚本 |
 | [文件管理](guides/files.md) | 引导文件的上传、删除和浏览 |
 | [引导配置（Profiles）](guides/profiles.md) | Profile 管理、脚本版本控制 |

@@ -18,7 +18,7 @@
 | **目标用户** | IT 运维工程师、IDC 工程师、系统管理员 |
 | **核心场景** | 批量装机、无盘工作站、OS 安装、服务器维护 |
 | **技术栈** | Go 1.23+ / React 19 / TypeScript / Tailwind CSS 4 / SQLite |
-| **平台支持** | Windows / Linux / macOS |
+| **平台支持** | 服务器运行平台：Windows 10+ / Linux / macOS 12+（amd64 / arm64，Linux 另支持 armv7）；可引导客户端覆盖 11 种架构 |
 
 ### 与其他方案的对比
 
@@ -26,9 +26,9 @@
 |------|--------|----------------------|-----------------|
 | 安装复杂度 | 单二进制，零依赖 | 手动配置多个服务 | 需要大量依赖 |
 | iPXE 支持 | 内置自定义编译 iPXE | 需自行编译 | 需自行集成 |
-| 多架构 | 11 种 CPU 架构 + Secure Boot | 通常仅 x86 | 有限 |
+| 多架构 | 11 种可引导客户端架构 + Secure Boot | 通常仅 x86 | 有限 |
 | Web 管理 | 内置，全功能 | 无 | 有，但复杂 |
-| DHCP 模式 | full / proxy / hybrid / off | 通常仅 one mode | 有限 |
+| DHCP 模式 | server / proxy / off | 通常仅 one mode | 有限 |
 | NFS | 内置 NFSv3 | 需外部 NFS | 需外部 |
 
 ---
@@ -37,7 +37,7 @@
 
 ### 网络服务
 
-- **DHCP 服务器** — 支持 full / proxy / hybrid / off 四种模式，每个接口独立配置
+- **DHCP 服务器** — 支持 server / proxy / off 三种模式，每个接口独立配置
 - **ProxyDHCP** — 端口 4011，叠加到现有 DHCP 环境
 - **TFTP 服务器** — 可配置端口和超时，提供 NBP 文件
 - **HTTP 服务器** — 提供引导脚本、Web UI、SPA、引导文件
@@ -46,7 +46,7 @@
 
 ### 引导能力
 
-- **iPXE** — 自定义编译，嵌入式引导脚本，11 种架构
+- **iPXE** — 自定义编译，嵌入式引导脚本，11 种客户端架构
 - **Secure Boot** — x86_64 和 ARM64 架构支持 UEFI Secure Boot
 - **引导类型** — direct（内核+initrd）、chain（链式加载）、wds（Windows WIM）、sanboot（iSCSI SAN）、local（本地硬盘）
 - **PXELinux** — 配置解析器 + AST + iPXE 脚本生成器
@@ -97,7 +97,7 @@ Stage 1                           Stage 2
 
 1. 客户端 PXE ROM 发送 DHCP Discover
 2. PxeLab DHCP 服务器响应 Offer/Ack，包含：
-   - IP 地址（full/hybrid 模式）
+   - IP 地址（server 模式）
    - next-server（TFTP 服务器地址）
    - bootfile（NBP 文件名，如 `ipxe.efi`）
    - Option 175.178（iPXE 引导脚本 URL）

@@ -7,108 +7,144 @@ const base = rawBase
     : `/${rawBase}/`
   : '/'
 
-const zhSidebar = {
+interface SidebarItemDef {
+  zh: string
+  en: string
+  link: string
+}
+
+interface SidebarGroupDef {
+  zh: string
+  en: string
+  items: SidebarItemDef[]
+}
+
+const sidebarDef: Record<string, SidebarGroupDef[]> = {
   '/': [
     {
-      text: '产品',
+      zh: '产品',
+      en: 'Product',
       items: [
-        { text: '产品定位', link: '/product' },
-        { text: '功能特性', link: '/features' },
-        { text: '优势能力', link: '/advantages' },
-        { text: '架构优势', link: '/architecture-advantages' },
-        { text: '常见问题', link: '/faq' },
+        { zh: '产品定位', en: 'Product Overview', link: '/product' },
+        { zh: '功能特性', en: 'Features', link: '/features' },
+        { zh: '优势能力', en: 'Advantages', link: '/advantages' },
+        { zh: '架构优势', en: 'Architecture Advantages', link: '/architecture-advantages' },
+        { zh: '常见问题', en: 'FAQ', link: '/faq' },
+      ],
+    },
+    {
+      zh: '进阶',
+      en: 'Advanced',
+      items: [
+        { zh: '引导架构', en: 'Boot Architecture', link: '/boot-architecture' },
+        { zh: 'iPXE 设置指南', en: 'iPXE Settings Guide', link: '/ipxe-settings-guide' },
       ],
     },
   ],
   '/guides/': [
     {
-      text: '概览',
+      zh: '概览',
+      en: 'Overview',
       items: [
-        { text: '仪表盘', link: '/guides/dashboard' },
+        { zh: '仪表盘', en: 'Dashboard', link: '/guides/dashboard' },
       ],
     },
     {
-      text: '基础配置',
+      zh: '基础配置',
+      en: 'Basic Configuration',
       items: [
-        { text: '服务配置', link: '/guides/services' },
-        { text: '文件管理', link: '/guides/files' },
-        { text: '引导配置', link: '/guides/profiles' },
-        { text: '应答文件模板', link: '/guides/answer-templates' },
-        { text: 'DHCP 配置', link: '/guides/dhcp' },
-        { text: '引导菜单配置', link: '/guides/boot-config' },
-        { text: '网络启动目录', link: '/guides/netboot' },
-        { text: 'OS 镜像管理', link: '/guides/os-images' },
+        { zh: '服务配置', en: 'Service Config', link: '/guides/services' },
+        { zh: '文件管理', en: 'Files', link: '/guides/files' },
+        { zh: '引导配置', en: 'Profiles', link: '/guides/profiles' },
+        { zh: '应答文件模板', en: 'Answer Templates', link: '/guides/answer-templates' },
+        { zh: 'DHCP 配置', en: 'DHCP Config', link: '/guides/dhcp' },
+        { zh: '引导菜单配置', en: 'Boot Config', link: '/guides/boot-config' },
+        { zh: '网络启动目录', en: 'Netboot Catalog', link: '/guides/netboot' },
+        { zh: 'OS 镜像管理', en: 'OS Images', link: '/guides/os-images' },
       ],
     },
     {
-      text: '管理',
+      zh: '管理',
+      en: 'Management',
       items: [
-        { text: '主机管理', link: '/guides/host-management' },
-        { text: '访问控制', link: '/guides/access-control' },
-        { text: '安装任务', link: '/guides/install-tasks' },
-        { text: 'BMC 带外管理', link: '/guides/bmc' },
-        { text: 'WOL 网络唤醒', link: '/guides/wol' },
-        { text: '网络诊断', link: '/guides/network-diagnostics' },
+        { zh: '主机管理', en: 'Host Management', link: '/guides/host-management' },
+        { zh: '访问控制', en: 'Access Control', link: '/guides/access-control' },
+        { zh: '安装任务', en: 'Install Tasks', link: '/guides/install-tasks' },
+        { zh: 'BMC 带外管理', en: 'BMC / IPMI', link: '/guides/bmc' },
+        { zh: 'WOL 网络唤醒', en: 'Wake-on-LAN', link: '/guides/wol' },
+        { zh: '网络诊断', en: 'Network Diagnostics', link: '/guides/network-diagnostics' },
       ],
     },
     {
-      text: '监控',
+      zh: '监控',
+      en: 'Monitoring',
       items: [
-        { text: '监控', link: '/guides/monitoring' },
+        { zh: '监控', en: 'Monitoring', link: '/guides/monitoring' },
       ],
     },
     {
-      text: '其他',
+      zh: '其他',
+      en: 'Others',
       items: [
-        { text: '设置', link: '/guides/settings' },
-        { text: 'Web UI 总览', link: '/guides/web-ui' },
-        { text: '部署模式', link: '/guides/deployment' },
+        { zh: '设置', en: 'Settings', link: '/guides/settings' },
+        { zh: 'Web UI 总览', en: 'Web UI Guide', link: '/guides/web-ui' },
+        { zh: '部署模式', en: 'Deployment', link: '/guides/deployment' },
       ],
     },
   ],
   '/reference/': [
     {
-      text: '服务参考',
+      zh: '服务参考',
+      en: 'Service Reference',
       items: [
-        { text: 'TFTP 服务', link: '/reference/tftp' },
-        { text: 'DNS 服务', link: '/reference/dns' },
-        { text: 'NFS 服务', link: '/reference/nfs' },
-        { text: '架构映射与 Secure Boot', link: '/reference/boot-settings' },
-        { text: 'iPXE 编译', link: '/reference/ipxe-build' },
+        { zh: 'TFTP 服务', en: 'TFTP Service', link: '/reference/tftp' },
+        { zh: 'DNS 服务', en: 'DNS Service', link: '/reference/dns' },
+        { zh: 'NFS 服务', en: 'NFS Service', link: '/reference/nfs' },
+        { zh: '架构映射与 Secure Boot', en: 'Architecture Mapping & Secure Boot', link: '/reference/boot-settings' },
+        { zh: 'iPXE 编译', en: 'iPXE Custom Build', link: '/reference/ipxe-build' },
       ],
     },
     {
-      text: '配置参考',
+      zh: '配置参考',
+      en: 'Configuration Reference',
       items: [
-        { text: '配置文件', link: '/reference/config-file' },
-        { text: 'REST API', link: '/reference/api-reference' },
-        { text: '环境变量与 CLI', link: '/reference/environment-variables' },
-        { text: '日志配置', link: '/reference/logging' },
+        { zh: '配置文件', en: 'Config File', link: '/reference/config-file' },
+        { zh: 'REST API', en: 'REST API', link: '/reference/api-reference' },
+        { zh: '环境变量与 CLI', en: 'Environment Variables & CLI', link: '/reference/environment-variables' },
+        { zh: '日志配置', en: 'Logging', link: '/reference/logging' },
       ],
     },
   ],
 }
 
-// English sidebar: same structure with /en/ prefix
-function enSidebar() {
+function buildSidebar(localePrefix: '' | '/en', lang: 'zh' | 'en') {
   const result: Record<string, any[]> = {}
-  for (const [key, groups] of Object.entries(zhSidebar)) {
-    result[`/en${key}`] = groups.map(g => ({
-      text: g.text,
-      items: g.items.map((item: any) => ({
-        text: item.text,
-        link: `/en${item.link}`,
+  for (const [key, groups] of Object.entries(sidebarDef)) {
+    result[`${localePrefix}${key}`] = groups.map(g => ({
+      text: g[lang],
+      items: g.items.map(item => ({
+        text: item[lang],
+        link: `${localePrefix}${item.link}`,
       })),
     }))
   }
   return result
 }
 
+const zhSidebar = buildSidebar('', 'zh')
+const enSidebar = buildSidebar('/en', 'en')
+
 export default defineConfig({
   base,
   title: 'PxeLab',
   description: '一体化 PXE 网络引导服务器',
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
+  srcExclude: [
+    'IMPLEMENTATION_PLAN.md',
+    'VERIFICATION-GUIDE.md',
+    'dev-plan.md',
+    'README.md',
+  ],
 
   head: [
     ['meta', { name: 'theme-color', content: '#3b82f6' }],
@@ -149,7 +185,7 @@ export default defineConfig({
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
           { text: 'Reference', link: '/en/reference/api-reference', activeMatch: '/en/reference/' },
         ],
-        sidebar: enSidebar(),
+        sidebar: enSidebar,
         outline: [2, 3],
         search: { provider: 'local' },
         socialLinks: [

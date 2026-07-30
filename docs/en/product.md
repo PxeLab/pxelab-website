@@ -31,9 +31,9 @@ Traditional PXE deployments require installing and configuring multiple services
 | Value | Description |
 |-------|-------------|
 | **Zero-dependency deployment** | Single binary, no extra dependencies needed |
-| **Full architecture coverage** | 11 CPU architectures including x86 BIOS/EFI, ARM64, Secure Boot |
+| **Full architecture coverage** | 11 bootable client CPU architectures including x86 BIOS/EFI, ARM64, Secure Boot |
 | **Modern management UI** | Built-in React Web UI, dark theme, bilingual, real-time monitoring |
-| **Flexible deployment modes** | 4 DHCP modes for various network environments |
+| **Flexible deployment modes** | 3 DHCP modes for various network environments |
 | **Ready out of the box** | Built-in iPXE, NFS, OS install catalog |
 
 ---
@@ -44,12 +44,12 @@ Traditional PXE deployments require installing and configuring multiple services
 |---------|--------|---------------------------|-----------------|
 | Setup complexity | Single binary, zero deps | Manual multi-service config | Heavy dependencies |
 | iPXE support | Built-in custom compilation | Self-compile required | Self-integration required |
-| Multi-arch | 11 archs + Secure Boot | Usually x86 only | Limited |
+| Multi-arch | 11 client archs + Secure Boot | Usually x86 only | Limited |
 | Web management | Built-in, full-featured | None | Yes, but complex |
-| DHCP modes | full / proxy / hybrid / off | Usually one mode | Limited |
+| DHCP modes | server / proxy / off | Usually one mode | Limited |
 | NFS | Built-in NFSv3 | External NFS needed | External needed |
 | Platform support | Windows / Linux / macOS | Usually Linux only | Usually Linux only |
-| Resource usage | ≤ 512 MB RAM | Depends on services | High |
+| Resource usage | Typical deployment ≤ 512 MB RAM | Depends on services | High |
 
 ---
 

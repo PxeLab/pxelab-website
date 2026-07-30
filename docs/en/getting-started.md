@@ -11,7 +11,7 @@
 | Item | Requirement |
 |------|-------------|
 | **OS** | Windows 10+ / Linux (kernel 3.10+) / macOS 12+ |
-| **Architecture** | amd64 / arm64 |
+| **Architecture** | amd64 / arm64 (Linux also supports armv7) |
 | **Memory** | ≥ 512 MB |
 | **Disk** | ≥ 1 GB free space |
 | **Network** | Admin/root privileges required (DHCP port 67) |

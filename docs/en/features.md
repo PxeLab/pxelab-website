@@ -10,7 +10,7 @@
 
 | Service | Port | Description |
 |---------|------|-------------|
-| **DHCP** | 67 | Supports full / proxy / hybrid / off modes, per-interface config |
+| **DHCP** | 67 | Supports server / proxy / off modes, per-interface config |
 | **ProxyDHCP** | 4011 | Overlays onto existing DHCP, no client config changes |
 | **TFTP** | 69 | Configurable port and timeout, serves NBP files |
 | **HTTP** | 8080 | Serves boot scripts, Web UI, SPA, boot files |
@@ -24,7 +24,7 @@
 ### iPXE Support
 
 - Custom-compiled iPXE with embedded boot scripts
-- 11 CPU architectures: x86 BIOS, EFI x86-64, ARM64, etc.
+- 11 bootable client CPU architectures: x86 BIOS, EFI x86-64, ARM64, etc.
 - Secure Boot support (x86_64 and ARM64)
 - Auto architecture detection via DHCP Option 93
 

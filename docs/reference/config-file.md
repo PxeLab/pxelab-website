@@ -34,7 +34,7 @@ interfaces:
     auto_start: true
     subnets:
       - cidr: 192.168.1.0/24
-        dhcp: hybrid             # full / proxy / hybrid / off
+        dhcp: server             # DHCP 模式：server（完整 DHCP）/ proxy / off
         pool: 192.168.1.100-192.168.1.200
         gateway: 192.168.1.1
         dns: 8.8.8.8

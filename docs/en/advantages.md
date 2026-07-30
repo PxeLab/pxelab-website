@@ -31,7 +31,7 @@ PxeLab packages everything into a single executable:
 
 ## 2. Full Architecture Coverage
 
-Supports 11 CPU architectures, far exceeding similar tools:
+Supports 11 bootable client CPU architectures, far exceeding similar tools:
 
 | Category | Supported Architectures |
 |----------|------------------------|
@@ -90,13 +90,12 @@ Say goodbye to command-line config files:
 
 ## 5. Flexible DHCP Modes
 
-4 DHCP modes for various network environments:
+3 DHCP modes for various network environments:
 
 | Mode | Description | Use Case |
 |------|-------------|----------|
-| **full** | Full DHCP server | Standalone networks |
+| **server** | Full DHCP server | Standalone networks |
 | **proxy** | ProxyDHCP overlay | Existing DHCP servers |
-| **hybrid** | Hybrid mode | Partial PXE needed |
 | **off** | DHCP disabled | TFTP/HTTP only |
 
 **Key Features**:
@@ -137,6 +136,6 @@ nfs:
 | Architecture support | Limited | 11 archs + Secure Boot |
 | iPXE | Self-compile | Built-in |
 | Management UI | CLI / complex Web | Modern Web UI |
-| DHCP flexibility | Limited | 4 modes |
+| DHCP flexibility | Limited | 3 modes |
 | NFS | External dependency | Built-in |
 | Cross-platform | Usually Linux only | Windows/Linux/macOS |
