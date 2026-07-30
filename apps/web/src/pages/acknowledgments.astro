@@ -1,0 +1,279 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const firmware = [
+  { name: 'iPXE', url: 'https://ipxe.org/', license: 'GPL-2.0-or-later', use: 'Network boot firmware and boot loader.' },
+  { name: 'GRUB 2', url: 'https://www.gnu.org/software/grub/', license: 'GPL-3.0', use: 'UEFI boot loader for x64 and ARM64.' },
+  { name: 'SYSLINUX / PXELINUX', url: 'https://wiki.syslinux.org/', license: 'GPL-2.0', use: 'Legacy BIOS boot loader.' },
+];
+
+const backend = [
+  { name: 'Go', url: 'https://go.dev/', license: 'BSD-3-Clause', use: 'Backend runtime and toolchain.' },
+  { name: 'chi', url: 'https://go-chi.io/', license: 'MIT', use: 'HTTP router and middleware.' },
+  { name: 'Cobra', url: 'https://github.com/spf13/cobra', license: 'Apache-2.0', use: 'CLI framework.' },
+  { name: 'Viper', url: 'https://github.com/spf13/viper', license: 'MIT', use: 'Configuration management.' },
+  { name: 'GORM', url: 'https://gorm.io/', license: 'MIT', use: 'Object-relational mapping.' },
+  { name: 'SQLite', url: 'https://www.sqlite.org/', license: 'Public Domain', use: 'Embedded database.' },
+  { name: 'go-ipmi', url: 'https://github.com/bougou/go-ipmi', license: 'MIT', use: 'IPMI/BMC out-of-band management.' },
+  { name: 'insomniacslk/dhcp', url: 'https://github.com/insomniacslk/dhcp', license: 'BSD-3-Clause', use: 'DHCP packet handling.' },
+  { name: 'miekg/dns', url: 'https://github.com/miekg/dns', license: 'BSD-3-Clause', use: 'DNS server implementation.' },
+  { name: 'pin/tftp', url: 'https://github.com/pin/tftp', license: 'MIT', use: 'TFTP server.' },
+  { name: 'willscott/go-nfs', url: 'https://github.com/willscott/go-nfs', license: 'MIT', use: 'NFSv3 server.' },
+  { name: 'go-git/go-billy', url: 'https://github.com/go-git/go-billy', license: 'Apache-2.0', use: 'Filesystem abstraction.' },
+  { name: 'systray', url: 'https://github.com/getlantern/systray', license: 'MIT', use: 'System tray integration for App mode.' },
+];
+
+const frontend = [
+  { name: 'React', url: 'https://react.dev/', license: 'MIT', use: 'Web UI framework.' },
+  { name: 'Astro', url: 'https://astro.build/', license: 'MIT', use: 'Static site generator for this website.' },
+  { name: 'VitePress', url: 'https://vitepress.dev/', license: 'MIT', use: 'Documentation site generator.' },
+];
+
+const resources = [
+  { name: 'netboot.xyz', url: 'https://netboot.xyz/', license: 'Apache-2.0', use: 'Network boot operating system installer menus and assets.' },
+];
+---
+
+<Layout
+  title="Acknowledgments — PxeLab"
+  description="PxeLab builds upon the work of many open source projects. View the complete list of dependencies and their licenses."
+>
+  <Nav />
+
+  <main class="ack-page">
+    <div class="container">
+      <div class="section-header" style="padding-top: 120px;">
+        <div class="section-label">Acknowledgments</div>
+        <h1>Standing on the shoulders of giants.</h1>
+        <p>PxeLab is possible because of the open source projects listed below. We are grateful to their authors and contributors.</p>
+      </div>
+
+      <section class="ack-group">
+        <h2>Boot Firmware</h2>
+        <p class="ack-group-desc">These projects provide the network boot loaders and firmware that PxeLab distributes to PXE clients.</p>
+        <div class="ack-cards">
+          {firmware.map(item => (
+            <div class="ack-card">
+              <div class="ack-card-header">
+                <a href={item.url} target="_blank" rel="noopener" class="ack-card-name">{item.name}</a>
+                <span class="ack-card-license">{item.license}</span>
+              </div>
+              <p class="ack-card-use">{item.use}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="ack-group">
+        <h2>Backend & Go Libraries</h2>
+        <p class="ack-group-desc">The core PxeLab server and its services are built with these libraries.</p>
+        <div class="ack-cards">
+          {backend.map(item => (
+            <div class="ack-card">
+              <div class="ack-card-header">
+                <a href={item.url} target="_blank" rel="noopener" class="ack-card-name">{item.name}</a>
+                <span class="ack-card-license">{item.license}</span>
+              </div>
+              <p class="ack-card-use">{item.use}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="ack-group">
+        <h2>Frontend & Website</h2>
+        <p class="ack-group-desc">The web interface, marketing site, and documentation are built with these tools.</p>
+        <div class="ack-cards">
+          {frontend.map(item => (
+            <div class="ack-card">
+              <div class="ack-card-header">
+                <a href={item.url} target="_blank" rel="noopener" class="ack-card-name">{item.name}</a>
+                <span class="ack-card-license">{item.license}</span>
+              </div>
+              <p class="ack-card-use">{item.use}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="ack-group">
+        <h2>Resources</h2>
+        <p class="ack-group-desc">Additional open source resources bundled or referenced by PxeLab.</p>
+        <div class="ack-cards">
+          {resources.map(item => (
+            <div class="ack-card">
+              <div class="ack-card-header">
+                <a href={item.url} target="_blank" rel="noopener" class="ack-card-name">{item.name}</a>
+                <span class="ack-card-license">{item.license}</span>
+              </div>
+              <p class="ack-card-use">{item.use}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="ack-license-note">
+        <h2>License Notice</h2>
+        <p>
+          PxeLab itself is licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">GNU Affero General Public License v3.0 (AGPL-3.0)</a>.
+          Third-party components listed above remain under their respective licenses. Source code for bundled boot firmware can be obtained from the upstream projects linked in this document.
+        </p>
+        <p>
+          For the complete and up-to-date list of Go dependencies, see the <code>go.mod</code> file in the
+          <a href="https://github.com/PxeLab/pxelab" target="_blank" rel="noopener">PxeLab repository</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .ack-page {
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  .ack-page .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .ack-page h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 16px 0 20px;
+    background: linear-gradient(135deg, var(--white) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .ack-page .section-header p {
+    color: var(--text-secondary);
+    font-size: 17px;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .ack-group {
+    margin-bottom: 64px;
+  }
+
+  .ack-group h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .ack-group-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .ack-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .ack-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .ack-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .ack-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .ack-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .ack-card-name:hover {
+    color: var(--accent);
+  }
+
+  .ack-card-license {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .ack-card-use {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ack-license-note {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+  }
+
+  .ack-license-note h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .ack-license-note p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .ack-license-note a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .ack-license-note a:hover {
+    text-decoration: underline;
+  }
+
+  .ack-license-note code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .ack-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
