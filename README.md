@@ -99,10 +99,10 @@ On every push to `main`, the workflow builds the site and deploys it to Cloudfla
 
 You can use a single domain for both the website and docs:
 
-- Root domain (`pxelab.io`) → serves the Astro marketing site
-- `pxelab.io/docs/` → serves the VitePress documentation
+- Root domain (`pxelab.com`) → serves the Astro marketing site
+- `pxelab.com/docs/` → serves the VitePress documentation
 
-If you prefer separate subdomains later, deploy the docs output to a second Pages project and add a CNAME for `docs.pxelab.io`.
+If you prefer separate subdomains later, deploy the docs output to a second Pages project and add a CNAME for `docs.pxelab.com`.
 
 ### Routing
 

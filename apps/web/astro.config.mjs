@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://pxelab.io',
+  site: 'https://pxelab.com',
   base: '/',
   outDir: './dist',
   build: {
