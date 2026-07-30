@@ -1,0 +1,75 @@
+
+<!-- ═══ COMPARISON ═══ -->
+<section class="section fade-in" id="comparison">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="cmp_label">Comparison</div>
+      <h2 data-i18n="cmp_title">Why PxeLab</h2>
+      <p data-i18n="cmp_desc">How PxeLab stacks up against a hand-rolled PXE stack and classic provisioning tools.</p>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;">
+      <table class="matrix-table cmp-table">
+        <thead>
+          <tr>
+            <th data-i18n="cmp_th_feature">Capability</th>
+            <th class="cmp-pxelab">PxeLab</th>
+            <th data-i18n="cmp_th_trad">Traditional PXE</th>
+            <th data-i18n="cmp_th_foreman">Foreman · Cobbler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_deploy">Deployment</td>
+            <td class="cmp-pxelab" data-i18n="cmp_deploy_pxelab">Single binary, zero deps</td>
+            <td data-i18n="cmp_deploy_trad">Multiple services, manual setup</td>
+            <td data-i18n="cmp_deploy_foreman">Heavy dependencies</td>
+          </tr>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_ipxe">iPXE</td>
+            <td class="cmp-pxelab" data-i18n="cmp_ipxe_pxelab">Built-in, custom-compiled</td>
+            <td data-i18n="cmp_ipxe_trad">Compile it yourself</td>
+            <td data-i18n="cmp_ipxe_foreman">Manual integration</td>
+          </tr>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_arch">Architectures</td>
+            <td class="cmp-pxelab" data-i18n="cmp_arch_pxelab">11 bootable client architectures</td>
+            <td data-i18n="cmp_arch_trad">Usually x86 only</td>
+            <td data-i18n="cmp_arch_foreman">Limited</td>
+          </tr>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_ui">Web UI</td>
+            <td class="cmp-pxelab" data-i18n="cmp_ui_pxelab">Built-in, full-featured</td>
+            <td data-i18n="cmp_ui_trad">None</td>
+            <td data-i18n="cmp_ui_foreman">Complex</td>
+          </tr>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_dhcp">DHCP</td>
+            <td class="cmp-pxelab" data-i18n="cmp_dhcp_pxelab">server/proxy/off, coexists with existing DHCP</td>
+            <td data-i18n="cmp_dhcp_trad">Single mode</td>
+            <td data-i18n="cmp_dhcp_foreman">Limited</td>
+          </tr>
+          <tr>
+            <td class="arch-name" data-i18n="cmp_row_nfs">NFS</td>
+            <td class="cmp-pxelab" data-i18n="cmp_nfs_pxelab">Built-in NFSv3</td>
+            <td data-i18n="cmp_nfs_trad">External server</td>
+            <td data-i18n="cmp_nfs_foreman">External server</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cmp-table .cmp-pxelab {
+    color: var(--white);
+    font-weight: 500;
+    background: var(--accent-glow);
+  }
+
+  .cmp-table th.cmp-pxelab {
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>

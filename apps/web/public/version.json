@@ -1,0 +1,8 @@
+{
+  "latest_version": "0.1.0",
+  "release_date": "",
+  "release_notes_url": "https://github.com/PxeLab/pxelab/releases",
+  "download_url": "https://github.com/PxeLab/pxelab/releases",
+  "checksums_url": "https://github.com/PxeLab/pxelab/releases/download/v0.1.0/pxelab_v0.1.0_checksums.txt",
+  "min_upgrade_version": "0.1.0"
+}
