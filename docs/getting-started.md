@@ -12,7 +12,7 @@ PXE（Preboot eXecution Environment，预启动执行环境）是一种让电脑
 
 一个典型场景：机房新到 20 台裸机，要在半天内全部装好系统。用 U 盘逐台安装不现实，PXE 让每台机器开机后自动从网络获取系统镜像，批量装机变成一件可管理的事。
 
-PxeLab 把 PXE 所需的 **DHCP、TFTP、HTTP、DNS、NFS** 五个网络服务打包进一个零依赖的程序，用 Web 界面管理整个流程。想了解技术细节？见[术语表](glossary.md)（更深入的引导机制讲解在「进阶主题 · 引导架构」中，建设中）。
+PxeLab 把 PXE 所需的 **DHCP、TFTP、HTTP、DNS、NFS** 五个网络服务打包进一个零依赖的程序，用 Web 界面管理整个流程。想了解技术细节？见[术语表](glossary.md)与[引导架构与无盘启动](guides/boot-architecture.md)。
 
 ---
 

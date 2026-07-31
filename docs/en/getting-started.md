@@ -12,7 +12,7 @@ PXE (Preboot eXecution Environment) is a mechanism that lets a computer **load i
 
 A typical scenario: 20 bare metal machines arrive in the server room, and all of them need systems installed within half a day. Installing them one by one with USB drives is not realistic. PXE lets every machine fetch its system image from the network automatically at power-on, turning mass installation into a manageable task.
 
-PxeLab packages the five network services PXE needs — **DHCP, TFTP, HTTP, DNS, NFS** — into a single zero-dependency binary and manages the whole flow from a web UI. Want the technical details? See the [Glossary](glossary.md) (a deeper walkthrough of the boot mechanics lives in "Advanced Topics · Boot Architecture", coming soon).
+PxeLab packages the five network services PXE needs — **DHCP, TFTP, HTTP, DNS, NFS** — into a single zero-dependency binary and manages the whole flow from a web UI. Want the technical details? See the [Glossary](glossary.md) and [Boot Architecture & Diskless](guides/boot-architecture.md).
 
 ---
 

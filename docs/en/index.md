@@ -11,7 +11,7 @@ hero:
       link: /en/getting-started
     - theme: alt
       text: Architecture
-      link: /en/architecture
+      link: /en/guides/architecture
 
 features:
   - title: All-in-One Services

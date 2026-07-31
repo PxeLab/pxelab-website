@@ -11,7 +11,7 @@ hero:
       link: /getting-started
     - theme: alt
       text: 架构概述
-      link: /architecture
+      link: /guides/architecture
 
 features:
   - title: 一体化服务

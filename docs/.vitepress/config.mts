@@ -28,7 +28,6 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: '产品定位', en: 'Product Overview', link: '/product' },
         { zh: '功能特性', en: 'Features', link: '/features' },
         { zh: '优势能力', en: 'Advantages', link: '/advantages' },
-        { zh: '架构优势', en: 'Architecture Advantages', link: '/architecture-advantages' },
         { zh: '常见问题', en: 'FAQ', link: '/faq' },
       ],
     },
@@ -143,7 +142,6 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: 'DNS 服务', en: 'DNS Service', link: '/reference/dns' },
         { zh: 'NFS 服务', en: 'NFS Service', link: '/reference/nfs' },
         { zh: '架构映射与 Secure Boot', en: 'Architecture Mapping & Secure Boot', link: '/reference/boot-settings' },
-        { zh: 'iPXE 编译', en: 'iPXE Custom Build', link: '/reference/ipxe-build' },
       ],
     },
     {
@@ -201,7 +199,7 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '产品', link: '/product', activeMatch: '/product|features|advantages|architecture-advantages|faq' },
+          { text: '产品', link: '/product', activeMatch: '/product|features|advantages|faq' },
           { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
           { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
@@ -227,7 +225,7 @@ export default defineConfig({
       description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
-          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|architecture-advantages|faq' },
+          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|faq' },
           { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
           { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
