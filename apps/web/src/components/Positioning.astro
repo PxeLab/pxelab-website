@@ -9,12 +9,6 @@
     </div>
 
     <div class="bento">
-      <!-- Positioning statement (wide card) -->
-      <div class="bento-item span-12">
-        <div class="bento-label" data-i18n="pos_stmt_label">Positioning</div>
-        <p class="pos-statement" data-i18n="pos_statement">PxeLab packs DHCP, TFTP, HTTP, DNS and NFS into a single zero-dependency binary, managed from a modern web UI and REST API — from power-on to a ready OS, no USB sticks, no per-machine toil.</p>
-      </div>
-
       <!-- Target audience -->
       <div class="pos-group" data-i18n="pos_aud_label">Who it's for</div>
 
@@ -100,6 +94,7 @@
     text-transform: uppercase;
     color: var(--accent);
     margin-top: 12px;
+    text-align: center;
   }
 
   .pos-icon {
@@ -114,18 +109,14 @@
     margin-bottom: 16px;
   }
 
-  .pos-statement {
-    font-size: 17px !important;
-    line-height: 1.8 !important;
-    max-width: 880px;
-  }
-
-  /* 目标用户 / 核心价值：单行排布 */
+  /* 目标用户 / 核心价值：单行排布，居中展示 */
   .pos-grid {
     grid-column: span 12;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
+    max-width: 1040px;
+    margin: 0 auto;
   }
 
   .pos-grid.vals {
