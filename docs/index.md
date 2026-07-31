@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: PxeLab
-  text: 一体化 PXE 网络引导服务器
-  tagline: 集成 DHCP、TFTP、HTTP、DNS、NFS 服务，通过 Web UI 和 REST API 管理
+  text: 一个二进制，多种架构，下载即用。
+  tagline: PXE in minutes — 内置 DHCP、TFTP、HTTP、DNS、NFS 服务，通过 Web UI 和 REST API 管理
   actions:
     - theme: brand
       text: 快速开始

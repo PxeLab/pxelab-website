@@ -137,7 +137,7 @@ const enSidebar = buildSidebar('/en', 'en')
 export default defineConfig({
   base,
   title: 'PxeLab',
-  description: '一体化 PXE 网络引导服务器',
+  description: '一个二进制，多种架构，下载即用 — 一体化 PXE 网络引导服务器',
   ignoreDeadLinks: false,
   srcExclude: [
     'IMPLEMENTATION_PLAN.md',
@@ -180,7 +180,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       title: 'PxeLab',
-      description: 'All-in-one PXE network boot server',
+      description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
           { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|architecture-advantages|faq' },

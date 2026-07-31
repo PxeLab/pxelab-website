@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: PxeLab
-  text: All-in-one PXE Network Boot Server
+  text: PXE in minutes, all-in-one binary.
   tagline: Integrated DHCP, TFTP, HTTP, DNS, NFS services with Web UI and REST API management
   actions:
     - theme: brand
