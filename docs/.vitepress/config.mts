@@ -23,21 +23,12 @@ interface SidebarGroupDef {
 const sidebarDef: Record<string, SidebarGroupDef[]> = {
   '/': [
     {
-      zh: '产品',
-      en: 'Product',
-      items: [
-        { zh: '产品定位', en: 'Product Overview', link: '/product' },
-        { zh: '功能特性', en: 'Features', link: '/features' },
-        { zh: '优势能力', en: 'Advantages', link: '/advantages' },
-        { zh: '常见问题', en: 'FAQ', link: '/faq' },
-      ],
-    },
-    {
       zh: '快速开始',
       en: 'Getting Started',
       items: [
         { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
         { zh: '术语表', en: 'Glossary', link: '/glossary' },
+        { zh: '常见问题', en: 'FAQ', link: '/faq' },
       ],
     },
     {
@@ -201,7 +192,6 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '产品', link: '/product', activeMatch: '/product|features|advantages|faq' },
           { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
           { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
@@ -228,7 +218,6 @@ export default defineConfig({
       description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
-          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|faq' },
           { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
           { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },

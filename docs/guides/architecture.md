@@ -2,7 +2,7 @@
 
 > PxeLab 的系统组成、引导流程与关键设计取舍。
 
-**相关文档**: [功能特性](../features.md) | [引导架构与无盘启动](boot-architecture.md) | [部署模式](deployment.md)
+**相关文档**: [快速开始](../getting-started.md) | [引导架构与无盘启动](boot-architecture.md) | [部署模式](deployment.md)
 
 ---
 
