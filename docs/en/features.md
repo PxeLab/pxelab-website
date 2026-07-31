@@ -2,7 +2,7 @@
 
 > Complete feature list of PxeLab.
 
-**Docs**: [Product Overview](/en/product) | [Advantages](/en/advantages) | [Architecture](/en/architecture)
+**Docs**: [Product Overview](/en/product) | [Advantages](/en/advantages) | [Architecture](/en/guides/architecture)
 
 ---
 

@@ -2,7 +2,7 @@
 
 > PxeLab's core positioning, features, and service architecture.
 
-**Docs**: [Getting Started](getting-started.md) | [DHCP Config](guides/dhcp.md) | [Boot Config](guides/boot-config.md)
+**Docs**: [Getting Started](../getting-started.md) | [DHCP Config](dhcp.md) | [Boot Config](boot-config.md)
 
 ---
 
