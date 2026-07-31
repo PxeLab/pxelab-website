@@ -36,6 +36,8 @@
 | 子网 1 → 网关 | `192.168.50.1` |
 | 子网 1 → DNS 服务器 | `8.8.8.8` |
 
+![服务配置 DHCP 页面](/screenshots/services-dhcp.png)
+
 保存后，检查顶部**服务状态栏**：DHCP 服务应为「运行」；若不是，点击启动。
 
 > **模式说明**：`server` 模式表示 PxeLab 充当这个网段的唯一 DHCP 服务器，同时分配 IP 和引导信息。如果你的网络已有 DHCP 服务器，改用 [proxy 模式（教程 2）](add-pxe-to-existing-dhcp.md)——只需叠加引导信息，不影响现有网络。

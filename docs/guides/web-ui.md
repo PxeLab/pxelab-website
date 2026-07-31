@@ -48,6 +48,8 @@
 
 ### 概览
 
+![仪表板](/screenshots/dashboard.png)
+
 | 页面 | 入口 | 做什么 | 详细 |
 |------|------|--------|------|
 | **仪表板** | 概览 → 仪表板 | 全局状态：统计卡片、服务状态、流量图表、最近事件、在线主机 | [仪表盘](dashboard.md) |
@@ -57,19 +59,33 @@
 | 页面 | 入口 | 做什么 | 详细 |
 |------|------|--------|------|
 | **服务配置** | 基础配置 → 服务配置 | 六个子页统一管理网络服务：DHCP（接口/子网/租约/预留）、DNS、NFS、TFTP、引导选项、OS 安装目录 | [服务配置](services.md) |
+
+![服务配置 DHCP 子页](/screenshots/services-dhcp.png)
+
+![引导选项子页（架构映射）](/screenshots/boot-settings.png)
 | **文件管理** | 基础配置 → 文件管理 | 引导文件的上传、删除与浏览 | [文件管理](files.md) |
+
+![文件管理页面](/screenshots/files.png)
 | **引导菜单** | 基础配置 → 引导菜单 | Profile（引导配置）管理、脚本版本控制、按主机绑定引导 | [引导菜单配置](boot-config.md) |
+
+![引导菜单页面](/screenshots/profiles.png)
 | **应答模板** | 基础配置 → 应答模板 | 自动化安装应答文件：预设/自定义模板、版本管理与验证 | [应答文件模板](answer-templates.md) |
 | **系统镜像** | 基础配置 → 系统镜像 | ISO 上传、导入、挂载、解压与文件浏览 | [OS 镜像管理](os-images.md) |
+
+![OS 安装目录页面](/screenshots/netboot-catalog.png)
 
 ### 管理
 
 | 页面 | 入口 | 做什么 | 详细 |
 |------|------|--------|------|
 | **主机管理** | 管理 → 主机管理 | 主机 CRUD、MAC 登记、绑定引导菜单、在线状态 | [主机管理](host-management.md) |
+
+![主机管理页面](/screenshots/hosts.png)
 | **访问控制** | 管理 → 访问控制 | MAC 黑白名单，控制哪些设备可接入 | [访问控制](access-control.md) |
 | **初始化脚本** | 管理 → 初始化脚本 | 引导脚本管理（自定义脚本资产） | - |
 | **安装任务** | 管理 → 安装任务 | 网络安装任务跟踪：创建、进度、结果 | [安装任务](install-tasks.md) |
+
+![安装任务页面](/screenshots/install-tasks.png)
 | **带外管理** | 管理 → 带外管理 | BMC/IPMI 电源控制、批量操作 | [BMC 带外管理](bmc.md) |
 | **唤醒管理** | 管理 → 唤醒管理 | WOL 网络唤醒、定时调度 | [WOL 网络唤醒](wol.md) |
 | **网络诊断** | 管理 → 网络诊断 | Ping / Traceroute，流式输出 | [网络诊断](network-diagnostics.md) |
