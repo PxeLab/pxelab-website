@@ -9,29 +9,34 @@
     </div>
 
     <div class="bento">
-      <!-- Architecture (wide card) -->
+      <!-- Cross-Platform Deployment (wide card) -->
       <div class="bento-item span-8">
-        <div class="bento-label" data-i18n="feat_arch_label">Architecture</div>
-        <h3 data-i18n="feat_arch_title">Two-stage network boot</h3>
-        <p data-i18n="feat_arch_desc">PXE ROM loads iPXE via TFTP, then iPXE fetches the boot menu over HTTP. Custom builds with embedded scripts — no manual configuration needed.</p>
-        <div style="margin-top: 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-          <div class="arch-node" style="padding: 12px 16px; min-width: auto;">
-            <div class="arch-node-title" style="font-size: 12.5px;">PXE ROM</div>
+        <div class="bento-label" data-i18n="feat_deploy_label">Cross-Platform Deployment</div>
+        <h3 data-i18n="feat_deploy_title">Run anywhere. Two modes.</h3>
+        <p data-i18n="feat_deploy_desc">Single binary for Linux, macOS, and Windows.</p>
+        <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_server_title">Server Mode</h4>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_server_desc">Headless deployment on Linux servers, VMs, and bare metal. Windows service or systemd unit. Runs in background with zero UI.</p>
           </div>
-          <div class="arch-connector" style="flex-direction: row; padding: 0;">
-            <div class="arch-line" style="width: 32px;"></div>
-            <span class="arch-protocol" style="margin: 0 0 0 4px;">TFTP</span>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_app_title">App Mode</h4>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_app_desc">Desktop application with system tray icon on macOS and Windows. One-click start/stop, visual config, tray notifications. Ideal for workstation use.</p>
           </div>
-          <div class="arch-node primary" style="padding: 12px 16px; min-width: auto;">
-            <div class="arch-node-title" style="font-size: 12.5px;">iPXE</div>
-          </div>
-          <div class="arch-connector" style="flex-direction: row; padding: 0;">
-            <div class="arch-line" style="width: 32px;"></div>
-            <span class="arch-protocol" style="margin: 0 0 0 4px;">HTTP</span>
-          </div>
-          <div class="arch-node" style="padding: 12px 16px; min-width: auto;">
-            <div class="arch-node-title" style="font-size: 12.5px;">Boot Menu</div>
-          </div>
+        </div>
+        <div class="bento-tags" style="margin-top: 20px;">
+          <span class="bento-tag">Linux</span>
+          <span class="bento-tag">macOS</span>
+          <span class="bento-tag">Windows</span>
+          <span class="bento-tag" data-i18n="feat_deploy_tag_systemd">systemd</span>
+          <span class="bento-tag">Windows Svc</span>
+          <span class="bento-tag">System Tray</span>
         </div>
       </div>
 
@@ -117,37 +122,6 @@
         <div class="bento-tags">
           <span class="bento-tag">Cobra</span>
           <span class="bento-tag" data-i18n="feat_cli_tag">Windows Svc</span>
-        </div>
-      </div>
-
-      <!-- Cross-Platform Deployment (wide card) -->
-      <div class="bento-item span-8">
-        <div class="bento-label" data-i18n="feat_deploy_label">Cross-Platform Deployment</div>
-        <h3 data-i18n="feat_deploy_title">Run anywhere. Two modes.</h3>
-        <p data-i18n="feat_deploy_desc">Single binary for Linux, macOS, and Windows. Server mode for headless infrastructure; App mode for desktop with system tray GUI. No runtime dependencies on any platform.</p>
-        <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_server_title">Server Mode</h4>
-            </div>
-            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_server_desc">Headless deployment on Linux servers, VMs, and bare metal. Windows service or systemd unit. Runs in background with zero UI.</p>
-          </div>
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-              <h4 style="font-size: 14px; font-weight: 600; color: var(--white); margin: 0;" data-i18n="feat_deploy_app_title">App Mode</h4>
-            </div>
-            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.6;" data-i18n="feat_deploy_app_desc">Desktop application with system tray icon on macOS and Windows. One-click start/stop, visual config, tray notifications. Ideal for workstation use.</p>
-          </div>
-        </div>
-        <div class="bento-tags" style="margin-top: 20px;">
-          <span class="bento-tag">Linux</span>
-          <span class="bento-tag">macOS</span>
-          <span class="bento-tag">Windows</span>
-          <span class="bento-tag" data-i18n="feat_deploy_tag_systemd">systemd</span>
-          <span class="bento-tag">Windows Svc</span>
-          <span class="bento-tag">System Tray</span>
         </div>
       </div>
     </div>
