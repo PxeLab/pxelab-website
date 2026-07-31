@@ -41,11 +41,10 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       ],
     },
     {
-      zh: '进阶',
-      en: 'Advanced',
+      zh: '故障排查',
+      en: 'Troubleshooting',
       items: [
-        { zh: '引导架构', en: 'Boot Architecture', link: '/boot-architecture' },
-        { zh: 'iPXE 设置指南', en: 'iPXE Settings Guide', link: '/ipxe-settings-guide' },
+        { zh: '故障排查', en: 'Troubleshooting', link: '/troubleshooting' },
       ],
     },
   ],
@@ -63,6 +62,7 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       zh: '概览',
       en: 'Overview',
       items: [
+        { zh: '界面速览', en: 'UI Overview', link: '/guides/web-ui' },
         { zh: '仪表盘', en: 'Dashboard', link: '/guides/dashboard' },
       ],
     },
@@ -100,12 +100,30 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       ],
     },
     {
+      zh: '进阶主题',
+      en: 'Advanced Topics',
+      items: [
+        { zh: '架构概述', en: 'Architecture', link: '/guides/architecture' },
+        { zh: '引导架构与无盘启动', en: 'Boot Architecture & Diskless', link: '/guides/boot-architecture' },
+        { zh: 'DHCP 模式详解', en: 'DHCP Modes', link: '/guides/dhcp-modes' },
+        { zh: 'iPXE 设置指南', en: 'iPXE Settings Guide', link: '/guides/ipxe-settings-guide' },
+      ],
+    },
+    {
       zh: '其他',
       en: 'Others',
       items: [
         { zh: '设置', en: 'Settings', link: '/guides/settings' },
-        { zh: 'Web UI 总览', en: 'Web UI Guide', link: '/guides/web-ui' },
         { zh: '部署模式', en: 'Deployment', link: '/guides/deployment' },
+      ],
+    },
+  ],
+  '/development/': [
+    {
+      zh: '开发指南',
+      en: 'Development',
+      items: [
+        { zh: '参与开发', en: 'Contributing', link: '/development/contributing' },
       ],
     },
   ],
@@ -180,6 +198,7 @@ export default defineConfig({
           { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
           { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
+          { text: '开发指南', link: '/development/contributing', activeMatch: '/development/' },
           { text: '参考文档', link: '/reference/api-reference', activeMatch: '/reference/' },
         ],
         sidebar: zhSidebar,
@@ -205,6 +224,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
           { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
+          { text: 'Development', link: '/en/development/contributing', activeMatch: '/en/development/' },
           { text: 'Reference', link: '/en/reference/api-reference', activeMatch: '/en/reference/' },
         ],
         sidebar: enSidebar,
