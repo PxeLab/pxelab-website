@@ -13,10 +13,21 @@
 
 ---
 
+## 教程
+
+| 文档 | 说明 |
+|------|------|
+| [教程 1：给裸机装 Ubuntu](tutorials/install-ubuntu.md) | server 模式端到端装机 |
+| [教程 2：在现有 DHCP 网络叠加 PXE](tutorials/add-pxe-to-existing-dhcp.md) | proxy 模式叠加 |
+| [教程 3：搭建无盘工作站](tutorials/diskless-workstation.md) | iSCSI sanboot |
+
+---
+
 ## 使用指南 — 概览
 
 | 文档 | 说明 |
 |------|------|
+| [界面速览](guides/web-ui.md) | 逐页介绍与界面地图 |
 | [仪表盘](guides/dashboard.md) | 全局统计、服务状态、流量图表、最近事件 |
 
 ---

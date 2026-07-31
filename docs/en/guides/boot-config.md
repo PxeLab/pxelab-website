@@ -1,107 +1,86 @@
-# Boot Config
+# Boot Menu Config
 
-> iPXE boot script system, Profile management, and default menu configuration.
+> Decide what clients see after booting and what they can start. Visual iPXE-based configuration — no hand-written scripts needed.
 
-**Docs**: [Architecture Mapping & Secure Boot](../reference/boot-settings.md) | [DHCP Config](dhcp.md) | [Netboot Catalog](netboot.md)
-
----
-
-## iPXE Boot Script System
-
-PxeLab's iPXE boot uses a **configuration-driven decision tree** — no need to write raw iPXE scripts, configure visually through the Web UI:
-
-```
-Client requests boot script
-    │
-    ├─ 1. Custom script? → Yes → Return directly, ignore all below
-    │
-    ├─ 2. Host has Profile? → Profile with menu → Return Profile menu
-    │
-    ├─ 3. Catalog redirect? → Enabled → Chain to OS install catalog
-    │
-    └─ 4. Default boot menu → Return configured default menu
-```
+**Docs**: [Profile Operations](profiles.md) | [Netboot Catalog](netboot.md) | [Architecture Mapping & Secure Boot](../reference/boot-settings.md)
 
 ---
 
-## Boot Menu Types
+## When to Use
 
-| BootType | Purpose | Example |
-|----------|---------|---------|
-| `local` | Boot from local disk | Skip network boot |
-| `direct` | Directly load kernel + initrd | Linux distro installation |
-| `chain` | Chain-load other bootloaders | GRUB2, Windows Boot Manager |
-| `wds` | Windows WIM boot | Windows PE / installation |
+- Clients **jump straight to the OS Install Catalog** (default behavior) → nothing to configure; just confirm the catalog is enabled
+- Want a **custom menu** (install a system, boot local disk, diskless boot, etc.) → create Profiles
+- A specific machine should **always install a specific system** → bind a Profile to its MAC
+- Don't want the catalog redirect; full control of the menu → configure the default menu
+
+## The Boot Decision Chain
+
+When a client requests a boot script, PxeLab answers in this order:
+
+```
+1. Custom iPXE script set?   → return it directly, ignore everything below
+2. Host has a Profile?       → return that Profile's menu
+3. Catalog redirect enabled? → jump to the Netboot OS Install Catalog
+4. None of the above         → return the default boot menu
+```
+
+## Boot Types
+
+| Type | Use | Example |
+|------|-----|---------|
+| `direct` | Load kernel + initrd directly | Linux install |
+| `chain` | Chain-load another bootloader/ISO | GRUB2, Memdisk ISO |
 | `sanboot` | iSCSI SAN boot | Diskless workstations |
+| `wds` | Windows WIM boot | Windows PE / install |
+| `local` | Boot from local disk | Default fallback |
 
-### sanboot Use Cases
+## Task 1: Create a Profile
 
-| Scenario | Suitable? | Reason |
-|----------|-----------|--------|
-| DOS boot disk | ✅ | Boots and runs immediately |
-| Live Linux | ✅ | Kernel + initramfs self-contained |
-| WinPE maintenance disk | ✅ | Gets tools via network after entering PE |
-| Memtest86+ | ✅ | Doesn't access disk after boot |
-| iSCSI LUN direct boot | ✅ | Installed system disk |
-| CentOS/RHEL install | ⚠️→❌ | Anaconda needs explicit inst.repo |
-| Windows install | ❌ | Needs wim + BCD extraction, use wimboot |
+Entry: **Basic Config → Boot Menu (Profiles)** → New. A Profile is one boot entry:
 
----
+| Field | Meaning |
+|-------|---------|
+| Profile name | Shown in the menu |
+| Architecture | Target client architecture |
+| Boot type | One of the five above |
+| Kernel path / Initrd path | For `direct` type (e.g. `vmlinuz` / `initrd.img`) |
+| Command line | Kernel parameters (e.g. `net.ifnames=0 console=tty0`) |
+| URL | Target address for `chain` / `sanboot` (e.g. `iscsi:192.168.1.50::::iqn.2024-01:disk`) |
 
-## Profile (Boot Configuration)
+Every edit saves a **version snapshot** automatically — diff and roll back to any version.
 
-Profile is a boot config bound to a specific host, containing a boot menu:
+## Task 2: Bind to a host
 
-- **Create Profile**: Specify name, architecture, boot type, and parameters
-- **Bind Host**: Bind Profile to host MAC address
-- **Script Versioning**: Auto-saves version snapshots on every modification, supports diff and rollback
-- **Create from Netboot**: One-click Profile creation from OS install catalog
+**Management → Host Management** → open the host → associate the Profile. Once bound, that machine skips the default flow and boots straight into its Profile.
 
-Each Profile is a single boot entry for simplified config:
+## Task 3: Configure the default menu
 
-```
-Profile: "Install Ubuntu 22.04"
-  ├─ Architecture: x86_64
-  ├─ Type: direct
-  ├─ Kernel: vmlinuz
-  ├─ Initrd: initrd.img
-  └─ Cmdline: net.ifnames=0 console=tty0
-```
+**Settings** (bottom of the sidebar) → **Boot Menu**:
 
----
+- **Menu title** (default `PxeLab Boot Menu`)
+- **Timeout**: 0 = no auto-select; >0 = auto-select the default entry after timeout
+- **Entries**: add the boot items you need (local, Profiles, etc.)
 
-## Default Boot Menu
+> Note: the default menu only appears when the host has no Profile AND the catalog redirect is off.
 
-Displayed when client has **no associated Profile** and **Netboot catalog redirect is disabled**.
+## Task 4: Full customization (custom iPXE script)
 
-Two modes supported (Web UI: **Service Config → Netboot Catalog**, or sidebar bottom **Settings → Netboot**):
-
-1. **Show default Profile's boot entry** — Only show Profiles marked as default
-2. **List all Profiles** — All Profiles as menu items
-
-Configuration:
-- **Menu Title** — Default `PxeLab Boot Menu`
-- **Timeout** — 0 = no auto-select, >0 = auto-select default entry after timeout
-- **Menu Entries** — Add multiple boot entries
-
----
-
-## Custom iPXE Script
-
-Fill in **Settings → Netboot → Custom iPXE Script** to **completely replace** all visual configuration:
+**Settings → Netboot → Custom iPXE Script**: once filled, it **fully replaces** all visual configuration (advanced). Available template variables:
 
 <v-pre>
 
 ```
-#!ipxe
-dhcp || clear
-echo Booting custom script for {{.MAC}}
-chain {{.URL}}/boot/custom.ipxe || shell
+{{.URL}}         Server URL (e.g. http://192.168.1.10:8080)
+{{.MAC}}         Client MAC address
+{{.NextServer}}  Server IP (without port)
 ```
 
 </v-pre>
 
-Available template variables:
-- `{{'{{'}}.URL}}` — Server address (e.g., `http://192.168.1.10:8080`)
-- `{{'{{'}}.MAC}}` — Client MAC address
-- `{{'{{'}}.NextServer}}` — Server IP (without port)
+## FAQ
+
+**Q: Clients boot straight into the OS Install Catalog and never see the default menu?**
+The catalog redirect is on by default. Disable "redirect" in **Service Config → OS Install Catalog** (or Settings → Netboot).
+
+**Q: A Profile change has no effect?**
+Make sure it's saved; bound hosts use the Profile menu — check the host's association on its detail page.

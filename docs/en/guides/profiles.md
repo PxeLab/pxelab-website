@@ -1,20 +1,48 @@
-# Profiles
+# Boot Config (Profile Operations)
 
-> Manage all boot configuration files (Profiles) that determine each host's boot behavior.
+> A Profile is "one boot entry": the concrete config of a system or boot method. This page covers creating and managing Profiles; the decision chain and menu config live in [Boot Menu Config](boot-config.md).
 
-**Docs**: [Boot Config](boot-config.md) | [Architecture Mapping](../reference/boot-settings.md)
+**Docs**: [Boot Menu Config](boot-config.md) | [Host Management](host-management.md) | [Netboot Catalog](netboot.md)
 
 ---
 
-Page path: `/profiles`
+## When to Use
 
-Manage all boot configuration files (Profiles):
+- Want to add a **boot entry** ("Install Ubuntu 22.04", "boot from SAN", …) → create a Profile
+- Want a Profile **used by a specific machine** → bind it to a host
+- Broke a boot entry → roll back a version
 
-- **Profile List**: DataTable display with columns for name, architecture, default status, boot type
-- **Create Profile**: Dialog form — select name, architecture (x86_64/arm64/etc.), boot type (direct/chain/sanboot/wds/local/custom) and parameters
-- **Edit Profile**: Modify boot parameters
-- **Script Versioning**: Auto-saves version snapshots on every custom script modification
-  - Version list: View history
-  - Diff comparison: Compare current vs historical versions
-  - Rollback: Restore to any historical version
-- **Create from Netboot**: One-click Profile generation from OS install catalog
+Entry: **Basic Config → Boot Menu (Profiles)** (`/profiles`). The list shows name, architecture, default flag, and boot type.
+
+## Task 1: Create a Profile
+
+Click **New**:
+
+| Field | Meaning |
+|-------|---------|
+| Profile name | Required, e.g. `Install Ubuntu 22.04` |
+| Architecture | Target client architecture (x86_64 / arm64, etc.) |
+| Boot type | `direct` / `chain` / `sanboot` / `wds` / `local` / `custom` |
+| Kernel path / Initrd path | For `direct` type |
+| Command line | Kernel parameters |
+| URL | Target address for `chain` / `sanboot` |
+
+Type meanings: see the boot types table in [Boot Menu Config](boot-config.md).
+
+## Task 2: Create from the OS Install Catalog
+
+Don't want to fill kernel/initrd by hand? Select a distro in the OS Install Catalog → "Create Profile" — PxeLab generates the Profile from the catalog entry automatically, no image paths to look up.
+
+## Task 3: Version management
+
+Every Profile edit (especially `custom`-type scripts) saves a version snapshot:
+
+- **History**: Profile detail → versions
+- **Diff**: compare current vs. historical versions
+- **Rollback**: restore any historical version with one click
+
+Great for multi-person collaboration and change audits: break something? Roll back.
+
+## Task 4: Set as default
+
+Mark a Profile as "default" in the list: when no host binding and no catalog redirect apply, the default Profile appears as a boot entry (see the default menu config in [Boot Menu Config](boot-config.md)).

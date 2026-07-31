@@ -1,47 +1,148 @@
-# Web UI Guide
+# UI Overview
 
-> PxeLab Web management interface navigation and page layout.
+> A tour of the PxeLab web UI: sidebar structure, what each page does, and top bar features. Detailed operations live in each feature guide.
 
-**Docs**: [Dashboard](dashboard.md) | [Service Config](services.md) | [Host Management](host-management.md)
+**Docs**: [Dashboard](dashboard.md) | [Service Config](services.md) | [Settings](settings.md)
 
 ---
 
-Page path: `/` (root path)
+## Sidebar Structure
 
-## Main Layout
+```
+Overview
+├─ Dashboard (/)
 
-PxeLab uses a standard layout:
+Basic Config
+├─ Service Config ▸ (nested sub-nav)
+│   ├─ DHCP (/services/dhcp)
+│   ├─ DNS (/services/dns)
+│   ├─ NFS (/services/nfs)
+│   ├─ TFTP (/services/tftp)
+│   ├─ Boot Options (/boot-settings)
+│   └─ OS Install Catalog (/netboot-catalog)
+├─ File Manager (/files)
+├─ Boot Menu (/profiles)
+├─ Answer Templates (/answer-templates)
+└─ OS Images (/os-images)
 
-- **Top Navigation Bar**
-  - Left: Logo + PxeLab title
-  - Center: Search bar (⌘K to activate)
-  - Right: Theme toggle (light/dark/system) + language switch + user dropdown (Change password, Sign out)
-- **Left Sidebar**: Vertical navigation menu
-- **Main Content Area**
+Management
+├─ Host Management (/hosts → /hosts/:id)
+├─ Access Control (/access-control)
+├─ Init Scripts (/scripts)
+├─ Install Tasks (/install-tasks)
+├─ BMC / IPMI (/bmc)
+├─ Wake-on-LAN (/wol)
+├─ Network Diagnostics (/network)
+└─ Hub (template marketplace)
 
-## Sidebar Navigation
+Monitoring
+├─ Event Log (/events)
+├─ Audit Log (/audit-logs)
+└─ Live Log (/logs)
 
-| Menu | Page Path | Content |
-|------|-----------|---------|
-| **Overview** | | |
-| └ Dashboard | `/dashboard` | Statistics, charts, service status, online hosts |
-| **Configuration** | | |
-| └ Service Config | `/services/dhcp` | DHCP/DNS/NFS/TFTP services |
-| └ Boot Config | `/boot-config` | iPXE scripts, Profiles, default boot menu |
-| └ Netboot Catalog | `/netboot-catalog` | OS install catalog, groups, cache |
-| └ Files | `/files` | Boot file management |
-| **Management** | | |
-| └ Hosts | `/hosts` | Device list and management |
-| └ Profiles | `/profiles` | Boot configuration files (Profiles) |
-| └ Answer Templates | `/answer-templates` | Automated installation answer files |
-| └ Install Tasks | `/install-tasks` | Network install task management |
-| └ Access Control | `/access-control` | MAC whitelist/blacklist/unauthorized devices |
-| └ OS Images | `/os-images` | ISO upload, mount, extraction |
-| └ Network Diagnostics | `/diagnostics` | Service detection, conflict diagnosis |
-| └ BMC | `/bmc` | IPMI out-of-band management |
-| └ WOL | `/wol` | Wake-on-LAN wake/scheduled tasks |
-| **Monitoring** | | |
-| └ Monitoring | `/monitoring` | Prometheus metrics, alerts, config |
-| **Global** | | |
-| └ Settings | `/settings` | Network, services, OS install, language, advanced |
-| └ Deployment | `/deployment` | Release and update management |
+Bottom
+└─ Settings (settings modal)
+```
+
+## Page-by-Page Tour
+
+### Overview
+
+![Dashboard](/screenshots/dashboard.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Dashboard** | Overview → Dashboard | Global state: stat cards, service status, traffic charts, recent events, online hosts | [Dashboard](dashboard.md) |
+
+### Basic Config
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Service Config** | Basic Config → Service Config | Six sub-pages managing the network services: DHCP (interfaces/subnets/leases/reservations), DNS, NFS, TFTP, Boot Options, OS Install Catalog | [Service Config](services.md) |
+
+![DHCP sub-page](/screenshots/services-dhcp.png)
+
+![Boot Options sub-page (arch map)](/screenshots/boot-settings.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **File Manager** | Basic Config → File Manager | Upload, delete, and browse boot files | [Files](files.md) |
+
+![File Manager](/screenshots/files.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Boot Menu** | Basic Config → Boot Menu | Profile (boot config) management, script versioning, per-host boot binding | [Boot Menu Config](boot-config.md) |
+
+![Boot Menu page](/screenshots/profiles.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Answer Templates** | Basic Config → Answer Templates | Unattended install answer files: preset/custom templates, versioning, validation | [Answer Templates](answer-templates.md) |
+| **OS Images** | Basic Config → OS Images | ISO upload, import, mount, extract, and file browsing | [OS Images](os-images.md) |
+
+![OS Install Catalog](/screenshots/netboot-catalog.png)
+
+### Management
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Host Management** | Management → Host Management | Host CRUD, MAC registration, boot menu binding, online status | [Host Management](host-management.md) |
+
+![Host Management](/screenshots/hosts.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Access Control** | Management → Access Control | MAC black/whitelist, controlling which devices can join | [Access Control](access-control.md) |
+| **Init Scripts** | Management → Init Scripts | Boot script management (custom script assets) | - |
+| **Install Tasks** | Management → Install Tasks | Network install task tracking: create, progress, result | [Install Tasks](install-tasks.md) |
+
+![Install Tasks](/screenshots/install-tasks.png)
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **BMC / IPMI** | Management → BMC / IPMI | Out-of-band power control, batch operations | [BMC / IPMI](bmc.md) |
+| **Wake-on-LAN** | Management → Wake-on-LAN | Remote wake, scheduled wake-ups | [WOL](wol.md) |
+| **Network Diagnostics** | Management → Network Diagnostics | Ping / Traceroute with streaming output | [Network Diagnostics](network-diagnostics.md) |
+| **Hub** | Management → Hub | PxeLab Hub template marketplace: community boot scripts and configs, one-click import | - |
+
+### Monitoring
+
+| Page | Entry | What it does | Details |
+|------|-------|--------------|---------|
+| **Event Log** | Monitoring → Event Log | Real-time event stream (DHCP/boot/wake/IPMI operations) | [Monitoring](monitoring.md) |
+| **Audit Log** | Monitoring → Audit Log | Audit trail of every config change | [Monitoring](monitoring.md) |
+| **Live Log** | Monitoring → Live Log | Multi-panel log stream, filterable by service | [Monitoring](monitoring.md) |
+
+### Settings
+
+| Entry | What it does | Details |
+|-------|--------------|---------|
+| **Settings** (bottom modal) | General config, boot menu, Netboot, service auto-start, log management | [Settings](settings.md) |
+
+---
+
+## Top Bar
+
+### Service Status Dropdown
+
+The service status indicator on the top-right; click to expand:
+
+- Per-service run state (running / stopped / error) and ports
+- Start / stop / restart each service individually, or all at once
+- Auto-refreshes every 5 seconds
+
+### Notification Center
+
+The bell icon: real-time system notifications and history.
+
+### Search / Command Palette (⌘K / Ctrl+K)
+
+- Jump to any page instantly
+- Shows recently visited pages
+- Searches features and settings
+
+### Language & Theme
+
+- One-click Chinese / English switch
+- Light / dark / system theme, adjustable accent color and corner radius

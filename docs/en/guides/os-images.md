@@ -1,35 +1,37 @@
 # OS Images
 
-> ISO image upload, mount, extraction, and file browsing.
+> Upload, import, mount, extract, and browse ISO images — turning system images into bootable resources.
 
-**Docs**: [Netboot Catalog](netboot.md) | [File Management](web-ui.md) | [REST API Reference](../reference/api-reference.md)
-
----
-
-## API Endpoints
-
-```
-GET    /api/v1/os-images                # List all images
-POST   /api/v1/os-images/upload         # Upload ISO
-POST   /api/v1/os-images/import         # Import local file
-GET    /api/v1/os-images/{id}           # Get image details
-PUT    /api/v1/os-images/{id}           # Update metadata
-DELETE /api/v1/os-images/{id}           # Delete image
-POST   /api/v1/os-images/{id}/extract   # Extract ISO
-POST   /api/v1/os-images/{id}/mount     # Mount ISO
-POST   /api/v1/os-images/{id}/unmount   # Unmount ISO
-POST   /api/v1/os-images/{id}/reprocess # Reprocess
-GET    /api/v1/os-images/{id}/file      # Download file
-```
+**Docs**: [Netboot Catalog](netboot.md) | [File Manager](files.md) | [REST API Reference](../reference/api-reference.md)
 
 ---
 
-## Features
+## When to Use
 
-- **Upload ISO** — Drag-and-drop or file picker upload
-- **Import Local File** — Import from server local path
-- **Auto-detection** — Automatically identify distro type
-- **Mount/Unmount** — ISO mount point management
-- **File Browsing** — Browse mounted ISO contents
-- **Download** — Download image files
-- **Reprocess** — Re-detect and re-parse images
+- Need **your own system images** (official ISOs, customized images) for network installs → upload/import
+- Want to boot image content **directly without extraction** → mount the ISO
+- Inspect image content → file browsing
+
+Entry: **Basic Config → OS Images** (`/os-images`).
+
+## Task 1: Upload / import
+
+- **Upload**: drag-and-drop or pick an ISO to upload
+- **Import from local path**: point at a file path on the server
+- Automatic distro detection after import
+
+## Task 2: Mount / unmount
+
+Mount an ISO to make its content directly bootable via NFS/HTTP; unmount when done. Mount point tracking is automatic.
+
+## Task 3: Browse files
+
+Browse the mounted image's content; download individual files.
+
+## Task 4: Reprocess
+
+Re-run distro detection/parsing after metadata changes with "reprocess".
+
+## API
+
+All operations have REST endpoints (upload/import/mount/extract/reprocess/file download) — see [REST API Reference](../reference/api-reference.md).

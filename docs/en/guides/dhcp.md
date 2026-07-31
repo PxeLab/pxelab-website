@@ -1,105 +1,63 @@
 # DHCP Config
 
-> PxeLab's DHCP server supports three operating modes, configurable independently per network interface.
+> Give devices on the network automatic IPs and PXE boot info. Task-oriented steps; protocol details live in [DHCP Modes](dhcp-modes.md).
 
-**Docs**: [Architecture](architecture.md) | [Boot Config](boot-config.md) | [Netboot Catalog](netboot.md)
-
----
-
-## Three DHCP Modes
-
-Each network interface (subnet) can independently set the DHCP mode:
-
-| Mode | Assigns IP | PXE Options | Non-PXE Clients | Use Case |
-|------|-----------|-------------|-----------------|----------|
-| **server** | ✅ | ✅ | ✅ Normal assignment | Sole DHCP server (default) |
-| **proxy** | ❌ yiaddr=0 | ✅ | ❌ Ignored | Overlay onto existing DHCP |
-| **off** | ❌ | ❌ | ❌ Ignored | DHCP disabled |
-
-### server Mode (Default)
-
-PxeLab acts as the **sole DHCP server**, managing the entire DHCP lifecycle:
-
-```
-Client Discover → PxeLab Offer (IP + Gateway + DNS + PXE Options) → Request → Ack
-```
-
-Use case: New networks, lab environments, isolated networks.
-
-### proxy Mode
-
-PxeLab **only provides PXE-related options**, IP assigned by existing DHCP server:
-
-```
-Client Discover → Existing DHCP Offer (IP) + PxeLab ProxyOffer (PXE options, yiaddr=0)
-```
-
-Key parameters:
-- `yiaddr=0.0.0.0` — Key indicator for iPXE to identify ProxyDHCP
-- `Option 60 = "PXEClient"` — Required by UEFI PXE Base Code
-- `siaddr` — Points to PxeLab (TFTP/HTTP server address)
-
-Use case: Networks with existing DHCP servers, overlay PXE service.
-
-### off Mode
-
-Completely disables DHCP on this interface. Other services (HTTP/TFTP/DNS) are unaffected.
+**Docs**: [Service Config](services.md) | [DHCP Modes](dhcp-modes.md) | [Boot Menu Config](boot-config.md)
 
 ---
 
-## Multi-Interface Deployment
+## When to Use
 
-Supports multi-NIC, multi-subnet configuration with independent DHCP modes:
+- New network needs **automatic IP + boot info** → create an interface in `server` mode
+- Network already has DHCP, just want to **layer boot capability on top** → `proxy` mode (see [Tutorial 2](../tutorials/add-pxe-to-existing-dhcp.md))
+- A specific device needs a **fixed IP** → IP reservation
+- Debugging "clients can't get an IP" → check the lease tab
 
-```yaml
-# Example: Management + Business interfaces
-interfaces:
-  - name: eth0          # Management
-    ip: 10.0.0.1
-    subnets:
-      - cidr: 10.0.0.0/24
-        dhcp: server     # Self-hosted DHCP
-        pool: 10.0.0.100-10.0.0.200
+Entry: **Basic Config → Service Config → DHCP**.
 
-  - name: eth1          # Business
-    ip: 192.168.1.100
-    subnets:
-      - cidr: 192.168.1.0/24
-        dhcp: proxy      # PXE overlay, don't interfere with company DHCP
-```
+## Task 1: Create an interface and subnet (server mode)
 
----
+Click **Add Interface** in the top-right corner and fill in:
 
-## IP Reservations
+| Field | Meaning |
+|-------|---------|
+| Interface name | A name, or pick a detected NIC from the list |
+| IP address | The PxeLab server's IP on this subnet |
+| Subnet 1 → Subnet CIDR | The network, e.g. `192.168.50.0/24` |
+| Subnet 1 → DHCP mode | `server (Server DHCP)` |
+| Subnet 1 → Address pool | "+ Add address range" to set the assignment range |
+| Subnet 1 → Gateway / DNS server | Default gateway and DNS for clients (DNS empty = use interface IP) |
+| Subnet 1 → Lease time (seconds) | Default 86400 (1 day) |
 
-Permanently bind a specific IP to a MAC address, ensuring critical devices always get the same IP:
+Save, then start the DHCP service (port 67) from the **service status bar**. An interface can hold multiple subnets via "+ Add subnet", each with its own mode and pool.
 
-- Web UI: **Service Config → DHCP → Reservations**
-- API: `POST /api/v1/dhcp/reservations`
-- Conflict detection: Auto-checks if IP is used by other reservations or active leases on create/edit
-- Only available for server-mode subnets
+## Task 2: Layer onto existing DHCP (proxy mode)
 
----
+Create an interface, set the subnet CIDR to your existing network, and pick `proxy (Proxy DHCP)` as the DHCP mode — **leave address pool, gateway, and DNS empty** (proxy doesn't assign IPs). Save and start `ProxyDHCP` (port 4011).
 
-## Access Control (Whitelist/Blacklist)
+> Full flow: [Tutorial 2: Layer PXE onto an Existing DHCP Network](../tutorials/add-pxe-to-existing-dhcp.md).
 
-| List | Behavior | Use Case |
-|------|----------|----------|
-| **Whitelist** | Only listed MACs can get IPs | Strict device access control |
-| **Blacklist** | Listed MACs are denied | Block specific devices |
-| **Unauthorized** | Devices not in any list | Monitoring and auditing |
+## Task 3: IP reservation (fixed IP)
 
-Web UI: **Management → Access Control**
+**Reservations** tab → add a reservation: fill in MAC and IP (hostname and note optional). Server-mode subnets only.
 
-Config supports pre-import from YAML seed files:
+- Conflict detection runs automatically: reserved IPs already taken by other reservations or active leases are flagged
+- Use for printers, servers, and other devices that need a fixed IP
 
-```yaml
-blacklist_seeds:
-  - mac: "AA:BB:CC:DD:EE:FF"
-    reason: "Decommissioned device"
+## Task 4: View and manage leases
 
-whitelist_seeds:
-  - mac: "11:22:33:44:55:66"
-    subnet: "10.0.0.0/24"
-    reason: "Server zone"
-```
+**Leases** tab: active leases (IP / MAC / expiry). Supports delete (force release) and batch cleanup.
+
+## Task 5: Chain to iPXE
+
+The "**Chain to iPXE**" toggle in the subnet config: when enabled, PXELinux/GRUB2 clients automatically redirect to load iPXE. Ideal for unifying legacy environments on iPXE (see [PXELinux Compatibility & Migration](pxelinux-migration.md)).
+
+## Mode Cheat Sheet
+
+| Mode | Assigns IP | Provides boot info | Scenario |
+|------|-----------|--------------------|----------|
+| **server** | ✅ | ✅ | PxeLab is the only DHCP (default) |
+| **proxy** | ❌ (existing DHCP assigns) | ✅ | Existing DHCP, add boot |
+| **off** | ❌ | ❌ | No DHCP on this interface |
+
+Protocol details (Option 60, yiaddr=0, etc.): [DHCP Modes](dhcp-modes.md).

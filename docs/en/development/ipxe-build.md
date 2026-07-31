@@ -1,22 +1,16 @@
-# iPXE Build Guide
+# Custom iPXE Build
+
+> PxeLab uses custom-built iPXE binaries for two-stage network boot. This page covers the embedded boot script, the build environment, and all build targets.
+
+**Docs**: [Boot Architecture & Diskless](../guides/boot-architecture.md) | [Architecture Mapping & Secure Boot](../reference/boot-settings.md)
+
+---
 
 ## Overview
 
-PxeLab uses custom-compiled iPXE binaries for two-stage network booting. Each binary embeds the same iPXE script that performs DHCP then loads the boot menu via HTTP, avoiding PXE BIOS/UEFI DHCP data caching issues that cause chain-load loops.
+Every iPXE binary embeds the same boot script: it runs DHCP, then loads the boot menu over HTTP — avoiding the chain-load loops caused by PXE BIOS/UEFI caching DHCP data.
 
-## Build Environment
-
-- Linux host with:
-  - `git`, `make`, `gcc`, `xz`
-  - Cross-compilers for target architectures:
-    - `gcc-aarch64-linux-gnu` (ARM64 UEFI)
-    - `gcc-x86-64-linux-gnu` (x86 UEFI, usually built-in)
-    - `gcc-i686-linux-gnu` (IA32 UEFI, optional)
-  - Network access (to clone iPXE source)
-
-## Embedded Script
-
-All PxeLab iPXE binaries embed the same script:
+### The Embedded Script
 
 ```bash
 #!ipxe
@@ -44,38 +38,50 @@ shell
 
 Script logic:
 
-1. **DHCP first** — Runs `dhcp` to get IP, also receives ProxyDHCP OFFER if present
-2. **isset proxydhcp/next-server** — Checks if ProxyDHCP data exists (note: `isset` parameter is the setting name, don't wrap with `${}`)
-3. **Proxy mode** — `proxydhcp/next-server` exists → use it as PxeLab address (the siaddr field from ProxyDHCP)
-4. **Server mode** — No proxy data → use `${dhcp-server}` (PxeLab itself is the DHCP server)
-5. **TFTP fallback** — Falls back to TFTP if HTTP chain-load fails
-6. **DHCP failure** — Drops to iPXE shell for manual debugging
+1. **DHCP first** — run `dhcp` to get an IP, also receiving the ProxyDHCP OFFER if one exists
+2. **`isset proxydhcp/next-server`** — detect whether ProxyDHCP data is present (note: `isset` takes a setting name — no `${}` wrapping)
+3. **Proxy mode** — `proxydhcp/next-server` exists → use it as the PxeLab address (the ProxyDHCP siaddr field)
+4. **Server mode** — no proxy data → use `${dhcp-server}` (PxeLab is the DHCP server itself)
+5. **TFTP fallback** — if HTTP chain-loading fails, try TFTP
+6. **DHCP failure** — drop into the iPXE shell for manual debugging
 
-**Advantage**: No hardcoded IPs, no dependency on `${next-server}` scope priority, no dependency on `PXE_STACK` compile option. Both Proxy and Server modes share the same script.
+**Benefits**: no hardcoded IPs, no reliance on `${next-server}` scope priority, no dependence on the `PXE_STACK` compile option. One script serves both proxy and server modes.
 
-### PXE_STACK Note
+### PXE_STACK
 
-**No longer needed.** Testing revealed PXE_STACK cannot properly import ProxyDHCP data in Legacy BIOS (undionly.kpxe) — PXE ROM stores proxy data as Option 43 sub-options that `PXE_STACK` can't read. The current approach uses iPXE's `dhcp` command to natively receive `yiaddr=0` ProxyDHCP OFFERs and store them in the `proxydhcp` scope, without needing `PXE_STACK`.
+**No longer needed.** Testing showed PXE_STACK can't import ProxyDHCP data under Legacy BIOS (undionly.kpxe) — the PXE ROM stores proxy data as Option 43 sub-options, which `PXE_STACK` can't read. The current approach uses iPXE's native `dhcp` command to receive the `yiaddr=0` ProxyDHCP OFFER into the `proxydhcp` scope.
 
-### ProxyDHCP Identification
+### ProxyDHCP Recognition
 
-iPXE's `dhcp_offer()` identifies an OFFER as ProxyDHCP with two required conditions:
+iPXE's `dhcp_offer()` needs two conditions to recognize an OFFER as ProxyDHCP:
 
-1. **`yiaddr == 0.0.0.0`** — Key indicator meaning "not assigning an IP"
-2. **Option 60 = `"PXEClient"`** — UEFI PXE Base Code requires this option to be echoed back
+1. **`yiaddr == 0.0.0.0`** — the key criterion: "no IP assigned"
+2. **Option 60 = `"PXEClient"`** — UEFI PXE Base Code requires this option echoed in the OFFER
 
-PxeLab's `appendProxyPXEOptions()` function ensures both are satisfied, along with setting siaddr, Option 54, Option 66, and Option 43.
+PxeLab's `appendProxyPXEOptions()` ensures both, plus siaddr, Option 54, Option 66, and Option 43.
+
+---
+
+## Build Environment
+
+- A Linux host with:
+  - `git`, `make`, `gcc`, `xz`
+  - Cross compilers per target architecture:
+    - `gcc-aarch64-linux-gnu` (ARM64 UEFI)
+    - `gcc-x86-64-linux-gnu` (x86 UEFI, usually present)
+    - `gcc-i686-linux-gnu` (IA32 UEFI, optional)
+  - Network access (to clone the iPXE source)
 
 ## Build Commands
 
-### 1) Clone iPXE Source
+### 1) Clone the iPXE source
 
 ```bash
 git clone --depth 1 https://github.com/ipxe/ipxe.git
 cd ipxe/src
 ```
 
-### 2) Create Embedded Script
+### 2) Create the embedded script
 
 ```bash
 cat > embedd.ipxe << "IPXE_EOF"
@@ -105,48 +111,68 @@ IPXE_EOF
 
 ### 3) Enable HTTPS
 
-Edit `src/config/general.h`, uncomment or add:
+Edit `src/config/general.h` — uncomment or add:
 
 ```c
 #define DOWNLOAD_PROTOCOL_HTTPS
 ```
 
-`DOWNLOAD_PROTOCOL_HTTPS` enables iPXE to download kernels and initrds from HTTPS addresses referenced in the netboot catalog (e.g., `https://github.com/...`).
+`DOWNLOAD_PROTOCOL_HTTPS` lets iPXE download kernels and initrds from `https://github.com/...` URLs referenced by the netboot catalog.
 
-> Other config options (`PXE_MENU`, `PXEXT`, `PXE_STACK`, etc.) don't need changes — defaults work fine. `PXE_STACK` is no longer required (see above).
+> Other config items (`PXE_MENU`, `PXEXT`, `PXE_STACK`, etc.) need no changes — defaults are fine. `PXE_STACK` is no longer required (see above).
 
-### 4) Build All Targets
+### 4) Build all targets
 
 ```bash
-# BIOS x86 — UNDI (uses PXE ROM network stack, no native NIC drivers)
+# BIOS x86 — UNDI (uses the PXE ROM network stack, no native NIC drivers)
 make bin/undionly.kpxe EMBED=embedd.ipxe
 
-# BIOS x86 — Full drivers (larger, some NIC compatibility issues)
+# BIOS x86 — full drivers (larger; some NICs may have compatibility issues)
 make bin/ipxe.pxe EMBED=embedd.ipxe
 
-# UEFI x86-64 — SNP (uses UEFI network stack)
+# UEFI x86-64 — SNP (uses the UEFI network stack)
 make bin-x86_64-efi/ipxe.efi EMBED=embedd.ipxe
 
 # UEFI IA32
 make bin-i386-efi/ipxe.efi EMBED=embedd.ipxe
 
-# UEFI ARM64 (requires aarch64 cross-compiler)
+# UEFI ARM64 (needs an aarch64 cross compiler)
 make bin-arm64-efi/ipxe.efi EMBED=embedd.ipxe CROSS=aarch64-linux-gnu-
 ```
 
-## Output Files
+### Using the PxeLab Makefile
 
-| Build Artifact | Architecture | PxeLab Filename | Size |
-|---------------|-------------|-----------------|------|
+The PxeLab repo ships Makefile targets:
+
+```bash
+make ipxe-build        # build x86_64 EFI (non-embedded, default)
+make ipxe-build-embed  # build x86_64 EFI (embedded failsafe)
+make ipxe-build-all    # Docker cross-build for all architectures (recommended)
+```
+
+---
+
+## Build Products
+
+| Product | Architecture | PxeLab file name | Size |
+|---------|--------------|------------------|------|
 | `bin/undionly.kpxe` | BIOS x86 (UNDI) | `undionly.kpxe` | ~71KB |
-| `bin/ipxe.pxe` | BIOS x86 (full) | `ipxe.pxe` | ~392KB |
+| `bin/ipxe.pxe` | BIOS x86 (full drivers) | `ipxe.pxe` | ~392KB |
 | `bin-x86_64-efi/ipxe.efi` | UEFI x86-64 | `ipxe.efi` | ~1.1MB |
 | `bin-i386-efi/ipxe.efi` | UEFI IA32 | `ipxe32.efi` | ~1.0MB |
 | `bin-arm64-efi/ipxe.efi` | UEFI ARM64 | `ipxe-arm64.efi` | ~1.2MB |
+| `bin-x86_64-efi/snponly.efi` | EFI BC (SNP) | `snponly.efi` | - |
+| `ipxe-riscv64.efi` | RISC-V 64 | `ipxe-riscv64.efi` | - |
+| `ipxe-loong64.efi` | LoongArch64 | `ipxe-loong64.efi` | - |
+| `ipxe-x86_64-sb.efi` | EFI x86-64 | - | Secure Boot iPXE |
+| `ipxe-arm64-sb.efi` | EFI ARM64 | - | Secure Boot iPXE |
+| `shim-x86_64.efi` / `shim-arm64.efi` | - | - | Secure Boot shim |
 
-## Integration into PxeLab
+---
 
-Build artifacts need to be copied to two locations:
+## Integrating into PxeLab
+
+Copy the products to two locations:
 
 ```bash
 # Runtime boot directory
@@ -154,7 +180,7 @@ cp bin/undionly.kpxe /path/to/PxeLab/boot/
 cp bin-x86_64-efi/ipxe.efi /path/to/PxeLab/boot/
 # ... and so on
 
-# Embedded bootdist (extracted on first run)
+# Embedded bootdist (released on first run)
 cp bin/undionly.kpxe /path/to/PxeLab/cmd/pxelab/bootdist/
 cp bin-x86_64-efi/ipxe.efi /path/to/PxeLab/cmd/pxelab/bootdist/
 # ... and so on
@@ -167,6 +193,8 @@ cd /path/to/PxeLab
 go build ./cmd/pxelab/
 ```
 
+---
+
 ## Architecture Mapping
 
-See `internal/boot/archmap.go` — the mapping logic from client architecture types to boot filenames.
+The client-architecture-to-boot-file mapping lives in `internal/boot/archmap.go`; the mapping table and Secure Boot details: [Architecture Mapping & Secure Boot](../reference/boot-settings.md).

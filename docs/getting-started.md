@@ -108,5 +108,5 @@ pxelab.exe
 
 - **教程**：[给裸机装 Ubuntu](tutorials/install-ubuntu.md) · [在现有 DHCP 网络叠加 PXE](tutorials/add-pxe-to-existing-dhcp.md) · [搭建无盘工作站](tutorials/diskless-workstation.md)
 - **使用指南**：按功能深度了解（[DHCP 配置](guides/dhcp.md)、[引导菜单配置](guides/boot-config.md)、[主机管理](guides/host-management.md)…）
-- **API 自动化**：REST API 快速上手（开发指南，建设中）
+- **API 自动化**：[REST API 快速上手](development/api-quickstart.md) · [自动化与 CI 集成](development/automation.md)
 - **遇到问题**：[故障排查](troubleshooting.md) · [常见问题](faq.md)

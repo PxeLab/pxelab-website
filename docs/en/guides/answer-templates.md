@@ -1,19 +1,44 @@
 # Answer Templates
 
-> Automated installation answer file management.
+> Pre-fill the installer's questions for **unattended installation**: the client boots and installs fully automatically — no one standing at the screen clicking through the wizard.
 
-**Docs**: [Netboot Catalog](netboot.md) | [Install Tasks](install-tasks.md)
+**Docs**: [Install Tasks](install-tasks.md) | [Netboot Catalog](netboot.md) | [Boot Menu Config](boot-config.md)
 
 ---
 
-Page path: `/answer-templates`
+## When to Use
 
-Automated installation answer file management:
+- Mass installation without clicking through wizards → answer file + install task
+- Install parameters (partitioning, timezone, repos, preseeded users) must be **standardized** → templates + variables
 
-- **Template List**: DataTable showing all templates
-- **Create Template**: Choose a preset template or start from blank
-- **Edit Template**: Online editor for answer file content
-- **Preset Library**: Pre-built answer files for common distros
-- **Validation**: Syntax and format checking
-- **Preview**: Generate final answer file preview
-- **Versioning**: Save historical versions, support rollback
+Entry: **Basic Config → Answer Templates** (`/answer-templates`).
+
+## Answer File Types
+
+| Type | Distributions |
+|------|---------------|
+| `preseed` | Debian / Ubuntu (legacy) |
+| `subiquity` | Ubuntu (new installer) |
+| `kickstart` | CentOS / RHEL / Fedora |
+| `autoyast` | openSUSE |
+| `autounattend` | Windows |
+
+## Task 1: Create a template
+
+Click **New**: pick a **preset template** (out-of-the-box for common distros) or start blank; fill in name, type, and content.
+
+## Task 2: Use variables
+
+Template content supports variable substitution (hostname, MAC, IP, and other runtime info), letting one template fit many machines. The variable list is shown in the create/edit form.
+
+## Task 3: Preview & validate
+
+Use "**Preview**" before saving to render the final answer file (variables substituted); "**Validate**" checks syntax and format and points out errors — avoiding mid-install failures.
+
+## Task 4: Version management
+
+Every edit saves a historical version with diff and rollback — same model as Profiles.
+
+## Combining with Install Tasks
+
+When creating an [Install Task](install-tasks.md), select this template — the install then runs unattended per the answer file.

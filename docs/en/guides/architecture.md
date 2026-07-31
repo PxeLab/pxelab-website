@@ -1,119 +1,14 @@
-# Architecture Overview
+# Architecture
 
-> PxeLab's core positioning, features, and service architecture.
+> PxeLab's system composition, boot flow, and key design decisions.
 
-**Docs**: [Getting Started](../getting-started.md) | [DHCP Config](dhcp.md) | [Boot Config](boot-config.md)
-
----
-
-## Overview
-
-**PxeLab** is an all-in-one PXE network boot server that integrates DHCP, TFTP, HTTP, DNS, and NFS into a single binary, managed via Web UI and REST API.
-
-### Core Positioning
-
-| Dimension | Description |
-|-----------|-------------|
-| **Product Form** | Single binary + embedded Web UI, ready out of the box |
-| **Target Users** | IT ops, IDC engineers, system administrators |
-| **Core Scenarios** | Batch deployment, diskless workstations, OS installation, server maintenance |
-| **Tech Stack** | Go 1.23+ / React 19 / TypeScript / Tailwind CSS 4 / SQLite |
-| **Platform Support** | Server runtime: Windows 10+ / Linux / macOS 12+ (amd64 / arm64; Linux also armv7); bootable clients span 11 architectures |
-
-### Comparison with Other Solutions
-
-| Feature | PxeLab | Traditional PXE (TFTP-only) | Foreman/Cobbler |
-|---------|--------|---------------------------|-----------------|
-| Setup complexity | Single binary, zero deps | Manual multi-service config | Heavy dependencies |
-| iPXE support | Built-in custom compilation | Self-compile required | Self-integration required |
-| Multi-arch | 11 bootable client architectures + Secure Boot | Usually x86 only | Limited |
-| Web management | Built-in, full-featured | None | Yes, but complex |
-| DHCP modes | server / proxy / off | Usually one mode | Limited |
-| NFS | Built-in NFSv3 | External needed | External needed |
-
----
-
-## Features
-
-### Network Services
-
-- **DHCP Server** — Supports server / proxy / off modes, per-interface configuration
-- **ProxyDHCP** — Port 4011, overlays onto existing DHCP environments
-- **TFTP Server** — Configurable port and timeout, serves NBP files
-- **HTTP Server** — Serves boot scripts, Web UI, SPA, boot files
-- **DNS Server** — Local DNS resolution + upstream forwarding, A/AAAA/CNAME records
-- **NFS Server** — Built-in NFSv3, multiple mount points, IP-based access control
-
-### Boot Capabilities
-
-- **iPXE** — Custom-compiled, embedded boot scripts, 11 client architectures
-- **Secure Boot** — x86_64 and ARM64 UEFI Secure Boot support
-- **Boot Types** — direct (kernel+initrd), chain (chain-load), wds (Windows WIM), sanboot (iSCSI SAN), local (local disk)
-- **PXELinux** — Config parser + AST + iPXE script generator
-- **Architecture Auto-detection** — Automatic boot file selection via DHCP Option 93
-
-### Management
-
-- **Web UI** — React SPA, dark theme, bilingual
-- **REST API** — v1, full CRUD operations
-- **Host Management** — CRUD, grouping, Profile binding
-- **Profile** — Boot config files with script versioning, diff, rollback
-- **OS Install Catalog** — 10 preset distro groups, drag-and-drop sorting
-- **Answer File Templates** — Preset + custom, preview and validation
-- **Install Tasks** — Track deployment progress
-
-### Hardware Management
-
-- **WOL** — Wake-on-LAN with scheduled tasks
-- **BMC/IPMI** — Out-of-band power control (on/off/reboot/status), CSV batch import
-- **OS Images** — ISO upload, mount, distro detection
-
-### Operations Tools
-
-- **Real-time Logs** — Multi-panel SSE log stream, filter by service
-- **Audit Logs** — Track all configuration changes
-- **Access Control** — MAC whitelist/blacklist
-- **Network Diagnostics** — Ping / Traceroute (streaming output)
-- **Prometheus Metrics** — `/api/v1/metrics` endpoint
-- **Log Rotation** — Auto-rotation by size/days/backups
-
----
-
-## Two-Stage Network Boot
-
-PxeLab uses a two-stage boot architecture, progressively upgrading from the limited PXE ROM to the full-featured iPXE:
-
-```
-Stage 1                           Stage 2
-┌─────────────┐   TFTP/HTTP    ┌──────────┐   HTTP     ┌──────────────┐
-│  PXE ROM    ├───────────────►│  iPXE    ├───────────►│  Boot Menu   │
-│  (BIOS/UEFI)│  undionly.kpxe │  (custom │  /boot/    │  (kernel+initrd│
-│             │  /ipxe.efi     │   build) │  ipxe/     │   /WIM/Chain │
-└─────────────┘                │          │  script    │   /Local)    │
-                               └──────────┘           └──────────────┘
-```
-
-**Stage 1: PXE ROM → iPXE**
-
-1. Client PXE ROM sends DHCP Discover
-2. PxeLab DHCP responds with Offer/Ack containing:
-   - IP address (server mode)
-   - next-server (TFTP server address)
-   - bootfile (NBP filename, e.g., `ipxe.efi`)
-   - Option 175.178 (iPXE boot script URL)
-3. Client downloads NBP via TFTP
-4. PXE ROM loads and executes NBP → iPXE starts
-
-**Stage 2: iPXE → Boot Menu**
-
-1. iPXE embedded script auto-executes: `dhcp` → `chain http://server:8080/boot/ipxe/script?mac=xx`
-2. PxeLab looks up the host's bound Profile by MAC address
-3. Returns the corresponding boot menu script
-4. Client displays menu, user selects boot entry
+**Docs**: [Features](../features.md) | [Boot Architecture & Diskless](boot-architecture.md) | [Deployment](deployment.md)
 
 ---
 
 ## Service Architecture
+
+PxeLab is a single binary whose internals are organized per service, coordinated by a service manager:
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -123,7 +18,7 @@ Stage 1                           Stage 2
 │  :8080   │  :67     │  :69     │  :53     │  :2049  │
 │  TCP     │  UDP     │  UDP     │  UDP     │  TCP    │
 ├──────────┴──────────┴──────────┴──────────┴─────────┤
-│              Service Manager (Lifecycle)             │
+│              Service Manager (lifecycle)             │
 ├─────────────────────────────────────────────────────┤
 │  SQLite (pxelab.db)  │  Event Bus  │  Log Bus      │
 ├─────────────────────────────────────────────────────┤
@@ -131,45 +26,58 @@ Stage 1                           Stage 2
 └─────────────────────────────────────────────────────┘
 ```
 
-| Service | Default Port | Protocol | Auto-start | Description |
-|---------|-------------|----------|------------|-------------|
-| HTTP | 8080 | TCP | ✅ | Web UI + API + boot file serving |
-| DHCP | 67 | UDP | Config-dependent | IP assignment + PXE options |
-| ProxyDHCP | 4011 | UDP | Config-dependent | PXE options only (overlay mode) |
+| Service | Default port | Protocol | Auto-start | Purpose |
+|---------|--------------|----------|------------|---------|
+| HTTP | 8080 | TCP | ✅ | Web UI + API + boot file service |
+| DHCP | 67 | UDP | per config | IP assignment + PXE options |
+| ProxyDHCP | 4011 | UDP | per config | PXE options only (overlay mode) |
 | TFTP | 69 | UDP | ❌ | NBP file transfer |
 | DNS | 53 | UDP | ❌ | Local DNS resolution |
 | NFS | 2049 | TCP | ❌ | NFSv3 file sharing |
 
+Each service starts/stops independently; config changes hot-reload in most cases — no process restart needed.
+
 ---
 
-## Deployment Modes
+## Two-Stage Network Boot
 
-### Server Mode (Default)
+The PXE ROM is limited, so PxeLab uses a two-stage boot to upgrade it to full-featured iPXE:
 
-```bash
-pxelab --mode server
-# or
-pxelab   # defaults to server mode
+```
+Stage 1                           Stage 2
+┌─────────────┐   TFTP/HTTP    ┌──────────┐   HTTP     ┌──────────────┐
+│  PXE ROM    ├───────────────►│  iPXE    ├───────────►│   Boot Menu  │
+│  (BIOS/UEFI)│  undionly.kpxe │  (custom │  /boot/    │  (kernel+initrd│
+│             │  /ipxe.efi     │  build)  │  ipxe/     │   /WIM/Chain │
+└─────────────┘                │          │  script    │   /Local)    │
+                               └──────────┘           └──────────────┘
 ```
 
-- Foreground run, logs to stderr
-- Suitable for server deployment, background running
-- Can be managed via systemd on Linux
+**Stage 1**: the client PXE ROM sends a DHCP request → PxeLab responds with IP, next-server, and the NBP file name → the client downloads the NBP (e.g. `ipxe.efi`) over TFTP and executes it.
 
-### App Mode
+**Stage 2**: iPXE runs its embedded script (`dhcp` → `chain http://server:8080/boot/ipxe/script`) → fetches the boot menu from PxeLab → the user picks a boot entry (install a system, boot local disk, etc.).
 
-```bash
-pxelab --mode app
-```
+Step-by-step details (PXELinux/GRUB2 compatibility, architecture mapping, sanboot diskless): [Boot Architecture & Diskless](boot-architecture.md).
 
-- Auto-opens browser
-- Runs as system tray on Windows (hides console window)
-- Suitable for desktop environments, personal use
+---
 
-### Windows System Tray
+## Key Design Decisions
 
-On Windows, PxeLab automatically enables system tray mode when a desktop environment is detected:
+| Decision | Approach | Payoff |
+|----------|----------|--------|
+| **Single binary** | Go static build; frontend and boot files embedded | Zero dependencies, one file to deploy; upgrades = replace one file, no path/permission issues |
+| **Service manager** | Every service implements a common lifecycle interface | Independent start/stop, graceful shutdown, config hot-reload |
+| **Event bus** | Services decouple via publish/subscribe (DHCP leases, boot events, WOL, etc.) | Loose coupling, easy extension, auditable logging |
+| **Store interface** | Data layer is interface-based: SQLite and in-memory implementations | In-memory for fast isolated tests; SQLite for lightweight reliable production |
+| **Dependency injection** | All service dependencies constructed explicitly at the entry point | Clear dependency graph, no global singletons, easy testing |
+| **Modern frontend** | React + CSS variable theming + route-level code splitting | Dark/light themes across all components, fast first paint |
 
-- Right-click tray icon: Open browser / Open data directory / Exit
-- Tray icon shows service running status
-- Closing the browser doesn't stop the service — exit via tray
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Backend | Go 1.23+ (chi router, SQLite/GORM) |
+| Frontend | React 19 + TypeScript + Tailwind CSS 4 + Vite |
+| Packaging | GoReleaser (multi-platform binaries) |

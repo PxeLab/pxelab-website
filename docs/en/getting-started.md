@@ -1,8 +1,18 @@
 # Getting Started
 
-> Installing and first run of PxeLab.
+> Goal: from downloading PxeLab to your first network install in 15 minutes.
 
-**Docs**: [Architecture](guides/architecture.md) | [Deployment](guides/deployment.md) | [Troubleshooting](troubleshooting.md)
+**Docs**: [Glossary](glossary.md) | [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) | [Troubleshooting](troubleshooting.md)
+
+---
+
+## What Is PXE?
+
+PXE (Preboot eXecution Environment) is a mechanism that lets a computer **load its operating system directly from the network at boot time** — no USB drive, no optical drive, not even a system on the local disk.
+
+A typical scenario: 20 bare metal machines arrive in the server room, and all of them need systems installed within half a day. Installing them one by one with USB drives is not realistic. PXE lets every machine fetch its system image from the network automatically at power-on, turning mass installation into a manageable task.
+
+PxeLab packages the five network services PXE needs — **DHCP, TFTP, HTTP, DNS, NFS** — into a single zero-dependency binary and manages the whole flow from a web UI. Want the technical details? See the [Glossary](glossary.md) (a deeper walkthrough of the boot mechanics lives in "Advanced Topics · Boot Architecture", coming soon).
 
 ---
 
@@ -12,99 +22,91 @@
 |------|-------------|
 | **OS** | Windows 10+ / Linux (kernel 3.10+) / macOS 12+ |
 | **Architecture** | amd64 / arm64 (Linux also supports armv7) |
-| **Memory** | ≥ 512 MB |
-| **Disk** | ≥ 1 GB free space |
-| **Network** | Admin/root privileges required (DHCP port 67) |
-| **Dependencies** | None (single binary, all files embedded) |
+| **RAM / Disk** | ≥ 512 MB / ≥ 1 GB |
+| **Network** | Admin/root rights needed to run DHCP (port 67) |
+
+No other dependencies — one file, download and run.
 
 ---
 
-## Installation
+## Download & Install
 
-### Option 1: Download Release (Recommended)
+### Option 1: Download a Release (recommended)
 
-Download the binary for your platform from GitHub Releases:
+Grab the binary for your platform from GitHub Releases:
 
 ```bash
 # Linux amd64
-wget https://github.com/user/pxelab/releases/latest/download/pxelab_linux_amd64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_linux_amd64.tar.gz
 tar xzf pxelab_linux_amd64.tar.gz
 
 # macOS arm64
-wget https://github.com/user/pxelab/releases/latest/download/pxelab_darwin_arm64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_darwin_arm64.tar.gz
 tar xzf pxelab_darwin_arm64.tar.gz
-
-# Windows
-# Download pxelab_windows_amd64.zip, extract to get pxelab.exe
 ```
+
+Windows: download `pxelab_windows_amd64.zip` and extract `pxelab.exe`.
 
 ### Option 2: Build from Source
 
 ```bash
-git clone https://github.com/user/pxelab.git
+git clone https://github.com/PxeLab/pxelab.git
 cd pxelab
-
-make build          # Generates bin/pxelab
-make frontend       # cd web && npm ci && npm run build (optional, already embedded)
-make release        # goreleaser release --clean
+make build          # produces bin/pxelab
 ```
 
-### Option 3: Docker (Planned)
+### Option 3: Docker
 
-> Docker containerized deployment is on the roadmap, not yet implemented.
+Container images are on the roadmap — not available yet.
 
 ---
 
-## First Run
-
-### Linux / macOS
+## First Launch
 
 ```bash
-# Root required (DHCP port 67 needs privileges)
-sudo ./bin/pxelab
+# Linux / macOS (DHCP port 67 needs root)
+sudo ./pxelab
 
-# Or specify data directory
-sudo ./bin/pxelab --data-dir /opt/pxelab-data
-
-# Or App mode (auto-opens browser)
-sudo ./bin/pxelab --mode app
-```
-
-### Windows
-
-```cmd
-# Run as Administrator
+# Windows (run as administrator)
 pxelab.exe
-
-# Or App mode
-pxelab.exe --mode app
 ```
 
-> **Windows System Tray**: On Windows, PxeLab runs in system tray mode by default, hiding the console window. The tray icon provides access to open browser, view data directory, and exit.
+Once started, open **`http://localhost:8080`** in a browser — you'll see the dashboard:
 
-### First Start Behavior
+![PxeLab dashboard](/screenshots/dashboard.png)
 
-1. Auto-creates data directory `~/.pxelab/`
-2. Initializes SQLite database `~/.pxelab/pxelab.db`
-3. Generates default config `~/.pxelab/config.yaml`
-4. Extracts embedded boot files to `~/.pxelab/boot/`
-5. Extracts embedded netboot catalog to `~/.pxelab/netboot/`
-6. Starts HTTP server (port 8080)
-7. Auto-opens browser (in `--mode app`)
+The **service status bar** at the top shows each service's state: by default only HTTP runs; DHCP / TFTP / DNS / NFS turn green once you configure and start them.
+
+> **Windows**: PxeLab runs in the system tray by default — the tray icon offers open browser, open data directory, and quit.
 
 ---
 
-## Verify Services
+## Your First Network Install (5 Steps)
 
-After starting, verify service status at:
+Get a computer that supports network boot (bare metal or an existing machine — either works) and follow along:
 
-| URL | Purpose |
-|-----|---------|
-| `http://localhost:8080` | Web Management UI |
-| `http://localhost:8080/api/v1/status` | Service status JSON |
-| `http://localhost:8080/api/v1/metrics` | Prometheus metrics |
-| `http://localhost:8080/boot/ipxe/script` | iPXE boot script |
+**Step 1: Create an interface and subnet**
+Go to **Basic Config → Service Config → DHCP**, click **Add Interface** in the top-right corner, fill in the interface name, IP address, and in "Subnet 1" set the network (`192.168.50.0/24`), address pool, gateway, DNS — keep the DHCP mode at **server**. Save, then start the DHCP service from the service status bar.
 
-```bash
-curl -s http://localhost:8080/api/v1/status | python -m json.tool
-```
+**Step 2: Make sure the OS Install Catalog is enabled**
+Go to **Basic Config → Service Config → OS Install Catalog** and confirm the "enabled" toggle is on (default). It decides which operating systems clients see after booting.
+
+**Step 3: Boot the client and enter network boot**
+Power the client on and enter its boot menu (common keys: F12 / F11 / Esc — varies by vendor), then choose **network boot (PXE Boot / Network Boot)**.
+
+**Step 4: Pick a system in the boot menu**
+When the menu appears, choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → start the install.
+
+**Step 5: Verify**
+Back on the dashboard: the new host shows up in the "Online hosts" list; **Management → Install Tasks** shows the install record for this machine. After the install finishes, the client boots normally from its local disk.
+
+> Want every detail? See [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md).
+
+---
+
+## Next Steps
+
+- **Tutorials**: [Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) · [Layer PXE onto an Existing DHCP Network](tutorials/add-pxe-to-existing-dhcp.md) · [Build a Diskless Workstation](tutorials/diskless-workstation.md)
+- **Guides**: go deep per feature ([DHCP Config](guides/dhcp.md), [Boot Menu Config](guides/boot-config.md), [Host Management](guides/host-management.md)…)
+- **API automation**: [REST API Quick Start](development/api-quickstart.md) · [Automation & CI Integration](development/automation.md)
+- **Stuck?**: [Troubleshooting](troubleshooting.md) · [FAQ](faq.md)

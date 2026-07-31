@@ -1,66 +1,59 @@
 # Service Config
 
-> Six service configuration sub-pages accessible from the Service Config navigation.
+> One place to manage the six network services: DHCP, DNS, NFS, TFTP, Boot Options, OS Install Catalog. Almost every network behavior is configured here.
 
-**Docs**: [DHCP Config](dhcp.md) | [TFTP Reference](../reference/tftp.md) | [DNS Reference](../reference/dns.md) | [NFS Reference](../reference/nfs.md) | [Architecture Mapping](../reference/boot-settings.md)
+**Docs**: [DHCP Config](dhcp.md) | [UI Overview](web-ui.md) | [Deployment](deployment.md)
 
 ---
 
-## DHCP (/services/dhcp)
+## When to Use
 
-- **Subnet Config**: Per-subnet DHCP mode (server/proxy/off), address pool range, gateway, DNS, lease time
-- **Reservations (Tab)**: IP + MAC binding, conflict detection, only available for server-mode subnets
-- **Lease List (Tab)**: View active leases, delete and batch cleanup
+- Clients **can't get an IP / can't boot** → check DHCP and Boot Options here
+- Tuning **DNS resolution, file sharing, boot files** → all in this group
+- Entry: **Basic Config → Service Config** (the six sub-pages are in the nested sub-nav)
 
-See [DHCP Config Guide](dhcp.md).
+## Sub-Page Cheat Sheet
 
-## DNS (/services/dns)
+### DHCP (/services/dhcp)
 
-- Upstream DNS configuration
-- Local domain settings
-- DNS record management (A / AAAA / CNAME)
-- Subnet-aware resolution config
+Interface and subnet management: each interface can host one or more subnets with independent DHCP modes (server / proxy / off), address pool, gateway, DNS, lease time; three tabs: **Subnets / Leases / Reservations**.
+
+See [DHCP Config](dhcp.md).
+
+### DNS (/services/dns)
+
+Local DNS resolution: upstream forwarding, local domain, A / AAAA / CNAME records, subnet-aware resolution.
 
 See [DNS Service Reference](../reference/dns.md).
 
-## NFS (/services/nfs)
+### NFS (/services/nfs)
 
-- Multiple mount point management (dynamic card list)
-  - Add/remove mount points
-  - Per mount point: label, export path, local directory, read-only toggle, IP/CIDR whitelist
-- NFS connection status: current connections, client list
-- Port configuration
+Network file sharing: multiple mount points (label, export path, local dir, read-only, IP/CIDR whitelist), connection status and client list, port config.
 
 See [NFS Service Reference](../reference/nfs.md).
 
-## TFTP (/services/tftp)
+### TFTP (/services/tftp)
 
-- Port and timeout settings
-- Boot file management (Tab): iPXE / PXELinux / GRUB2 three-column architecture mapping display
-- File management: upload/delete boot files, table view (name, size, modified time, MD5)
+Boot file service: port and timeout settings, boot file management (iPXE / PXELinux / GRUB2 columns showing architecture mapping), file upload and delete.
 
 See [TFTP Service Reference](../reference/tftp.md).
 
-## Boot Settings (/boot-settings)
+### Boot Options (/boot-settings)
 
-Architecture mapping management page:
-
-- **Boot File Health Check**: Verify all architecture boot files exist and sizes are normal
-- **Architecture Mapping Table**: 10 architecture configuration table
-  - Columns: Architecture name, AL code, NBP type (iPXE/PXELinux/GRUB2 dropdown), boot filename, Secure Boot support status
-  - Auto-update boot filename on NBP switch
-  - ARM64 + PXELinux fallback notice
-- **iPXE Script Settings**: Custom iPXE script (template variables `{{'{{'}}.URL}}` / `{{'{{'}}.MAC}}`)
-- **Actions**: Save, Restore defaults
+Architecture mapping management: client architecture → boot file mapping table (with Secure Boot support status), boot file health check, NBP type switching, iPXE script settings.
 
 See [Architecture Mapping & Secure Boot](../reference/boot-settings.md).
 
-## Netboot Catalog (/netboot-catalog)
+### OS Install Catalog (/netboot-catalog)
 
-OS install catalog management:
-
-- Distro list: Show all available distros with version and architecture
-- Group management: Enable/disable 10 built-in groups, edit titles, drag-and-drop sorting
-- Cache stats: Cache path, file count, disk usage
+Built-in distribution install menu: group enable/disable, title editing, drag-and-drop ordering, cache stats.
 
 See [Netboot Catalog](netboot.md).
+
+## Service Status & Start/Stop
+
+The **service status bar** at the top shows all six services' run states and ports:
+
+- Start / stop / restart each service individually, or all at once
+- HTTP is the core service and cannot be stopped
+- After config changes that require a restart, just restart the service from the bar

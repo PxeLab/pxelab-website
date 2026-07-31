@@ -1,34 +1,39 @@
 # Dashboard
 
-> Home dashboard provides a global overview, auto-refreshing every 5 seconds.
+> The home dashboard gives a global overview, auto-refreshing every 5 seconds: are the services healthy, what's the traffic, which machines are booting.
 
 **Docs**: [Getting Started](../getting-started.md) | [Host Management](host-management.md) | [Service Config](services.md)
 
 ---
 
-## Statistics Cards
+## When to Use
 
-Top row shows 5 core metrics:
+- The first page you see when opening PxeLab — check service health and overall system state
+- Watch live during installs/boots: hosts coming online, event stream, traffic curves
 
-| Card | Data Source | Description |
-|------|------------|-------------|
-| Online Hosts | `hosts.last_online` | Hosts with records in last 10 minutes |
-| Running Services | `GET /api/v1/services` | Services with status=running |
-| Active Leases | Prometheus `dhcp.activeLeases` | Current DHCP active leases |
-| DNS Records | `GET /api/v1/dns/records` | Total DNS records |
-| Today's Boots | events (type=BOOT, today) | Boot events today |
+## Stat Cards
+
+The top row shows 5 core metrics:
+
+| Card | Data source | Meaning |
+|------|-------------|---------|
+| Online hosts | `hosts.last_online` | Hosts with activity in the last 10 minutes |
+| Running services | `GET /api/v1/services` | Count of services with status=running |
+| Active leases | Prometheus `dhcp.activeLeases` | Current active DHCP lease count |
+| DNS records | `GET /api/v1/dns/records` | Total DNS record count |
+| Boots today | events (type=BOOT, today) | BOOT events today |
 
 ## Service Status Bar
 
-Shows running status (green/yellow/red dot) and port for DHCP / TFTP / HTTP / DNS / NFS services.
+Shows the run state (green/yellow/red dot) and port of all five services: DHCP / TFTP / HTTP / DNS / NFS.
 
-## Charts Area
+## Charts
 
-- **Traffic Trend** — TFTP / HTTP / NFS bandwidth, switchable between 5m / 30m / 1h time ranges
-- **HTTP Status Codes** — Pie chart showing 2xx / 3xx / 4xx / 5xx distribution
-- **DHCP Architecture Distribution** — Pie chart showing client architectures (x86 BIOS / EFI x86-64 / ARM64, etc.)
-- **Recent Events** — Latest 12 events with type tags (DHCP / TFTP / HTTP / BOOT / IPMI / DNS)
+- **Traffic trend** — TFTP / HTTP / NFS bandwidth, switchable between 5m / 30m / 1h windows
+- **HTTP status distribution** — pie chart of 2xx / 3xx / 4xx / 5xx shares
+- **DHCP architecture distribution** — pie chart of client architectures (x86 BIOS / EFI x86-64 / ARM64, etc.)
+- **Recent events** — the latest 12 events with type tags (DHCP / TFTP / HTTP / BOOT / IPMI / DNS)
 
 ## Online Hosts List
 
-Shows recently booted hosts with online status indicator.
+Hosts that booted recently, with online status dots.
