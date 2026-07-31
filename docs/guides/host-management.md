@@ -1,70 +1,64 @@
 # 主机管理
 
-> 设备管理、WOL 网络唤醒与 BMC/IPMI 带外管理。
+> 登记网络里的设备（按 MAC 识别），给每台机器分配独立的引导行为，并跟踪其在线状态。
 
-**相关文档**: [Web UI 指南](web-ui.md) | [REST API 参考](../reference/api-reference.md)
-
----
-
-## 主机 CRUD
-
-管理网络中的设备：
-
-```
-GET    /api/v1/hosts                # 列出所有主机
-POST   /api/v1/hosts                # 创建主机
-GET    /api/v1/hosts/{id}           # 获取主机详情
-PUT    /api/v1/hosts/{id}           # 更新主机
-DELETE /api/v1/hosts/{id}           # 删除主机
-```
-
-每个主机可配置：
-- 名称、描述
-- MAC 地址
-- 绑定 Profile（引导配置）
-- IP 地址
-- 分组
+**相关文档**: [引导菜单配置](boot-config.md) | [访问控制](access-control.md) | [WOL 网络唤醒](wol.md) | [BMC 带外管理](bmc.md)
 
 ---
 
-## WOL 网络唤醒
+## 什么时候用
 
-通过 Wake-on-LAN 远程开机：
+- 某台机器要**固定装某个系统** → 登记主机 + 绑定 Profile
+- 机房批量上线 → CSV 批量导入
+- 想**远程唤醒 / 带外开关机** → 登记主机后操作
+- 想看到**哪些机器最近引导过** → 在线状态与引导次数
 
-```
-POST /api/v1/hosts/{id}/wake       # 唤醒单台主机
-POST /api/v1/hosts/batch/wake      # 批量唤醒
-GET  /api/v1/wol/history           # 唤醒历史
-POST /api/v1/wol/schedule          # 创建定时唤醒
-GET  /api/v1/wol/schedules         # 列出定时任务
-```
+入口：**管理 → 主机管理**（`/hosts`），详情页 `/hosts/:id`。
 
-定时调度功能：
-- 指定 MAC 地址和唤醒时间
-- 支持一次性或周期性调度
-- 唤醒历史记录
+## 任务 1：新建主机
 
----
+点击「**新建主机**」：
 
-## BMC/IPMI 带外管理
+| 字段 | 说明 |
+|------|------|
+| 名称 | 必填，如 `server-01` |
+| MAC 地址 | 必填，小写十六进制，冒号或短横线分隔（如 `aa:bb:cc:dd:ee:01`） |
+| IP | 可选（已知 IP 可填） |
+| 关联配置（Profile） | 绑定引导菜单，决定该机器如何引导 |
 
-通过 IPMI 协议远程管理服务器电源：
+> MAC 与名称均唯一：重复创建会报冲突。
 
-```
-POST /api/v1/bmc/probe              # 探测 BMC
-POST /api/v1/bmc/{id}/power-on      # 开机
-POST /api/v1/bmc/{id}/power-off     # 关机
-POST /api/v1/bmc/{id}/restart       # 重启
-GET  /api/v1/bmc/{id}/status        # 查询状态
-POST /api/v1/bmc/{id}/boot-device   # 设置启动设备
-```
+## 任务 2：批量导入（CSV）
 
-支持批量操作：
-```
-POST /api/v1/bmc/batch/power-on     # 批量开机
-POST /api/v1/bmc/batch/power-off    # 批量关机
-POST /api/v1/bmc/batch/restart      # 批量重启
-POST /api/v1/bmc/batch/status       # 批量查询状态
+点击「**导入 CSV**」，格式为 `mac,name,profile`：
+
+```csv
+aa:bb:cc:dd:ee:01,server-01,ubuntu-install
+aa:bb:cc:dd:ee:02,server-02,centos-install
 ```
 
-CSV 批量导入 BMC 配置：`POST /api/v1/bmc/configs/import`
+导入完成后显示成功/失败统计。重复 MAC 会被跳过（或报错，按提示处理）。
+
+## 任务 3：绑定引导行为
+
+两种方式：
+
+- **详情页绑定**：打开主机 → 关联 Profile → 保存。之后该机器引导时直接走该 Profile
+- 批量场景可配合 [自动化与 CI 集成](../development/automation.md) 用 API 完成
+
+## 任务 4：远程控制
+
+主机详情页可发起：
+
+- **WOL 网络唤醒**：向该 MAC 发送魔术包，唤醒关机状态的机器（支持定时调度）
+- **BMC/IPMI 电源控制**：登记带外信息（BMC 地址/账号）后，可远程开机、关机、重启、查电源状态，支持批量操作
+
+详细说明见 [WOL 网络唤醒](wol.md) 与 [BMC 带外管理](bmc.md)。
+
+## 在线状态
+
+主机最近 10 分钟内有引导记录 → 状态显示「在线」。列表还显示引导次数与最近在线时间，用于确认装机/引导是否成功。
+
+## API
+
+主机 CRUD、唤醒、BMC 操作均有对应 REST API，端点清单见 [REST API 参考](../reference/api-reference.md)。

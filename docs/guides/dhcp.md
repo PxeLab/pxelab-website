@@ -1,105 +1,63 @@
 # DHCP 配置
 
-> PxeLab 的 DHCP 服务器支持三种运行模式，每个网络接口可独立配置。
+> 让网络里的设备自动获得 IP 和 PXE 引导信息。按任务操作，模式细节见 [DHCP 模式详解](dhcp-modes.md)。
 
-**相关文档**: [架构概述](architecture.md) | [引导配置](boot-config.md) | [网络启动目录](netboot.md)
-
----
-
-## 三种 DHCP 模式
-
-每个网络接口（子网）可独立设置 DHCP 模式：
-
-| 模式 | 分配 IP | PXE 选项 | 非 PXE 客户端 | 适用场景 |
-|------|---------|---------|--------------|---------|
-| **server** | ✅ | ✅ | ✅ 正常分配 | 唯一 DHCP 服务器（默认） |
-| **proxy** | ❌ yiaddr=0 | ✅ | ❌ 忽略 | 叠加到现有 DHCP |
-| **off** | ❌ | ❌ | ❌ 忽略 | 关闭 DHCP |
-
-### server 模式（默认）
-
-PxeLab 作为网络中的**唯一 DHCP 服务器**，管理整个 DHCP 生命周期：
-
-```
-客户端 Discover → PxeLab Offer（IP + 网关 + DNS + PXE 选项）→ Request → Ack
-```
-
-适用：新建网络、实验环境、隔离网络。
-
-### proxy 模式
-
-PxeLab **仅提供 PXE 相关选项**，IP 地址由现有 DHCP 服务器分配：
-
-```
-客户端 Discover → 现有 DHCP Offer（IP）+ PxeLab ProxyOffer（PXE 选项，yiaddr=0）
-```
-
-关键参数：
-- `yiaddr=0.0.0.0` — iPXE 识别 ProxyDHCP 的关键判据
-- `Option 60 = "PXEClient"` — UEFI PXE Base Code 要求
-- `siaddr` — 指向 PxeLab（TFTP/HTTP 服务器地址）
-
-适用：已有 DHCP 服务器的网络，叠加 PXE 服务。
-
-### off 模式
-
-完全关闭该接口的 DHCP 功能，不影响 HTTP/TFTP/DNS 等其他服务。
+**相关文档**: [服务配置](services.md) | [DHCP 模式详解](dhcp-modes.md) | [引导菜单配置](boot-config.md)
 
 ---
 
-## 多接口部署
+## 什么时候用
 
-支持多网卡多子网配置，每个接口独立设置 DHCP 模式：
+- 新网络需要**自动分配 IP + 引导信息** → 用 `server` 模式新建接口
+- 网络已有 DHCP，只想**叠加引导能力** → 用 `proxy` 模式（见[教程 2](../tutorials/add-pxe-to-existing-dhcp.md)）
+- 某台设备要**固定 IP** → IP 预留
+- 排查「客户端拿不到 IP」→ 看租约管理
 
-```yaml
-# 示例：管理口 + 业务口
-interfaces:
-  - name: eth0          # 管理口
-    ip: 10.0.0.1
-    subnets:
-      - cidr: 10.0.0.0/24
-        dhcp: server     # 自建 DHCP
-        pool: 10.0.0.100-10.0.0.200
+入口：**基础配置 → 服务配置 → DHCP**。
 
-  - name: eth1          # 业务口
-    ip: 192.168.1.100
-    subnets:
-      - cidr: 192.168.1.0/24
-        dhcp: proxy      # 叠加 PXE，不干扰公司 DHCP
-```
+## 任务 1：新建接口与子网（server 模式）
 
----
+点击右上角「**新增接口**」，填写：
 
-## IP 预留（DHCP Reservation）
+| 字段 | 说明 |
+|------|------|
+| 接口名称 | 名称或从列表选择检测到的网卡 |
+| IP 地址 | PxeLab 服务器在该网段的 IP |
+| 子网 1 → 子网 CIDR | 网段，如 `192.168.50.0/24` |
+| 子网 1 → DHCP 模式 | `server（Server DHCP）` |
+| 子网 1 → 地址池 | 「+ 添加地址范围」设置分配范围 |
+| 子网 1 → 网关 / DNS 服务器 | 客户端默认网关与 DNS（DNS 留空则用接口 IP） |
+| 子网 1 → 租约时间（秒） | 默认 86400（1 天） |
 
-将特定 IP 地址永久绑定到 MAC 地址，确保关键设备始终获得相同 IP：
+保存后，在顶部**服务状态栏**启动 DHCP 服务（端口 67）。一个接口可「+ 添加子网」配置多个网段，各子网独立设置模式与地址池。
 
-- Web UI：**基础配置 → 服务配置 → DHCP → 预留管理**
-- API：`POST /api/v1/dhcp/reservations`
-- 冲突检测：创建/编辑时自动检查 IP 是否已被其他预留或活跃租约占用
-- 仅 server 模式子网支持预留
+## 任务 2：叠加到现有 DHCP（proxy 模式）
 
----
+新建接口，子网 CIDR 填现有网段，DHCP 模式选 `proxy（Proxy DHCP）`——**地址池、网关、DNS 留空**（proxy 不分配 IP）。保存后启动 `ProxyDHCP`（端口 4011）。
 
-## 访问控制（黑白名单）
+> 完整流程见[教程 2：在现有 DHCP 网络上叠加 PXE](../tutorials/add-pxe-to-existing-dhcp.md)。
 
-| 列表 | 行为 | 适用场景 |
-|------|------|---------|
-| **白名单** | 仅允许列表中的 MAC 地址获取 IP | 严格控制接入设备 |
-| **黑名单** | 拒绝列表中的 MAC 地址 | 封禁特定设备 |
-| **未授权设备** | 不在任何列表中的设备 | 监控和审计 |
+## 任务 3：IP 预留（固定 IP）
 
-Web UI：**管理 → 访问控制**
+**预留管理**页签 → 新增预留：填 MAC 与 IP（可带主机名、备注）。仅 server 模式子网支持。
 
-配置支持从 YAML 种子文件预导入：
+- 创建/编辑时自动做冲突检测：IP 已被其他预留或活跃租约占用会提示
+- 用途：打印机、服务器等需要固定 IP 的设备
 
-```yaml
-blacklist_seeds:
-  - mac: "AA:BB:CC:DD:EE:FF"
-    reason: "已报废设备"
+## 任务 4：查看与管理租约
 
-whitelist_seeds:
-  - mac: "11:22:33:44:55:66"
-    subnet: "10.0.0.0/24"
-    reason: "服务器区"
-```
+**租约管理**页签：当前活跃租约列表（IP / MAC / 到期时间）。支持删除（强制回收）与批量清理。
+
+## 任务 5：链式加载到 iPXE
+
+子网配置中的「**链式加载到 iPXE**」开关：开启后，以 PXELinux/GRUB2 引导的客户端会自动跳转加载 iPXE。适合老环境统一迁移到 iPXE（详见 [PXELinux 兼容与迁移](pxelinux-migration.md)）。
+
+## 三种模式速查
+
+| 模式 | 分配 IP | 提供引导信息 | 适用场景 |
+|------|---------|-------------|---------|
+| **server** | ✅ | ✅ | PxeLab 是唯一 DHCP（默认） |
+| **proxy** | ❌（现网 DHCP 分配） | ✅ | 已有 DHCP，叠加引导 |
+| **off** | ❌ | ❌ | 接口不做 DHCP |
+
+细节（Option 60、yiaddr=0 等协议机制）见 [DHCP 模式详解](dhcp-modes.md)。

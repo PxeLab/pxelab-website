@@ -1,107 +1,86 @@
-# 引导配置
+# 引导菜单配置
 
-> iPXE 引导脚本系统、Profile 管理与默认菜单配置。
+> 决定客户端引导后看到什么菜单、能启动什么。基于 iPXE 的可视化配置，无需手写脚本。
 
-**相关文档**: [架构映射与 Secure Boot](../reference/boot-settings.md) | [DHCP 配置](dhcp.md) | [网络启动目录](netboot.md)
-
----
-
-## iPXE 引导脚本系统
-
-PxeLab 的 iPXE 引导采用**配置驱动决策树**设计，无需编写原始 iPXE 脚本，通过 Web 界面可视化配置：
-
-```
-客户端请求引导脚本
-    │
-    ├─ 1. 自定义脚本？ → 有 → 直接返回，忽略所有下方配置
-    │
-    ├─ 2. 主机有 Profile？ → 有 Profile 且含菜单 → 返回 Profile 菜单
-    │
-    ├─ 3. 安装目录跳转？ → 已启用 → chain 到 OS 安装目录
-    │
-    └─ 4. 默认引导菜单 → 返回配置的默认菜单
-```
+**相关文档**: [Profile 操作](profiles.md) | [网络启动目录](netboot.md) | [架构映射与 Secure Boot](../reference/boot-settings.md)
 
 ---
 
-## 引导菜单类型
+## 什么时候用
 
-| BootType | 用途 | 示例 |
-|----------|------|------|
-| `local` | 从本地硬盘启动 | 跳过网络引导 |
-| `direct` | 直接加载内核 + initrd | Linux 发行版安装 |
-| `chain` | Chain-load 其他引导器 | GRUB2、Windows Boot Manager |
-| `wds` | Windows WIM 引导 | Windows PE / 安装 |
+- 客户端引导后**直接跳转 OS 安装目录**（默认行为）→ 无需配置，确认目录已启用即可
+- 要**自定义菜单**（装系统、从本地启动、无盘启动等）→ 创建 Profile
+- 某台机器**固定装某个系统** → Profile 绑定到主机 MAC
+- 不想要 OS 目录跳转、想完全自控菜单 → 配置默认菜单
+
+## 引导决策链
+
+客户端请求引导脚本时，PxeLab 按以下顺序决定返回什么：
+
+```
+1. 有自定义 iPXE 脚本？   → 直接返回，忽略其余配置
+2. 主机绑定了 Profile？    → 返回该 Profile 菜单
+3. 启用了 OS 目录跳转？    → 跳转到 Netboot OS 安装目录
+4. 以上都不是             → 返回默认引导菜单
+```
+
+## 引导类型
+
+| 类型 | 用途 | 示例 |
+|------|------|------|
+| `direct` | 直接加载内核 + initrd | Linux 安装 |
+| `chain` | 链式加载其他引导器/ISO | GRUB2、Memdisk ISO |
 | `sanboot` | iSCSI SAN 启动 | 无盘工作站 |
+| `wds` | Windows WIM 引导 | Windows PE / 安装 |
+| `local` | 从本地硬盘启动 | 默认兜底 |
 
-### sanboot 适用场景
+## 任务 1：创建 Profile
 
-| 场景 | 是否适合 | 原因 |
-|------|---------|------|
-| DOS 启动盘 | ✅ | 启动即运行，不再访问外部介质 |
-| Live Linux | ✅ | 内核 + initramfs 自包含 |
-| WinPE 维护盘 | ✅ | 进 PE 后通过网络获取工具 |
-| Memtest86+ | ✅ | 引导后不读盘 |
-| iSCSI LUN 直启 | ✅ | 已安装系统盘 |
-| CentOS/RHEL 安装 | ⚠️→❌ | Anaconda 需显式 inst.repo |
-| Windows 安装 | ❌ | 需提取 wim + BCD，走 wimboot |
+入口：**基础配置 → 引导菜单（Profiles）** → 新建。一个 Profile 就是一个引导项：
 
----
+| 字段 | 说明 |
+|------|------|
+| Profile 名称 | 菜单中显示的名称 |
+| 架构 | 适用的客户端架构 |
+| 引导类型 | 上表五种之一 |
+| 内核路径 / Initrd 路径 | `direct` 类型时填写（如 `vmlinuz` / `initrd.img`） |
+| 命令行参数 | 内核参数（如 `net.ifnames=0 console=tty0`） |
+| URL | `chain` / `sanboot` 类型时的目标地址（如 `iscsi:192.168.1.50::::iqn.2024-01:disk`） |
 
-## Profile（引导配置文件）
+保存后，Profile 每次修改自动保存**版本快照**，可对比差异、回滚任意版本。
 
-Profile 是绑定到特定主机的引导配置，包含一个引导菜单：
+## 任务 2：绑定主机
 
-- **创建 Profile**：指定名称、架构、引导类型和参数
-- **绑定主机**：将 Profile 绑定到主机 MAC 地址
-- **脚本版本管理**：每次修改自动保存版本快照，支持差异对比和回滚
-- **从 Netboot 创建**：可从 OS 安装目录一键创建 Profile
+**管理 → 主机管理** → 打开主机详情 → 关联该 Profile。绑定后，这台机器引导时**跳过默认流程，直接走它的 Profile**。
 
-每个 Profile 为单引导项，简化配置：
+## 任务 3：配置默认菜单
 
-```
-Profile: "Install Ubuntu 22.04"
-  ├─ 架构: x86_64
-  ├─ 类型: direct
-  ├─ Kernel: vmlinuz
-  ├─ Initrd: initrd.img
-  └─ Cmdline: net.ifnames=0 console=tty0
-```
+侧边栏底部 **设置 → 引导菜单**：
 
----
+- **菜单标题**（默认 `PxeLab Boot Menu`）
+- **超时时间**：0 = 不自动选择；>0 = 超时后自动选择默认项
+- **菜单项**：把需要的引导项加进来（local、各 Profile 等）
 
-## 默认引导菜单
+> 注意：默认菜单只在「未绑定 Profile 且未启用 OS 目录跳转」时出现。
 
-当客户端**无关联 Profile** 且**未启用 Netboot 安装目录跳转**时，显示默认菜单。
+## 任务 4：完全自定义（自定义 iPXE 脚本）
 
-支持两种模式（Web UI：**基础配置 → 服务配置 → Netboot 目录**，或侧边栏底部 **设置 → Netboot**）：
-
-1. **显示默认 Profile 的引导项** — 仅展示标记为 default 的 Profile
-2. **列出所有 Profile** — 将所有 Profile 作为菜单项
-
-配置项：
-- **菜单标题** — 默认 `PxeLab Boot Menu`
-- **超时时间** — 0 = 不自动选择，>0 = 超时后自动选择默认条目
-- **菜单条目** — 可添加多个引导项
-
----
-
-## 自定义 iPXE 脚本
-
-在 **设置弹窗 → Netboot → 自定义 iPXE 脚本** 中填写后，**完全替代**所有可视化配置：
+侧边栏底部 **设置 → Netboot → 自定义 iPXE 脚本**：填写脚本后**完全替代**所有可视化配置（高级用户）。可用模板变量：
 
 <v-pre>
 
 ```
-#!ipxe
-dhcp || clear
-echo Booting custom script for {{.MAC}}
-chain {{.URL}}/boot/custom.ipxe || shell
+{{.URL}}         服务器地址（如 http://192.168.1.10:8080）
+{{.MAC}}         客户端 MAC 地址
+{{.NextServer}}  服务器 IP（不含端口）
 ```
 
 </v-pre>
 
-可用模板变量：
-- `{`{`.URL}` — 服务器地址（如 `http://192.168.1.10:8080`）
-- `{`{`.MAC}` — 客户端 MAC 地址
-- `{`{`.NextServer}` — 服务器 IP（不含端口）
+## 常见问题
+
+**Q: 客户端引导后直接进了 OS 安装目录，看不到默认菜单？**
+OS 目录跳转默认开启。在 **服务配置 → OS 安装目录**（或设置 → Netboot）中关闭「启用跳转」即可。
+
+**Q: Profile 改了不生效？**
+确认保存；绑定 Profile 的主机走 Profile 菜单，检查主机详情里的关联是否正确。
