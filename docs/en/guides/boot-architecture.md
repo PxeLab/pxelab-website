@@ -48,7 +48,7 @@ All iPXE binaries are custom-compiled:
 - **Embedded boot script** — automatically runs dhcp + chain HTTP on startup
 - **UNDI/SNP interface preferred** — uses the PXE/UEFI firmware network stack, avoiding native driver compatibility issues
 
-See [ipxe-build.md](ipxe-build.md).
+See [Custom iPXE Build](../development/ipxe-build.md).
 
 ## Supported Boot Methods
 

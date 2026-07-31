@@ -9,7 +9,7 @@
 | 文档 | 说明 |
 |------|------|
 | [快速开始](getting-started.md) | 系统要求、安装方式、首次启动与验证 |
-| [架构与概述](architecture.md) | 核心定位、功能特性、两阶段引导与服务架构 |
+| [架构概述](guides/architecture.md) | 服务架构、两阶段引导与设计取舍 |
 
 ---
 
@@ -70,10 +70,17 @@
 | [DNS 服务](reference/dns.md) | 本地 DNS、上游转发与记录管理 |
 | [NFS 服务](reference/nfs.md) | NFSv3 多挂载点与 IP 访问控制 |
 | [架构映射与 Secure Boot](reference/boot-settings.md) | 11 种架构支持与 Secure Boot 链 |
-| [iPXE 编译](reference/ipxe-build.md) | 内嵌引导脚本与多架构编译产物 |
 | [环境变量与 CLI](reference/environment-variables.md) | CLI 参数、环境变量与数据目录结构 |
 | [日志配置](reference/logging.md) | 日志级别、轮转配置与排查 |
-| [贡献指南](contributing.md) | 开发环境、代码规范与 PR 流程 |
+
+---
+
+## 开发指南
+
+| 文档 | 说明 |
+|------|------|
+| [iPXE 编译](development/ipxe-build.md) | 内嵌引导脚本、编译环境与多架构编译产物 |
+| [参与开发](development/contributing.md) | 开发环境、代码规范与 PR 流程 |
 
 ---
 

@@ -2,7 +2,7 @@
 
 > PxeLab's DHCP server supports three operating modes, configurable independently per network interface.
 
-**Docs**: [Architecture](../architecture.md) | [Boot Config](boot-config.md) | [Netboot Catalog](netboot.md)
+**Docs**: [Architecture](architecture.md) | [Boot Config](boot-config.md) | [Netboot Catalog](netboot.md)
 
 ---
 

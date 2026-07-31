@@ -2,7 +2,7 @@
 
 > PxeLab Web 管理界面的完整操作指南。
 
-**相关文档**: [快速开始](../getting-started.md) | [架构与概述](../architecture.md) | [配置文件参考](../reference/config-file.md)
+**相关文档**: [快速开始](../getting-started.md) | [架构概述](architecture.md) | [配置文件参考](../reference/config-file.md)
 
 ---
 

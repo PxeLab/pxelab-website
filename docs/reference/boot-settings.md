@@ -2,7 +2,7 @@
 
 > 11 种 CPU 架构支持、Secure Boot 链与 chain_to_ipxe。
 
-**相关文档**: [引导配置](../guides/boot-config.md) | [iPXE 编译](ipxe-build.md)
+**相关文档**: [引导配置](../guides/boot-config.md) | [iPXE 编译](../development/ipxe-build.md)
 
 ---
 

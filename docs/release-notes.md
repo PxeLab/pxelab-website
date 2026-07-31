@@ -2,7 +2,7 @@
 
 > PxeLab 各版本的新增功能与变更记录。
 
-**相关文档**: [快速开始](getting-started.md) | [架构与概述](architecture.md)
+**相关文档**: [快速开始](getting-started.md) | [架构概述](guides/architecture.md)
 
 ---
 

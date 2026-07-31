@@ -2,7 +2,7 @@
 
 > 11 CPU architecture support, Secure Boot chain, and chain_to_ipxe.
 
-**Related**: [Boot Config](../guides/boot-config.md) | [iPXE Build](ipxe-build.md)
+**Related**: [Boot Config](../guides/boot-config.md) | [iPXE Build](../development/ipxe-build.md)
 
 ---
 

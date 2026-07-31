@@ -2,7 +2,7 @@
 
 > PxeLab 的完整功能清单。
 
-**相关文档**: [产品定位](product.md) | [优势能力](advantages.md) | [架构概述](architecture.md)
+**相关文档**: [产品定位](product.md) | [优势能力](advantages.md) | [架构概述](guides/architecture.md)
 
 ---
 

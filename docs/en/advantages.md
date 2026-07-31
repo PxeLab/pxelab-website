@@ -2,7 +2,7 @@
 
 > Why choose PxeLab?
 
-**Docs**: [Product Overview](/en/product) | [Features](/en/features) | [Architecture](/en/architecture-advantages)
+**Docs**: [Product Overview](/en/product) | [Features](/en/features) | [Architecture](/en/guides/architecture)
 
 ---
 

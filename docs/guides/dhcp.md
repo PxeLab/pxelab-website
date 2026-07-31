@@ -2,7 +2,7 @@
 
 > PxeLab 的 DHCP 服务器支持三种运行模式，每个网络接口可独立配置。
 
-**相关文档**: [架构与概述](../architecture.md) | [引导配置](boot-config.md) | [网络启动目录](netboot.md)
+**相关文档**: [架构概述](architecture.md) | [引导配置](boot-config.md) | [网络启动目录](netboot.md)
 
 ---
 

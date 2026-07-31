@@ -2,7 +2,7 @@
 
 > New features and changes in each PxeLab version.
 
-**Docs**: [Getting Started](getting-started.md) | [Architecture](architecture.md)
+**Docs**: [Getting Started](getting-started.md) | [Architecture](guides/architecture.md)
 
 ---
 

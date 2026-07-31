@@ -2,7 +2,7 @@
 
 > 为什么选择 PxeLab？
 
-**相关文档**: [产品定位](product.md) | [功能特性](features.md) | [架构优势](architecture-advantages.md)
+**相关文档**: [产品定位](product.md) | [功能特性](features.md) | [架构概述](guides/architecture.md)
 
 ---
 

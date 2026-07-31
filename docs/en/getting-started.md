@@ -2,7 +2,7 @@
 
 > Installing and first run of PxeLab.
 
-**Docs**: [Architecture](architecture.md) | [Deployment](guides/deployment.md) | [Troubleshooting](troubleshooting.md)
+**Docs**: [Architecture](guides/architecture.md) | [Deployment](guides/deployment.md) | [Troubleshooting](troubleshooting.md)
 
 ---
 
