@@ -150,6 +150,7 @@ export default defineConfig({
 
   head: [
     ['meta', { name: 'theme-color', content: '#060709' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
   ],
 
   locales: {
@@ -202,6 +203,7 @@ export default defineConfig({
   },
 
   themeConfig: {
+    logo: '/logo.svg',
     outline: [2, 3],
     search: { provider: 'local' },
   },
