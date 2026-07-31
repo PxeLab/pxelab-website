@@ -33,11 +33,28 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       ],
     },
     {
+      zh: '快速开始',
+      en: 'Getting Started',
+      items: [
+        { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
+        { zh: '术语表', en: 'Glossary', link: '/glossary' },
+      ],
+    },
+    {
       zh: '进阶',
       en: 'Advanced',
       items: [
         { zh: '引导架构', en: 'Boot Architecture', link: '/boot-architecture' },
         { zh: 'iPXE 设置指南', en: 'iPXE Settings Guide', link: '/ipxe-settings-guide' },
+      ],
+    },
+  ],
+  '/tutorials/': [
+    {
+      zh: '教程',
+      en: 'Tutorials',
+      items: [
+        { zh: '教程 1：给裸机装 Ubuntu', en: 'Tutorial 1: Install Ubuntu on a Bare Metal Machine', link: '/tutorials/install-ubuntu' },
       ],
     },
   ],
@@ -161,6 +178,7 @@ export default defineConfig({
         nav: [
           { text: '产品', link: '/product', activeMatch: '/product|features|advantages|architecture-advantages|faq' },
           { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
+          { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
           { text: '参考文档', link: '/reference/api-reference', activeMatch: '/reference/' },
         ],
@@ -185,6 +203,7 @@ export default defineConfig({
         nav: [
           { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|architecture-advantages|faq' },
           { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
+          { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
           { text: 'Reference', link: '/en/reference/api-reference', activeMatch: '/en/reference/' },
         ],
