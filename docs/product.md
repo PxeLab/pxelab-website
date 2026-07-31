@@ -8,7 +8,7 @@
 
 ## 什么是 PxeLab
 
-**PxeLab** 是一体化 PXE 网络引导平台：把 DHCP、TFTP、HTTP、DNS、NFS 五大网络服务打包进一个零依赖的二进制文件，用现代 Web UI 和 REST API 管理整个网络启动流程——从按下电源到系统就绪，无需 U 盘，无需逐台操作。
+**PxeLab** 是一体化 [PXE](glossary.md) 网络引导平台：把 DHCP、TFTP、HTTP、DNS、NFS 五大网络服务打包进一个零依赖的二进制文件，用现代 Web UI 和 REST API 管理整个网络启动流程——从按下电源到系统就绪，无需 U 盘，无需逐台操作。
 
 传统 PXE 环境需要分别安装、调试多个守护进程（dhcpd / dnsmasq、tftpd-hpa、手写 iPXE 脚本……），配置散落各处，文档陈旧，排错如同玄学。PxeLab 把这一切收敛为一个文件：**下载、运行、打开浏览器，几分钟内开始装机。**
 
@@ -17,10 +17,10 @@
 ## 产品功能
 
 - **五大网络服务内置**：DHCP（server / proxy / off 三种模式）、TFTP、HTTP、DNS、NFSv3，单进程承载全部引导流量
-- **两段式网络引导**：PXE ROM 经 TFTP 加载 iPXE，再由 iPXE 经 HTTP 拉取启动菜单；iPXE 为内置定制编译，开箱即用
+- **两段式网络引导**：PXE ROM 经 TFTP 加载 [iPXE](glossary.md)，再由 iPXE 经 HTTP 拉取启动菜单；iPXE 为内置定制编译，开箱即用（机制详解见[引导架构与无盘启动](guides/boot-architecture.md)）
 - **全架构覆盖**：x86 BIOS、UEFI x64、ARM64、RISC-V 64、LoongArch64 等 11 种可引导架构，支持 Secure Boot
 - **自动化装机**：内置 64+ 主流发行版安装目录，配套 autoinstall / preseed / kickstart / autounattend 应答文件模板，安装任务全程可追踪
-- **现代管理界面**：React Web UI，暗色主题，中英双语，实时事件监控
+- **现代管理界面**：React Web UI，亮/暗主题，中英双语，实时事件监控
 - **REST API 全覆盖**：所有管理操作均可 API 化，易于接入现有自动化体系
 - **带外管理**：BMC/IPMI 电源控制、WOL 网络唤醒与定时调度
 - **PxeLab Hub**：社区共享的基线脚本、启动模板与配置方案，一键导入（[hub.pxelab.com](https://hub.pxelab.com)）

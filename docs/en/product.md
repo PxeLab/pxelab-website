@@ -17,10 +17,10 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 ## What It Does
 
 - **Five network services built in**: DHCP (server / proxy / off modes), TFTP, HTTP, DNS, and NFSv3 — one process carries the entire boot flow
-- **Two-stage network boot**: the PXE ROM loads iPXE over TFTP, then iPXE pulls the boot menu over HTTP; iPXE ships as a built-in custom build, zero manual setup
+- **Two-stage network boot**: the PXE ROM loads iPXE over TFTP, then iPXE pulls the boot menu over HTTP; iPXE ships as a built-in custom build, zero manual setup (mechanics: [Boot Architecture & Diskless](guides/boot-architecture.md))
 - **Every architecture**: 11 bootable client architectures including x86 BIOS, UEFI x64, ARM64, RISC-V 64, and LoongArch64, with Secure Boot support
 - **Automated provisioning**: built-in catalog of 64+ mainstream distros with autoinstall / preseed / kickstart / autounattend answer-file templates, and end-to-end install task tracking
-- **Modern management UI**: React Web UI with dark theme, bilingual (EN/中文), and real-time event monitoring
+- **Modern management UI**: React Web UI with light/dark themes, bilingual (EN/中文), and real-time event monitoring
 - **Full REST API**: every management operation is API-accessible, ready for your automation stack
 - **Out-of-band ops**: BMC/IPMI power control, Wake-on-LAN with scheduling
 - **PxeLab Hub**: community-contributed baselines, boot templates, and configurations, imported in one click ([hub.pxelab.com](https://hub.pxelab.com))

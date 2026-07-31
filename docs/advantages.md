@@ -49,7 +49,7 @@ PxeLab 将所有服务打包为单个可执行文件：
 
 ## 3. 内置 iPXE，无需外部编译
 
-iPXE 是功能强大的网络引导固件，但传统方式需要自行编译。
+iPXE（PXE 的增强版，见[术语表](glossary.md)）是功能强大的网络引导固件，但传统方式需要自行编译。
 
 PxeLab 内置自定义编译的 iPXE：
 
@@ -79,12 +79,12 @@ PxeLab 内置自定义编译的 iPXE：
 | **REST API** | 支持自动化和集成 |
 
 **管理能力**：
-- 仪表盘：全局概览，服务状态，流量图表
+- 仪表板：全局概览，服务状态，流量图表
 - 主机管理：CRUD、分组、Profile 绑定
-- 引导配置：Profile 管理、脚本版本控制
-- OS 目录：内置发行版、自定义分组
+- 引导菜单：Profile 管理、脚本版本控制
+- OS 安装目录：内置发行版、自定义分组
 - 硬件管理：WOL、BMC/IPMI 控制
-- 运维工具：日志、审计、诊断
+- 运维工具：事件/审计/实时日志、网络诊断
 
 ---
 
@@ -114,9 +114,12 @@ PxeLab 内置自定义编译的 iPXE：
 # config.yaml
 nfs:
   enabled: true
-  mountpoints:
-    - path: /data/installs
-      allowed_ips:
+  mount_points:
+    - label: "Installs"
+      export_path: "/installs"
+      local_dir: ""
+      read_only: true
+      allow_ips:
         - 192.168.1.0/24
 ```
 

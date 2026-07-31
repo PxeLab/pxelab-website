@@ -19,7 +19,7 @@ features:
   - title: 多架构支持
     details: 支持 x86 BIOS、EFI x86-64、ARM64 等 11 种可引导客户端架构，含 Secure Boot
   - title: Web 管理界面
-    details: 现代化 React UI，中英双语，暗色主题，实时事件监控
+    details: 现代化 React UI，中英双语，亮/暗主题，实时事件监控
   - title: REST API
     details: 完整的 REST API，支持所有管理操作的自动化
   - title: 网络启动目录

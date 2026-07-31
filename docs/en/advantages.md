@@ -81,10 +81,10 @@ Say goodbye to command-line config files:
 **Management Capabilities**:
 - Dashboard: global overview, service status, traffic charts
 - Host management: CRUD, grouping, profile binding
-- Boot config: profile management, script versioning
-- OS catalog: built-in distros, custom groups
+- Boot menu: profile management, script versioning
+- OS Install Catalog: built-in distros, custom groups
 - Hardware: WOL, BMC/IPMI control
-- Operations: logs, audit, diagnostics
+- Operations: event/audit/live logs, network diagnostics
 
 ---
 
@@ -114,9 +114,12 @@ Built-in NFSv3 server, no external dependencies:
 # config.yaml
 nfs:
   enabled: true
-  mountpoints:
-    - path: /data/installs
-      allowed_ips:
+  mount_points:
+    - label: "Installs"
+      export_path: "/installs"
+      local_dir: ""
+      read_only: true
+      allow_ips:
         - 192.168.1.0/24
 ```
 

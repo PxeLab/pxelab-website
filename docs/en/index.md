@@ -19,7 +19,7 @@ features:
   - title: Multi-Architecture
     details: Supports x86 BIOS, EFI x86-64, ARM64 — 11 bootable client architectures with Secure Boot
   - title: Web Management UI
-    details: Modern React interface with bilingual support, dark theme, real-time monitoring
+    details: Modern React interface with bilingual support, light/dark themes, real-time monitoring
   - title: REST API
     details: Complete REST API for automating all management operations
   - title: Netboot Catalog

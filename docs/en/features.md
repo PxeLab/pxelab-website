@@ -50,7 +50,7 @@
 
 ### Web UI
 
-- React 19 SPA, dark/light theme
+- React 19 SPA, light/dark/system themes with adjustable accent color and corner radius
 - Bilingual (Chinese/English)
 - Real-time data refresh (SSE event stream)
 - Responsive design, mobile-friendly
@@ -65,15 +65,19 @@
 ### Host Management
 
 - Host CRUD, grouping
-- Profile binding (boot configuration)
-- MAC address management
-- Online status tracking
+- Profile binding (boot menu), MAC address management
+- Online status tracking, WOL wake, BMC/IPMI power control
 
-### Profile Management
+### Boot Menu (Profile Management)
 
-- Boot configuration files with script versioning
+- Boot configuration (Profile) with script versioning
 - Diff comparison, rollback
-- Supports direct / chain / wds / sanboot / local types
+- Supports direct / chain / wds / sanboot / local boot types
+
+### Scripts & Template Marketplace
+
+- **Init Scripts / Script Management**: custom boot script assets
+- **PxeLab Hub**: community-shared baseline scripts, boot templates, and configs with one-click import
 
 ### OS Install Catalog
 
@@ -105,8 +109,9 @@
 
 | Tool | Description |
 |------|-------------|
-| **Real-time Logs** | Multi-panel SSE log stream, filter by service |
-| **Audit Logs** | Track all configuration changes |
+| **Event Log** | Real-time event stream (DHCP / boot / wake / out-of-band), SSE push |
+| **Audit Log** | Track all configuration changes |
+| **Live Log** | Multi-panel SSE log stream, filter by service |
 | **Access Control** | MAC whitelist/blacklist |
 | **Network Diagnostics** | Ping / Traceroute (streaming output) |
 | **Prometheus Metrics** | Full performance and status metrics |
