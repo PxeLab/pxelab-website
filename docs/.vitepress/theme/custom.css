@@ -165,26 +165,58 @@
   font-size: 15px;
 }
 
-/* 侧栏组标题：mono 大写宽字距小标签 */
+/* ---------- 侧边栏：Kimi 风格（分组加粗常规大小写、条目次级色、树线层级） ---------- */
+
+/* 分组标题：加粗主色 */
 .VPSidebarItem.level-0 > .item > .text,
-.VPSidebarGroup .title .title-text,
-.VPSidebarItem .group > .text {
-  font-family: var(--vp-font-family-mono);
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--vp-c-text-3);
+.VPSidebarGroup .title .title-text {
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--vp-c-text-1);
 }
 
-/* 侧栏选中态：靛紫 */
-.VPSidebarItem .link.active .text,
+/* 条目：次级色 500 字重 */
+.VPSidebarItem.level-1 .text,
+.VPSidebarItem.level-2 .text,
+.VPSidebarItem.level-3 .text,
+.VPSidebarItem.level-4 .text,
+.VPSidebarItem.level-5 .text {
+  color: var(--vp-c-text-2);
+  font-weight: 500;
+}
+
+/* 悬停 → 品牌色 */
+.VPSidebarItem.is-link > .item > .link:hover .text {
+  color: var(--vp-c-brand-1);
+}
+
+/* 激活 → 品牌色 */
 .VPSidebarItem.is-active > .item .link .text {
-  color: var(--vp-c-brand-2);
+  color: var(--vp-c-brand-1);
   font-weight: 500;
 }
 
-.VPSidebarItem .link:hover .text {
+/* 激活指示条：品牌色 */
+.VPSidebarItem.level-1.is-active > .item > .indicator,
+.VPSidebarItem.level-2.is-active > .item > .indicator,
+.VPSidebarItem.level-3.is-active > .item > .indicator {
+  background-color: var(--vp-c-brand-1);
+}
+
+/* 嵌套层级：左侧 1px 分隔线 + 16px 缩进（树线） */
+.VPSidebarItem.level-1 .items,
+.VPSidebarItem.level-2 .items,
+.VPSidebarItem.level-3 .items,
+.VPSidebarItem.level-4 .items {
+  border-left: 1px solid var(--vp-c-divider);
+  padding-left: 16px;
+}
+
+/* 分组含激活子项：标题保持主色 */
+.VPSidebarItem.level-0.has-active > .item > .text {
   color: var(--vp-c-text-1);
 }
 

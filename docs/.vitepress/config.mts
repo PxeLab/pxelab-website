@@ -17,6 +17,7 @@ interface SidebarGroupDef {
   zh: string
   en: string
   items: SidebarItemDef[]
+  collapsed?: boolean
 }
 
 const sidebarDef: Record<string, SidebarGroupDef[]> = {
@@ -166,6 +167,7 @@ function buildSidebar(localePrefix: '' | '/en', lang: 'zh' | 'en') {
         text: item[lang],
         link: `${localePrefix}${item.link}`,
       })),
+      collapsed: g.collapsed ?? false,
     }))
   }
   return result
