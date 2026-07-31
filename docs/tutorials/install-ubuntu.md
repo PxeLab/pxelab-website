@@ -38,7 +38,7 @@
 
 保存后，检查顶部**服务状态栏**：DHCP 服务应为「运行」；若不是，点击启动。
 
-> **模式说明**：`server` 模式表示 PxeLab 充当这个网段的唯一 DHCP 服务器，同时分配 IP 和引导信息。如果你的网络已有 DHCP 服务器，改用 proxy 模式（教程 2，建设中）——只需叠加引导信息，不影响现有网络。
+> **模式说明**：`server` 模式表示 PxeLab 充当这个网段的唯一 DHCP 服务器，同时分配 IP 和引导信息。如果你的网络已有 DHCP 服务器，改用 [proxy 模式（教程 2）](add-pxe-to-existing-dhcp.md)——只需叠加引导信息，不影响现有网络。
 
 ## 第 2 步：确认 OS 安装目录已开启
 
@@ -82,4 +82,4 @@ PxeLab 内置了 64+ 主流发行版的安装目录（Ubuntu、Debian、CentOS�
 
 - **无人值守安装**：用[应答文件模板](../guides/answer-templates.md) + [安装任务](../guides/install-tasks.md)，安装过程无需人工点击向导
 - **绑定主机引导**：为特定机器绑定 [Profile（引导配置文件）](../guides/profiles.md)，让不同机器装不同系统
-- **更多场景**：在已有 DHCP 的网络叠加 PXE（教程 2，建设中）· 搭建无盘工作站（教程 3，建设中）
+- **更多场景**：[在已有 DHCP 的网络叠加 PXE（教程 2）](add-pxe-to-existing-dhcp.md) · [搭建无盘工作站（教程 3）](diskless-workstation.md)

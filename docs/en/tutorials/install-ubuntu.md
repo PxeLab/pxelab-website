@@ -38,7 +38,7 @@ Go to **Basic Config → Service Config → DHCP**, click **Add Interface** in t
 
 Save, then check the **service status bar** at the top: the DHCP service should be "running"; if not, start it.
 
-> **About the mode**: `server` mode means PxeLab acts as the only DHCP server on this subnet, handing out both IP addresses and boot information. If your network already has a DHCP server, use proxy mode instead (Tutorial 2, coming soon) — it only layers boot information on top and leaves the existing network untouched.
+> **About the mode**: `server` mode means PxeLab acts as the only DHCP server on this subnet, handing out both IP addresses and boot information. If your network already has a DHCP server, use [proxy mode instead (Tutorial 2)](add-pxe-to-existing-dhcp.md) — it only layers boot information on top and leaves the existing network untouched.
 
 ## Step 2: Make sure the OS Install Catalog is enabled
 
@@ -82,4 +82,4 @@ If everything is normal, the PxeLab boot menu appears within a few seconds.
 
 - **Unattended installs**: combine [Answer Templates](../guides/answer-templates.md) with [Install Tasks](../guides/install-tasks.md) so no one has to click through the wizard
 - **Per-host boot config**: bind a [Profile](../guides/profiles.md) to a specific machine so different hosts install different systems
-- **More scenarios**: layer PXE onto an existing DHCP network (Tutorial 2, coming soon) · build diskless workstations (Tutorial 3, coming soon)
+- **More scenarios**: [layer PXE onto an existing DHCP network (Tutorial 2)](add-pxe-to-existing-dhcp.md) · [build diskless workstations (Tutorial 3)](diskless-workstation.md)

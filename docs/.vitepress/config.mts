@@ -54,6 +54,8 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       en: 'Tutorials',
       items: [
         { zh: '教程 1：给裸机装 Ubuntu', en: 'Tutorial 1: Install Ubuntu on a Bare Metal Machine', link: '/tutorials/install-ubuntu' },
+        { zh: '教程 2：在现有 DHCP 网络上叠加 PXE', en: 'Tutorial 2: Layer PXE onto an Existing DHCP Network', link: '/tutorials/add-pxe-to-existing-dhcp' },
+        { zh: '教程 3：搭建无盘工作站', en: 'Tutorial 3: Build a Diskless Workstation', link: '/tutorials/diskless-workstation' },
       ],
     },
   ],
