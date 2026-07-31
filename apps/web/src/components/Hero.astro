@@ -1,7 +1,13 @@
-
 <!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-bg"></div>
+
+  <!-- corner registration crosses -->
+  <span class="hero-cross tl" aria-hidden="true"></span>
+  <span class="hero-cross tr" aria-hidden="true"></span>
+  <span class="hero-cross bl" aria-hidden="true"></span>
+  <span class="hero-cross br" aria-hidden="true"></span>
+
   <div class="hero-content">
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
@@ -9,6 +15,10 @@
     </div>
     <h1><span class="gradient">PxeLab</span></h1>
     <p class="hero-subtitle" data-i18n="hero_subtitle">All-in-one PXE server with a modern web UI.<br>Five network services, two interfaces, zero dependencies.</p>
+    <div class="hero-term">
+      <span class="hero-term-cmd"><span class="p">$</span> pxelab --mode server</span>
+      <span class="hero-term-out" data-i18n="hero_term_out">→ dhcp :67 · tftp :69 · http :80 · dns :53 · nfs :2049 — listening</span>
+    </div>
     <div class="hero-ctas">
       <a href="https://github.com/PxeLab/pxelab" class="btn btn-primary">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -17,5 +27,18 @@
       <a href="#quickstart" class="btn btn-secondary"><span data-i18n="hero_cta_quickstart">Quick Start</span> →</a>
       <a href="/docs/" class="btn btn-secondary" data-i18n="hero_cta_docs">Documentation</a>
     </div>
+  </div>
+
+  <!-- boot sequence annotation (blueprint drawing) -->
+  <div class="bootflow" aria-hidden="true">
+    <div class="bootflow-cap" data-i18n="hero_fig">FIG.01 — BOOT SEQUENCE</div>
+    <div class="bootflow-node"><b data-i18n="hero_flow_pxe">PXE ROM</b><span class="idx">01</span></div>
+    <div class="bootflow-link"><span>DHCP :67/UDP</span></div>
+    <div class="bootflow-node"><b>iPXE</b><span class="idx">02</span></div>
+    <div class="bootflow-link"><span>TFTP :69/UDP</span></div>
+    <div class="bootflow-node"><b data-i18n="hero_flow_menu">Boot Menu</b><span class="idx">03</span></div>
+    <div class="bootflow-link"><span>HTTP :80 · NFS :2049</span></div>
+    <div class="bootflow-node"><b data-i18n="hero_flow_os">OS Image</b><span class="idx">04</span></div>
+    <div class="bootflow-cap end" data-i18n="hero_flow_done">→ TARGET PROVISIONED</div>
   </div>
 </section>
