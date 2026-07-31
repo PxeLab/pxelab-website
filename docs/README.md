@@ -83,3 +83,30 @@
 |------|------|
 | [故障排查与常见问题](troubleshooting.md) | 常见问题排查、日志分析与 FAQ |
 | [版本历史](release-notes.md) | 各版本新增功能与变更记录 |
+
+---
+
+## 截图维护
+
+文档截图位于 `public/screenshots/`，采用**亮色主题**（无头浏览器默认跟随系统亮色，无需额外参数）。
+
+生成方式：
+
+1. 构建并运行后端：`go build -o bin/pxelab ./cmd/pxelab && ./bin/pxelab`（本机 HTTP 8080，默认免认证）
+2. 预置演示数据（可选）：
+
+```bash
+curl -s -X POST http://localhost:8080/api/v1/hosts -H "Content-Type: application/json" \
+  -d '{"name":"node-01","mac":"aa:bb:cc:dd:ee:01","ip":"192.168.50.101"}'
+```
+
+3. 系统 Edge 无头截图（需替换为本地 Edge 路径）：
+
+```bash
+"/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" \
+  --headless --disable-gpu --hide-scrollbars \
+  --window-size=1920,1080 --virtual-time-budget=20000 \
+  --screenshot="<输出路径>.png" http://localhost:8080/<路由>
+```
+
+UI 改版后重跑以上三步刷新截图。
