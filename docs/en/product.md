@@ -1,6 +1,6 @@
 # Product Overview
 
-> All-in-one PXE network boot server, ready to use out of the box.
+> One binary, every architecture, ready to run. PXE in minutes, all-in-one binary.
 
 **Docs**: [Getting Started](/en/getting-started) | [Features](/en/features) | [Advantages](/en/advantages)
 
@@ -8,21 +8,34 @@
 
 ## What is PxeLab
 
-**PxeLab** is an all-in-one PXE network boot server that integrates DHCP, TFTP, HTTP, DNS, and NFS services into a single binary, managed through a modern Web UI and REST API.
+**PxeLab** is an all-in-one PXE network boot platform: it packs DHCP, TFTP, HTTP, DNS, and NFS into a single zero-dependency binary, managed from a modern Web UI and REST API — from power-on to a ready OS, no USB sticks, no per-machine toil.
 
-Traditional PXE deployments require installing and configuring multiple services (DHCP, TFTP, HTTP, etc.) separately — a process that's tedious and error-prone. PxeLab simplifies everything into one executable: download, run, and start using. Whether you're doing batch OS deployment, diskless workstation setup, or daily server maintenance, PxeLab provides an efficient and reliable network boot solution.
+Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd / dnsmasq, tftpd-hpa, hand-written iPXE scripts…), with configs scattered everywhere, stale documentation, and debugging that feels like voodoo. PxeLab collapses all of that into one file: **download, run, open your browser, and start provisioning within minutes.**
 
 ---
 
-## Target Users
+## What It Does
 
-| User Role | Typical Scenarios |
-|-----------|-------------------|
-| **IT Operations** | Batch OS deployment, remote server maintenance |
-| **IDC Engineers** | Data center batch provisioning, diskless workstation deployment |
-| **System Administrators** | Daily server management, network boot configuration |
-| **Dev/Test Teams** | Quick test environment setup, automated deployment |
-| **Education/Training** | Network boot teaching, lab environment setup |
+- **Five network services built in**: DHCP (server / proxy / off modes), TFTP, HTTP, DNS, and NFSv3 — one process carries the entire boot flow
+- **Two-stage network boot**: the PXE ROM loads iPXE over TFTP, then iPXE pulls the boot menu over HTTP; iPXE ships as a built-in custom build, zero manual setup
+- **Every architecture**: 11 bootable client architectures including x86 BIOS, UEFI x64, ARM64, RISC-V 64, and LoongArch64, with Secure Boot support
+- **Automated provisioning**: built-in catalog of 64+ mainstream distros with autoinstall / preseed / kickstart / autounattend answer-file templates, and end-to-end install task tracking
+- **Modern management UI**: React Web UI with dark theme, bilingual (EN/中文), and real-time event monitoring
+- **Full REST API**: every management operation is API-accessible, ready for your automation stack
+- **Out-of-band ops**: BMC/IPMI power control, Wake-on-LAN with scheduling
+- **PxeLab Hub**: community-contributed baselines, boot templates, and configurations, imported in one click ([hub.pxelab.com](https://hub.pxelab.com))
+
+---
+
+## Who It's For
+
+| User Role | Typical Scenarios | What PxeLab Solves |
+|-----------|-------------------|--------------------|
+| **IT Operations** | Batch OS deployment, remote maintenance | Provisioning becomes a network push instead of a USB-stick walk, with tracked tasks |
+| **IDC Engineers** | Data center bring-up, diskless workstations | One server boots an entire rack; iSCSI sanboot for diskless operation |
+| **System Administrators** | Boot configuration, rescue & maintenance | Memtest86, GParted, and live systems always at hand |
+| **Dev/Test Teams** | Quick environment setup, automated deployment | Full REST API slots straight into CI pipelines |
+| **Education/Training** | Network boot teaching, lab environments | A zero-dependency single file — classroom-ready in minutes |
 
 ---
 
@@ -30,11 +43,11 @@ Traditional PXE deployments require installing and configuring multiple services
 
 | Value | Description |
 |-------|-------------|
-| **Zero-dependency deployment** | Single binary, no extra dependencies needed |
-| **Full architecture coverage** | 11 bootable client CPU architectures including x86 BIOS/EFI, ARM64, Secure Boot |
-| **Modern management UI** | Built-in React Web UI, dark theme, bilingual, real-time monitoring |
-| **Flexible deployment modes** | 3 DHCP modes for various network environments |
-| **Ready out of the box** | Built-in iPXE, NFS, OS install catalog |
+| **Deploy in minutes** | Single binary, zero dependencies — PXE in minutes, not hours |
+| **Every architecture** | 11 bootable client architectures including x86 BIOS/EFI, ARM64, with Secure Boot |
+| **Automated provisioning** | 64+ distro catalog plus answer-file templates, with end-to-end task tracking |
+| **Modern management** | Bilingual Web UI plus full REST API — no more split between CLI and config files |
+| **Platform freedom** | Runs on Windows / Linux / macOS; typical deployment uses ≤ 512 MB RAM |
 
 ---
 
