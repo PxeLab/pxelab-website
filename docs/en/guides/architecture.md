@@ -2,7 +2,7 @@
 
 > PxeLab's system composition, boot flow, and key design decisions.
 
-**Docs**: [Getting Started](../getting-started.md) | [Boot Architecture & Diskless](boot-architecture.md) | [Deployment](deployment.md)
+**Docs**: [Features](../features.md) | [Boot Architecture & Diskless](boot-architecture.md) | [Deployment](deployment.md)
 
 ---
 
