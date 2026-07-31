@@ -1,0 +1,248 @@
+/**
+ * PxeLab 品牌主题 —— 与落地页（website/apps/web）统一的设计体系
+ * 深色底 #060709 / 靛紫强调 #6C7BF0 / Inter + JetBrains Mono
+ */
+
+/* ---------- 自托管字体（与落地页同一份字体文件） ---------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Inter-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Inter-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Inter-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Medium.ttf') format('truetype');
+}
+
+/* ---------- 品牌变量（亮暗同色相；暗色为主） ---------- */
+:root {
+  /* 品牌靛紫 */
+  --vp-c-brand-1: #6C7BF0;
+  --vp-c-brand-2: #7D8BF5;
+  --vp-c-brand-3: #5A68D8;
+  --vp-c-brand-soft: rgba(108, 123, 240, 0.14);
+
+  /* 辅助色 */
+  --vp-c-blue: #5CB3FF;
+  --vp-c-green: #5CD9A8;
+
+  /* 字体栈 */
+  --vp-font-family-base:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --vp-font-family-mono:
+    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* 代码 */
+  --vp-code-font-size: 0.875em;
+
+  /* tip 自定义块走品牌靛紫 */
+  --vp-custom-block-tip-border: var(--vp-c-brand-1);
+  --vp-custom-block-tip-text: var(--vp-c-brand-2);
+  --vp-custom-block-tip-bg: rgba(108, 123, 240, 0.08);
+  --vp-custom-block-tip-code-bg: rgba(108, 123, 240, 0.12);
+
+  /* 首页按钮（hero）对齐品牌 */
+  --vp-button-brand-border: var(--vp-c-brand-1);
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: var(--vp-c-brand-2);
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: var(--vp-c-brand-3);
+  --vp-button-brand-active-text: #ffffff;
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+
+  /* hero 名称渐变为品牌靛紫系 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #8b97f7 10%, #6c7bf0 55%, #5cb3ff 100%);
+}
+
+/* ---------- 暗色模式（默认，三站统一基调） ---------- */
+:root.dark {
+  /* 背景层级：base / elevated / soft */
+  --vp-c-bg: #060709;
+  --vp-c-bg-alt: #0C0D10;
+  --vp-c-bg-elv: #0C0D10;
+  --vp-c-bg-soft: #0C0D10;
+  --vp-c-bg-mute: #131419;
+
+  /* 分割线与边框 */
+  --vp-c-divider: rgba(255, 255, 255, 0.07);
+  --vp-c-border: rgba(255, 255, 255, 0.07);
+  --vp-c-gutter: rgba(255, 255, 255, 0.07);
+
+  /* 文字三级 */
+  --vp-c-text-1: #F0F1F3;
+  --vp-c-text-2: #9BA0AB;
+  --vp-c-text-3: #5C6170;
+
+  /* 代码块：深色面板 */
+  --vp-code-block-bg: #0C0D10;
+  --vp-code-bg: rgba(108, 123, 240, 0.12);
+  --vp-code-color: #b9c0f5;
+  --vp-code-tab-divider: rgba(255, 255, 255, 0.07);
+  --vp-code-tab-text-color: #9BA0AB;
+  --vp-code-tab-bg: #060709;
+  --vp-code-tab-active-text-color: var(--vp-c-brand-2);
+  --vp-code-tab-hover-text-color: var(--vp-c-brand-2);
+  --vp-code-tab-active-bar-color: var(--vp-c-brand-1);
+
+  /* 行内高亮 / diff 对齐品牌 */
+  --vp-code-line-diff-add-color: rgba(92, 217, 168, 0.12);
+  --vp-code-line-diff-remove-color: rgba(255, 107, 138, 0.10);
+  --vp-code-line-highlight-color: rgba(108, 123, 240, 0.10);
+}
+
+/* ---------- 亮色模式：可用，brand 同色相 ---------- */
+:root:not(.dark) {
+  --vp-c-brand-1: #4f5ce0;
+  --vp-c-brand-2: #5A68D8;
+  --vp-c-brand-3: #3d49c4;
+  --vp-c-brand-soft: rgba(108, 123, 240, 0.14);
+  --vp-custom-block-tip-bg: rgba(108, 123, 240, 0.06);
+  --vp-custom-block-tip-text: #3d49c4;
+}
+
+/* ---------- 组件级细节 ---------- */
+
+/* 圆角统一 8 / 12 */
+:root {
+  --vp-border-radius: 8px;
+}
+
+.vp-doc div[class*='language-'] {
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-border);
+}
+
+.vp-doc .custom-block {
+  border-radius: 8px;
+}
+
+/* 无实体阴影，导航/侧栏背景用极克制的层次 */
+.VPNavBar {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* 顶栏品牌字：与落地页一致的品牌呈现（加粗 + 紧凑字距） */
+.VPNavBarTitle .title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: 15px;
+}
+
+/* 侧栏组标题：mono 大写宽字距小标签 */
+.VPSidebarItem.level-0 > .item > .text,
+.VPSidebarGroup .title .title-text,
+.VPSidebarItem .group > .text {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--vp-c-text-3);
+}
+
+/* 侧栏选中态：靛紫 */
+.VPSidebarItem .link.active .text,
+.VPSidebarItem.is-active > .item .link .text {
+  color: var(--vp-c-brand-2);
+  font-weight: 500;
+}
+
+.VPSidebarItem .link:hover .text {
+  color: var(--vp-c-text-1);
+}
+
+/* 右侧 TOC 指示条与激活链接 */
+.VPDoc .outline-link.active,
+.VPDoc .outline-link:hover {
+  color: var(--vp-c-brand-2);
+}
+
+.VPDocOutlineDropdown,
+.VPDocAsideOutline .content {
+  border-left-color: var(--vp-c-divider);
+}
+
+/* 正文链接走靛紫（VitePress 已用 --vp-c-brand-1，这里补 hover） */
+.vp-doc a {
+  text-decoration: none;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* 表格、引用等细节对齐深色面板 */
+.vp-doc table th {
+  background-color: var(--vp-c-bg-soft);
+}
+
+.vp-doc blockquote {
+  border-radius: 0 8px 8px 0;
+}
+
+/* 代码块内复制按钮、行号等不破坏面板色 */
+.vp-doc [class*='language-'] .lang {
+  color: var(--vp-c-text-3);
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* 搜索弹窗的克制 glow：选中项用靛紫底 */
+.DocSearch-Button {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+}
+
+/* 页脚、上一页/下一页卡片 */
+.VPLink .prev-next .pager-link,
+.pager-link {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+}
+
+.pager-link:hover {
+  border-color: var(--vp-c-brand-1);
+}
+
+.pager-link:hover .title {
+  color: var(--vp-c-brand-2);
+}

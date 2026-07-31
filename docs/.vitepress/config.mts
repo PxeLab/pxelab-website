@@ -146,8 +146,10 @@ export default defineConfig({
     'README.md',
   ],
 
+  appearance: 'dark',
+
   head: [
-    ['meta', { name: 'theme-color', content: '#3b82f6' }],
+    ['meta', { name: 'theme-color', content: '#060709' }],
   ],
 
   locales: {

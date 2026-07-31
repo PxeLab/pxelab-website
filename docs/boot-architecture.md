@@ -84,6 +84,73 @@ GRUB2 网络引导已支持：
 - 客户端请求 `grub.cfg`（或按 MAC 的 `grub.cfg-01-<mac>`）时，HTTP 端点拦截请求并根据 Profile 实时生成 GRUB2 配置（`configgen.FormatGRUB2`）
 - 也可以通过 iPXE 以 `chain` 类型链式加载 GRUB2 引导镜像（`chain grub2.efi`），GRUB2 作为独立引导器使用
 
+### PXELinux / GRUB2 配置解析链
+
+当客户端（`pxelinux.0` / `pxelinux.efi` / `grubx64.efi` / `grubaa64.efi`）通过 HTTP 请求引导配置时，PxeLab 按以下优先级链处理：
+
+```
+请求 /boot/pxelinux.cfg/default 或 /boot/grub2/grub.cfg
+    │
+    ├─ Level 1: Chain-to-iPXE 激活？     ─→ 返回 iPXE 跳转配置
+    │                                       (由 chainToIPXEFallback 决定)
+    │
+    └─ Level 2: 有默认 Profile？         ─→ 从数据库读取 Profile 菜单条目
+        │                                   按 PXELinux/GRUB2 语法渲染
+        │
+        └─ Level 3: 静态文件兜底          ─→ 从 boot/ 目录读取文件
+                                             (pxelinux.cfg/default / grub2/grub.cfg)
+```
+
+#### Level 1: Chain-to-iPXE 重定向
+
+当管理员在 Web UI 基础配置中启用了 **Chain to iPXE** 功能时，PXELinux/GRUB2 客户端请求配置时会收到一段**跳转配置**，引导客户端加载 iPXE。内容由以下 Go 函数生成（`internal/boot/chainload.go`）：
+
+| 格式 | 生成函数 | 效果 |
+|------|---------|------|
+| PXELinux | `PXELinuxChainloadConfig()` | `KERNEL http://server/boot/ipxe.efi` |
+| GRUB2 | `GRUB2ChainloadConfig()` | `chainloader (http)/boot/ipxe.efi` |
+
+目的是让 iPXE（HTTP 栈更完整）接管后续引导流程，避免 PXELinux/GRUB2 的 HTTP 功能受限。
+
+#### Level 2: Profile 原生配置生成
+
+当 **Chain to iPXE 未启用**（或不适用），系统会查询数据库：
+
+1. **MAC 特定配置请求**（如 `pxelinux.cfg/01-aa-bb-cc-dd-ee-ff`）：
+   - 按 MAC 查找主机 → 获取绑定的 Profile
+2. **默认配置请求**（如 `pxelinux.cfg/default` 或 `grub2/grub.cfg`）：
+   - 获取 `is_default=true` 的 Profile
+
+找到 Profile 后，读取其 **MenuJSON**（引导菜单条目），通过 `configgen.Generate()` 转换为对应格式：
+
+- **PXELinux 格式** → `generatePXELinux()` → `LABEL xxx / KERNEL xxx / APPEND xxx`
+- **GRUB2 格式** → `generateGRUB2()` → `menuentry "xxx" { linux xxx; initrd xxx }`
+
+内容来源于管理员在 Web UI 中配置的 Profile 菜单条目（type 支持 `direct`/`chain`/`local`）。
+
+#### Level 3: 静态文件兜底
+
+若无默认 Profile（`GetDefaultProfile` 返回空），系统 fallback 到 `bootFS.Read(filePath)`——从配置的引导文件根目录读取静态文件：
+
+| 配置项 | 默认路径 | 说明 |
+|--------|---------|------|
+| `PXEConfigFile` | `pxelinux.cfg/default` | PXELinux 默认配置 |
+| `GRUBConfigFile` | `grub2/grub.cfg` | GRUB2 默认配置 |
+
+这些静态文件随二进制嵌入（`//go:embed all:bootdist`），首次启动时自动释放到引导目录。修改 `boot/` 下的文件后，需执行 `go generate ./cmd/pxelab/` 或 `make sync-bootdist` 同步到 `bootdist/` 再重新编译。
+
+#### MAC 地址特定配置
+
+除了默认配置，PXELinux 和 GRUB2 会自动请求 MAC 地址修饰的配置路径：
+
+| 格式 | 示例路径 |
+|------|---------|
+| PXELinux | `pxelinux.cfg/01-aa-bb-cc-dd-ee-ff` |
+| GRUB2 | `grub2/grub.cfg-01-aa-bb-cc-dd-ee-ff` |
+| GRUB2 短格式 | `grub2/01-aa-bb-cc-dd-ee-ff` |
+
+当请求 MAC 特定配置时，系统会根据 MAC 查找主机绑定的 Profile，生成对应配置。这样可以做到**每台机器独立的引导配置**。
+
 ## Boot File Mapping
 
 详见 `internal/boot/archmap.go`：
