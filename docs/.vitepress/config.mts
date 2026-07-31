@@ -127,6 +127,9 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       zh: '开发指南',
       en: 'Development',
       items: [
+        { zh: 'REST API 快速上手', en: 'REST API Quick Start', link: '/development/api-quickstart' },
+        { zh: '自动化与 CI 集成', en: 'Automation & CI Integration', link: '/development/automation' },
+        { zh: '自定义 iPXE 编译', en: 'Custom iPXE Build', link: '/development/ipxe-build' },
         { zh: '参与开发', en: 'Contributing', link: '/development/contributing' },
       ],
     },
