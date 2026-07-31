@@ -28,17 +28,4 @@
       <a href="/docs/" class="btn btn-secondary" data-i18n="hero_cta_docs">Documentation</a>
     </div>
   </div>
-
-  <!-- boot sequence annotation (blueprint drawing) -->
-  <div class="bootflow" aria-hidden="true">
-    <div class="bootflow-cap" data-i18n="hero_fig">FIG.01 — BOOT SEQUENCE</div>
-    <div class="bootflow-node"><b data-i18n="hero_flow_pxe">PXE ROM</b><span class="idx">01</span></div>
-    <div class="bootflow-link"><span>DHCP :67/UDP</span></div>
-    <div class="bootflow-node"><b>iPXE</b><span class="idx">02</span></div>
-    <div class="bootflow-link"><span>TFTP :69/UDP</span></div>
-    <div class="bootflow-node"><b data-i18n="hero_flow_menu">Boot Menu</b><span class="idx">03</span></div>
-    <div class="bootflow-link"><span>HTTP :80 · NFS :2049</span></div>
-    <div class="bootflow-node"><b data-i18n="hero_flow_os">OS Image</b><span class="idx">04</span></div>
-    <div class="bootflow-cap end" data-i18n="hero_flow_done">→ TARGET PROVISIONED</div>
-  </div>
 </section>
