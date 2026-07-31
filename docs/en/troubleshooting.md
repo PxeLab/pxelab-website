@@ -59,56 +59,34 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 ---
 
-## FAQ
+## Common Questions (Failure-type)
 
-### Q: What permissions does PxeLab need?
+> For conceptual questions (what something is, how to choose, upgrade/backup), see [FAQ](faq.md).
 
-**A**: Linux/macOS requires root privileges (DHCP port 67 is a privileged port). Windows requires administrator privileges.
+### Q: Client can't get IP address?
 
-### Q: Can I run multiple DHCP servers simultaneously?
+**A:** Checklist:
 
-**A**: Yes. Use `proxy` mode to overlay onto the existing DHCP environment — PxeLab only provides PXE boot options while IP addresses are still assigned by the existing DHCP server.
+1. Is DHCP service running: `curl localhost:8080/api/v1/services | jq .dhcp.status`
+2. Is port 67 occupied: `netstat -tlnp | grep :67`
+3. Are firewall rules allowing it: `iptables -L -n | grep 67`
+4. Is network interface configured correctly
 
-### Q: What OS installations are supported?
+### Q: Client gets IP but can't boot?
 
-**A**: Via iPXE boot:
-- Linux: Ubuntu, Debian, CentOS, Fedora, Arch, Gentoo, and more — 64 distros in total
-- Windows: Via WDS emulation or wimboot
-- BSD: FreeBSD, OpenBSD, NetBSD
-- Live CD: Kali, GParted, SystemRescue, etc.
+**A:** Checklist:
 
-### Q: How to customize the boot menu?
+1. Is TFTP service running
+2. Do boot files exist: `ls -la /path/to/pxelinux.0`
+3. Are next-server and boot-file configured correctly
+4. Are client and server on the same subnet
 
-**A**: Three ways:
-1. **Default menu** — Sidebar bottom **Settings → Boot Menu** → Default boot menu
-2. **Profile** — Create dedicated boot config for hosts
-3. **Custom script** — Sidebar bottom **Settings → Netboot → Custom iPXE Script** (advanced)
+### Q: How to view detailed logs?
 
-### Q: Where is data stored?
+**A:** Enable debug mode:
 
-**A**: Default location `~/.pxelab/`:
-- `config.yaml` — Configuration file
-- `pxelab.db` — SQLite database
-- `boot/` — Boot files
-- `netboot/` — Netboot catalog
-- `logs/` — Log files
+```bash
+./pxelab --log-level debug
+```
 
-### Q: How to backup data?
-
-**A**: Back up the entire `~/.pxelab/` directory. Core data is in `pxelab.db` and `config.yaml`.
-
-### Q: Is Docker deployment supported?
-
-**A**: Not yet, on the roadmap. Currently recommended to run the binary directly.
-
-### Q: How to upgrade PxeLab?
-
-**A**:
-1. Stop the currently running PxeLab
-2. Download the new version binary and replace the old file
-3. Data directory `~/.pxelab/` needs no changes — new version auto-migrates
-4. Restart
-
-### Q: How to configure multiple NICs?
-
-**A**: Configure multiple interfaces in the `interfaces` section of `config.yaml`, each with independent DHCP mode and subnet settings.
+Or in Web UI: **Settings → Logs → Log Level → Debug**

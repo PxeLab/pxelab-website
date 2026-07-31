@@ -302,32 +302,23 @@ Customizable via `--data-dir` flag.
 
 ---
 
-## Troubleshooting
+## Operations
 
-### Q: Client can't get IP address?
+### Q: How to upgrade PxeLab?
 
-**A:** Checklist:
+**A**:
 
-1. Is DHCP service running: `curl localhost:8080/api/v1/services | jq .dhcp.status`
-2. Is port 67 occupied: `netstat -tlnp | grep :67`
-3. Are firewall rules allowing it: `iptables -L -n | grep 67`
-4. Is network interface configured correctly
+1. Stop the currently running PxeLab
+2. Download the new version binary and replace the old file
+3. Data directory `~/.pxelab/` needs no changes — new version auto-migrates
+4. Restart
 
-### Q: Client gets IP but can't boot?
+### Q: How to backup data?
 
-**A:** Checklist:
+**A**: Back up the entire `~/.pxelab/` directory. Core data is in `pxelab.db` and `config.yaml`.
 
-1. Is TFTP service running
-2. Do boot files exist: `ls -la /path/to/pxelinux.0`
-3. Are next-server and boot-file configured correctly
-4. Are client and server on the same subnet
+### Q: Is Docker deployment supported?
 
-### Q: How to view detailed logs?
+**A**: Not yet, on the roadmap. Currently recommended to run the binary directly.
 
-**A:** Enable debug mode:
-
-```bash
-./pxelab --log-level debug
-```
-
-Or in Web UI: **Settings → Logs → Log Level → Debug**
+> For client boot failure issues (no IP, interrupted boot), see [Troubleshooting](troubleshooting.md).

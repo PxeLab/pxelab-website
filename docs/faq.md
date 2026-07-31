@@ -302,32 +302,23 @@ DHCP 和 TFTP 是主要性能瓶颈，大规模部署建议使用高性能硬件
 
 ---
 
-## 故障排查
+## 运维
 
-### Q: 客户端无法获取 IP 地址？
+### Q: 如何升级 PxeLab？
 
-**A:** 检查清单：
+**A:**
 
-1. DHCP 服务是否运行：`curl localhost:8080/api/v1/services | jq .dhcp.status`
-2. 端口 67 是否被占用：`netstat -tlnp | grep :67`
-3. 防火墙是否放行：`iptables -L -n | grep 67`
-4. 网络接口配置是否正确
+1. 停止当前运行的 PxeLab
+2. 下载新版本二进制替换旧文件
+3. 数据目录 `~/.pxelab/` 无需变动，新版本自动迁移
+4. 重新启动
 
-### Q: 客户端获取 IP 后无法引导？
+### Q: 如何备份数据？
 
-**A:** 检查清单：
+**A:** 备份 `~/.pxelab/` 整个目录即可。核心数据在 `pxelab.db` 和 `config.yaml`。
 
-1. TFTP 服务是否运行
-2. 引导文件是否存在：`ls -la /path/to/pxelinux.0`
-3. next-server 和 boot-file 配置是否正确
-4. 客户端和服务器是否在同一子网
+### Q: 支持 Docker 部署吗？
 
-### Q: 如何查看详细日志？
+**A:** 暂不支持，在 Roadmap 中。当前推荐直接运行二进制。
 
-**A:** 启用调试模式：
-
-```bash
-./pxelab --log-level debug
-```
-
-或在 Web UI 中：**设置 → 日志 → 日志级别 → Debug**
+> 客户端引导失败类问题（拿不到 IP、引导中断）请见[故障排查](troubleshooting.md)。

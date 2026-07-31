@@ -59,56 +59,34 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 ---
 
-## 常见问题（FAQ）
+## 常见问题（故障类）
 
-### Q: PxeLab 需要什么权限？
+> 概念类问题（这是什么、怎么选、如何升级/备份）请见[常见问题](faq.md)。
 
-**A**: Linux/macOS 需要 root 权限（DHCP 端口 67 是特权端口）。Windows 需要管理员权限。
+### Q: 客户端无法获取 IP 地址？
 
-### Q: 可以同时运行多个 DHCP 服务器吗？
+**A:** 检查清单：
 
-**A**: 可以。使用 `proxy` 模式叠加到现有 DHCP 环境，PxeLab 仅提供 PXE 引导选项，IP 地址仍由现有 DHCP 服务器分配。
+1. DHCP 服务是否运行：`curl localhost:8080/api/v1/services | jq .dhcp.status`
+2. 端口 67 是否被占用：`netstat -tlnp | grep :67`
+3. 防火墙是否放行：`iptables -L -n | grep 67`
+4. 网络接口配置是否正确
 
-### Q: 支持哪些操作系统安装？
+### Q: 客户端获取 IP 后无法引导？
 
-**A**: 通过 iPXE 引导支持：
-- Linux：Ubuntu、Debian、CentOS、Fedora、Arch、Gentoo 等 64 个发行版
-- Windows：通过 WDS 仿真或 wimboot
-- BSD：FreeBSD、OpenBSD、NetBSD
-- Live CD：Kali、GParted、SystemRescue 等
+**A:** 检查清单：
 
-### Q: 如何自定义引导菜单？
+1. TFTP 服务是否运行
+2. 引导文件是否存在：`ls -la /path/to/pxelinux.0`
+3. next-server 和 boot-file 配置是否正确
+4. 客户端和服务器是否在同一子网
 
-**A**: 三种方式：
-1. **默认菜单** — 侧边栏底部 **设置 → Boot Menu** → 默认引导菜单
-2. **Profile** — 为主机创建专用引导配置
-3. **自定义脚本** — 侧边栏底部 **设置 → Netboot → 自定义 iPXE 脚本**（高级用户）
+### Q: 如何查看详细日志？
 
-### Q: 数据存储在哪里？
+**A:** 启用调试模式：
 
-**A**: 默认在 `~/.pxelab/`：
-- `config.yaml` — 配置文件
-- `pxelab.db` — SQLite 数据库
-- `boot/` — 引导文件
-- `netboot/` — 网络启动目录
-- `logs/` — 日志文件
+```bash
+./pxelab --log-level debug
+```
 
-### Q: 如何备份数据？
-
-**A**: 备份 `~/.pxelab/` 整个目录即可。核心数据在 `pxelab.db` 和 `config.yaml`。
-
-### Q: 支持 Docker 部署吗？
-
-**A**: 暂不支持，在 Roadmap 中。当前推荐直接运行二进制。
-
-### Q: 如何升级 PxeLab？
-
-**A**:
-1. 停止当前运行的 PxeLab
-2. 下载新版本二进制替换旧文件
-3. 数据目录 `~/.pxelab/` 无需变动，新版本自动迁移
-4. 重新启动
-
-### Q: 多网卡如何配置？
-
-**A**: 在 `config.yaml` 的 `interfaces` 部分配置多个接口，每个接口独立设置 DHCP 模式和子网。
+或在 Web UI 中：**设置 → 日志 → 日志级别 → Debug**
