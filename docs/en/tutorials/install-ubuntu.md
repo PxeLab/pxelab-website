@@ -1,7 +1,7 @@
 # Tutorial 1: Install Ubuntu on a Bare Metal Machine
 
 > ⏱ Time: 15 minutes ｜ Level: Beginner ｜ Audience: First-time PxeLab users
-> Prerequisites: PxeLab is running (see [Getting Started](../en/getting-started.md)), a computer that supports network boot, and network connectivity between client and server
+> Prerequisites: PxeLab is running (see [Getting Started](../getting-started.md)), a computer that supports network boot, and network connectivity between client and server
 
 ---
 
@@ -15,7 +15,7 @@ This tutorial walks you through the whole flow: **create the network → network
 
 ## Preparation
 
-- PxeLab is running, and its web UI is reachable (http://localhost:8080)
+- PxeLab is running, and its web UI is reachable (`http://localhost:8080`)
 - The client and PxeLab are on the same subnet and can reach each other
 - A free subnet (this tutorial uses `192.168.50.0/24` — replace it with your own network)
 - The client hardware supports PXE network boot (almost every NIC and motherboard does, enabled by default)
@@ -80,6 +80,6 @@ If everything is normal, the PxeLab boot menu appears within a few seconds.
 
 ## Going further
 
-- **Unattended installs**: combine [Answer Templates](../en/guides/answer-templates.md) with [Install Tasks](../en/guides/install-tasks.md) so no one has to click through the wizard
-- **Per-host boot config**: bind a [Profile](../en/guides/profiles.md) to a specific machine so different hosts install different systems
+- **Unattended installs**: combine [Answer Templates](../guides/answer-templates.md) with [Install Tasks](../guides/install-tasks.md) so no one has to click through the wizard
+- **Per-host boot config**: bind a [Profile](../guides/profiles.md) to a specific machine so different hosts install different systems
 - **More scenarios**: layer PXE onto an existing DHCP network (Tutorial 2, coming soon) · build diskless workstations (Tutorial 3, coming soon)

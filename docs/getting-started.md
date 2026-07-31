@@ -71,9 +71,9 @@ sudo ./pxelab
 pxelab.exe
 ```
 
-启动后，打开浏览器访问 **http://localhost:8080**，你会看到仪表板：
+启动后，打开浏览器访问 **`http://localhost:8080`**，你会看到仪表板：
 
-![PxeLab 仪表盘](./screenshots/dashboard.png)
+![PxeLab 仪表板](/screenshots/dashboard.png)
 
 顶部的**服务状态栏**显示各服务的运行状态：默认只启动了 HTTP 服务，DHCP / TFTP / DNS / NFS 会在你配置并启动后变绿。
 
