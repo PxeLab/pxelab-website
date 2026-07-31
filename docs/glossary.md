@@ -22,3 +22,11 @@
 - **BMC / IPMI** — 服务器的带外管理接口，可远程开机、关机、查看电源状态
 - **sanboot** — 从 iSCSI 存储直接启动系统，客户端硬盘都不需要（无盘工作站）
 - **WDS** — Windows 部署服务；PxeLab 支持 WDS 场景的 Windows 安装
+- **接口（Interface）与子网（Subnet）** — PxeLab 的 DHCP 按接口组织：一个网卡接口下可配置一个或多个子网，每个子网独立设置 DHCP 模式
+- **地址池（Address Pool）** — 子网中用于分配给客户端的 IP 范围（如 `192.168.50.100-200`）
+- **租约（Lease）** — DHCP 分配给客户端的 IP 及其有效期
+- **两阶段引导** — PxeLab 的引导方式：先由 PXE ROM 加载 iPXE，再由 iPXE 加载引导菜单，解决传统 PXE 功能受限的问题
+- **引导项（BootType）** — 引导菜单中的一个选项类型：direct（直接加载内核）、chain（链式加载）、sanboot（SAN 启动）、wds（Windows WIM）、local（本地启动）
+- **ISO** — 光盘镜像文件格式，PxeLab 可挂载 ISO 用于网络安装
+- **架构映射（Arch Map）** — 客户端 CPU 架构到引导文件的对应关系，PxeLab 据此自动选择正确的引导文件
+- **iSCSI** — 网络存储协议，把远程磁盘当作本地磁盘使用，是 sanboot 无盘启动的基础

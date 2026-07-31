@@ -22,3 +22,11 @@
 - **BMC / IPMI** — A server's out-of-band management interface for remote power on/off and power status queries
 - **sanboot** — Booting directly from an iSCSI target; the client doesn't even need a disk (diskless workstations)
 - **WDS** — Windows Deployment Services; PxeLab supports Windows installation in WDS scenarios
+- **Interface & Subnet** — PxeLab organizes DHCP by interface: one NIC interface can host one or more subnets, each with its own DHCP mode
+- **Address Pool** — The IP range within a subnet that gets assigned to clients (e.g. `192.168.50.100-200`)
+- **Lease** — The IP address DHCP assigns to a client, along with its validity period
+- **Two-stage boot** — PxeLab's boot flow: the PXE ROM first loads iPXE, then iPXE loads the boot menu — solving the limited capabilities of classic PXE
+- **BootType** — An option type in the boot menu: direct (load kernel), chain (chain-load), sanboot (SAN boot), wds (Windows WIM), local (local disk)
+- **ISO** — The optical disc image format; PxeLab can mount ISOs for network installation
+- **Arch Map** — The mapping from client CPU architecture to boot file; PxeLab uses it to pick the right boot file automatically
+- **iSCSI** — A network storage protocol that makes a remote disk behave like a local one; the foundation of sanboot diskless boot

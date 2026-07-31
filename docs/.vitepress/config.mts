@@ -109,6 +109,8 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: '引导架构与无盘启动', en: 'Boot Architecture & Diskless', link: '/guides/boot-architecture' },
         { zh: 'DHCP 模式详解', en: 'DHCP Modes', link: '/guides/dhcp-modes' },
         { zh: 'iPXE 设置指南', en: 'iPXE Settings Guide', link: '/guides/ipxe-settings-guide' },
+        { zh: 'PXELinux 兼容与迁移', en: 'PXELinux Compatibility & Migration', link: '/guides/pxelinux-migration' },
+        { zh: '性能与大规模部署', en: 'Performance & Large-Scale Deployment', link: '/guides/scale-and-performance' },
       ],
     },
     {
