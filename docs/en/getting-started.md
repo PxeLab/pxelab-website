@@ -2,17 +2,7 @@
 
 > Goal: from downloading PxeLab to your first network install in 15 minutes.
 
-**Docs**: [Glossary](glossary.md) | [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) | [Troubleshooting](troubleshooting.md)
-
----
-
-## What Is PXE?
-
-PXE (Preboot eXecution Environment) is a mechanism that lets a computer **load its operating system directly from the network at boot time** — no USB drive, no optical drive, not even a system on the local disk.
-
-A typical scenario: 20 bare metal machines arrive in the server room, and all of them need systems installed within half a day. Installing them one by one with USB drives is not realistic. PXE lets every machine fetch its system image from the network automatically at power-on, turning mass installation into a manageable task.
-
-PxeLab packages the five network services PXE needs — **DHCP, TFTP, HTTP, DNS, NFS** — into a single zero-dependency binary and manages the whole flow from a web UI. Want the technical details? See the [Glossary](glossary.md) and [Boot Architecture & Diskless](guides/boot-architecture.md).
+**Docs**: [Product Overview](product.md) | [Glossary](glossary.md) | [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) | [Troubleshooting](troubleshooting.md)
 
 ---
 
@@ -49,23 +39,7 @@ Windows: download `pxelab_v0.1.0_windows_amd64.zip` and extract `pxelab.exe`.
 
 > Release assets follow the naming pattern `pxelab_<version>_<os>_<arch>` (zip on Windows, tar.gz elsewhere). Check the [Releases](https://github.com/PxeLab/pxelab/releases) page for the latest version and replace `v0.1.0` in the example URLs accordingly.
 
-### Option 2: Package Manager
-
-```bash
-# Debian / Ubuntu (deb package)
-sudo apt install ./pxelab_v0.1.0_linux_amd64.deb
-
-# RHEL / Rocky / AlmaLinux (rpm package)
-sudo rpm -Uvh pxelab_v0.1.0_linux_amd64.rpm
-
-# macOS (Homebrew)
-brew tap pxelab/homebrew-tap
-brew install pxelab
-```
-
-The deb / rpm packages register the systemd service `pxelab.service` and write the config to `/etc/pxelab/config.yaml` on install.
-
-### Option 3: Build from Source
+### Option 2: Build from Source
 
 ```bash
 git clone https://github.com/PxeLab/pxelab.git
@@ -73,29 +47,37 @@ cd pxelab
 make build          # produces bin/pxelab
 ```
 
-### Option 4: Docker
-
-Container images are on the roadmap — not available yet.
+> deb / rpm packages, Homebrew and Docker images are on the roadmap — not available yet.
 
 ---
 
 ## First Launch
+
+PxeLab has two run modes with different launch commands:
+
+**Server mode (default)** — runs in the foreground, logs to the terminal:
 
 ```bash
 # Linux / macOS (DHCP port 67 needs root)
 sudo ./pxelab
 
 # Windows (run as administrator)
-pxelab.exe
+pxelab.exe --mode server
 ```
+
+**App mode** — starts and opens the browser automatically:
+
+```bash
+./pxelab --mode app
+```
+
+> **Windows**: double-clicking `pxelab.exe` (no arguments) runs in **system tray mode** — the tray icon offers open browser, open data directory, and quit; `--mode server` / `--mode app` run in the foreground with a console window. See [Deployment](guides/deployment.md) for more options.
 
 Once started, open **`http://localhost:8080`** in a browser — you'll see the dashboard:
 
 ![PxeLab dashboard](/screenshots/dashboard.png)
 
-The **service status bar** at the top shows each service's state: HTTP runs by default; DHCP and ProxyDHCP also try to start automatically in fallback mode (listening on `0.0.0.0:67` / `0.0.0.0:4011`, needs root, no addresses assigned until subnets are configured); TFTP / DNS / NFS are stopped by default and turn green once you configure and start them.
-
-> **Windows**: PxeLab runs in the system tray by default — the tray icon offers open browser, open data directory, and quit.
+The **service status bar** at the top shows each service's state: **only the HTTP service starts by default**; DHCP / ProxyDHCP / TFTP / DNS / NFS are stopped by default — start them manually (or enable auto-start on the interface for DHCP).
 
 ---
 
@@ -106,14 +88,14 @@ Get a computer that supports network boot (bare metal or an existing machine —
 **Step 1: Create an interface and subnet**
 Go to **Basic Config → Service Config → DHCP**, click **Add Interface** in the top-right corner, fill in the interface name, IP address, and in "Subnet 1" set the network (`192.168.50.0/24`), address pool, gateway, DNS — keep the DHCP mode at **server**. Save, then start the DHCP service from the service status bar.
 
-**Step 2: Make sure the OS Install Catalog is enabled**
-Go to **Basic Config → Service Config → OS Install Catalog** and confirm the "enabled" toggle is on (default). It decides which operating systems clients see after booting.
+**Step 2: Enable the OS Install Catalog (Netboot)**
+Go to **Basic Config → Service Config → OS Install Catalog** and turn the "enabled" toggle on (**off by default** — must be enabled manually). Only then does the **[OS] Netboot OS Install Catalog** entry appear in the client's boot menu; it decides which operating systems clients see after booting.
 
 **Step 3: Boot the client and enter network boot**
 Power the client on and enter its boot menu (common keys: F12 / F11 / Esc — varies by vendor), then choose **network boot (PXE Boot / Network Boot)**.
 
 **Step 4: Pick a system in the boot menu**
-When the menu appears, choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → start the install.
+When the menu appears, choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → start the install. (If the entry is missing, go back to Step 2 and confirm the OS Install Catalog is enabled.)
 
 **Step 5: Verify**
 Back on the dashboard: the new host shows up in the "Online hosts" list; **Management → Install Tasks** shows the install record for this machine. After the install finishes, the client boots normally from its local disk.

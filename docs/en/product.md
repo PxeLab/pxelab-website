@@ -6,6 +6,14 @@
 
 ---
 
+## What Is PXE?
+
+PXE (Preboot eXecution Environment) is a mechanism that lets a computer **load its operating system directly from the network at boot time** — no USB drive, no optical drive, not even a system on the local disk.
+
+A typical scenario: 20 bare metal machines arrive in the server room, and all of them need systems installed within half a day. Installing them one by one with USB drives is not realistic. PXE lets every machine fetch its system image from the network automatically at power-on, turning mass installation into a manageable task.
+
+---
+
 ## What is PxeLab
 
 **PxeLab** is an all-in-one PXE network boot platform: it packs DHCP, TFTP, HTTP, DNS, and NFS into a single zero-dependency binary, managed from a modern Web UI and REST API — from power-on to a ready OS, no USB sticks, no per-machine toil.
