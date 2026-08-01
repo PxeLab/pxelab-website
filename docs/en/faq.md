@@ -287,16 +287,12 @@ CSV batch import for BMC info is supported, ideal for large-scale deployments.
 
 ### Q: How many hosts can PxeLab support?
 
-**A:** Depends on hardware configuration (estimates below — verify against real deployments):
+**A:** Depends on which kind of "support":
 
-| Config | Recommended Hosts |
-|--------|------------------|
-| Single core / 512 MB | ≤ 50 |
-| Dual core / 1 GB | ≤ 200 |
-| Quad core / 2 GB | ≤ 500 |
-| Octa core / 4 GB | ≤ 1000 |
+- **Managed scale** (DHCP leases / online hosts): DHCP is a lightweight protocol — a single core / 512 MB handles hundreds of clients comfortably; CPU/RAM is not the bottleneck in steady state
+- **Concurrent booting**: the real capacity limit — momentary load spikes far above steady state when many clients download boot files/ISOs at once, bounded by network bandwidth, disk I/O, and boot method (TFTP is serial; HTTP/iPXE is an order of magnitude faster). For mass deployment, trigger boots in batches (20–50)
 
-DHCP and TFTP are main performance bottlenecks — use high-performance hardware for large deployments.
+See [Performance & Large-Scale Deployment](guides/scale-and-performance.md) for details.
 
 ### Q: How to monitor PxeLab status?
 

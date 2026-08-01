@@ -10,12 +10,20 @@
 
 | Hardware | Suggested client count |
 |----------|------------------------|
-| 1 core / 512 MB | ≤ 50 |
-| 2 cores / 1 GB | ≤ 200 |
-| 4 cores / 2 GB | ≤ 500 |
-| 8 cores / 4 GB | ≤ 1000 |
+| 1 core / 512 MB | hundreds |
+| 2 cores / 1 GB | thousands |
+| 4 cores / 2 GB | thousands |
 
-DHCP and TFTP are the main bottlenecks: DHCP handles lease assignment, and TFTP transfers boot files serially. The table is a general guideline — real capacity depends on boot patterns (mass deployment boots many machines at once, with momentary load far above steady state).
+The table above is a reference for **steady-state managed scale** (DHCP leases / online hosts) — DHCP is a lightweight protocol, and CPU/RAM is usually not the bottleneck.
+
+**The real capacity limit is "concurrent booting", not managed count**: when many clients download boot files/ISOs at once, momentary load spikes far above steady state, bounded by:
+
+- **Network bandwidth** — a Gigabit NIC (≈112 MB/s) sets the throughput ceiling for simultaneous downloads
+- **Disk I/O** — mechanical drives saturate first on concurrent boot-file/ISO reads; SSDs help significantly
+- **Boot method** — TFTP transfers serially; HTTP/iPXE is an order of magnitude faster, prefer HTTP
+- **Netboot cache** — once enabled, boot files land on disk and repeat boots skip external downloads
+
+So **don't estimate supported hosts directly from hardware specs**; for mass deployment, trigger boots in batches (20–50 machines) — more effective than buying stronger hardware.
 
 ## Bottlenecks and Optimization
 
@@ -64,7 +72,7 @@ Key points:
 ## FAQ
 
 **Q: How many machines can one PxeLab serve?**
-See the capacity table: roughly 500 on 4 cores / 2 GB. Above that, split across multiple deployments per VLAN.
+Managed scale (leases/online hosts) reaches thousands (see the capacity table above). For concurrent boots, stagger batches (20–50 machines); above a single server's managed scale, or for higher concurrency, split across multiple deployments per VLAN.
 
 **Q: Batch boots are slow — what now?**
 First confirm clients use HTTP rather than TFTP (iPXE defaults to HTTP); check Netboot caching is enabled; stagger batches at high concurrency.
