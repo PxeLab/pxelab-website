@@ -80,7 +80,7 @@
 | [TFTP 服务](reference/tftp.md) | TFTP 配置与引导文件管理 |
 | [DNS 服务](reference/dns.md) | 本地 DNS、上游转发与记录管理 |
 | [NFS 服务](reference/nfs.md) | NFSv3 多挂载点与 IP 访问控制 |
-| [架构映射与 Secure Boot](reference/boot-settings.md) | 11 种架构支持与 Secure Boot 链 |
+| [架构映射与 Secure Boot](reference/boot-settings.md) | 10 种架构支持与 Secure Boot 链 |
 | [环境变量与 CLI](reference/environment-variables.md) | CLI 参数、环境变量与数据目录结构 |
 | [日志配置](reference/logging.md) | 日志级别、轮转配置与排查 |
 

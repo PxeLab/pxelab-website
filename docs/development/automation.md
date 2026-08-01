@@ -22,8 +22,8 @@
 BASE=http://localhost:8080/api/v1
 
 while IFS=, read -r mac name profile; do
-  # 1. 先按 MAC 查是否已存在
-  exists=$(curl -s "$BASE/hosts?mac=$mac" | grep -c "\"mac\":\"$mac\"")
+  # 1. 先按 MAC 查是否已存在（search 匹配 name/mac/ip）
+  exists=$(curl -s "$BASE/hosts?search=$mac" | grep -c "\"mac\":\"$mac\"")
   if [ "$exists" -gt 0 ]; then
     echo "skip $mac (exists)"
     continue
@@ -79,7 +79,7 @@ jobs:
 # 服务状态 → 监控系统
 curl -s http://localhost:8080/api/v1/status
 
-# Prometheus 指标（兼容标准格式）
+# 指标快照（JSON 格式）
 curl -s http://localhost:8080/api/v1/metrics
 
 # 主机列表 → CMDB 同步

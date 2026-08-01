@@ -78,6 +78,6 @@ Stage 1                           Stage 2
 
 | 层级 | 技术 |
 |------|------|
-| 后端 | Go 1.23+（chi 路由、SQLite/GORM） |
+| 后端 | Go 1.25+（chi 路由、SQLite/GORM） |
 | 前端 | React 19 + TypeScript + Tailwind CSS 4 + Vite |
 | 打包发布 | GoReleaser（多平台二进制） |

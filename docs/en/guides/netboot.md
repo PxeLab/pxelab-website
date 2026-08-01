@@ -21,11 +21,11 @@ On the OS Install Catalog page, confirm the "**enabled**" toggle is on (default)
 
 ## Task 2: Group management
 
-The catalog is organized into groups (Linux Distributions, Windows, System Tools, Live CDs, etc. — 10 groups), supporting:
+The catalog is organized into groups (Linux Distributions, Windows, System Tools, Live CDs, etc. — 10 groups), derived automatically from enabled distros; group enable/disable, display title, and ordering are configured via `catalog_display.groups` in `config.yaml`:
 
 - **Enable/disable groups** — hide whole categories you don't need
 - **Custom titles** — rename groups
-- **Drag-and-drop ordering** — reorder groups
+- **Adjust order** — via the `order` field (lower values come first)
 
 ## Task 3: Overlays (per-distro customization)
 

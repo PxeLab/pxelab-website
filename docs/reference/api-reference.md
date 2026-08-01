@@ -54,6 +54,20 @@ GET  /api/v1/auth/session   # 检查会话
 | POST | `/auth/logout` | 登出 |
 | GET | `/auth/session` | 检查会话 |
 
+### 版本
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/version` | 当前版本信息 |
+| POST | `/version/check` | 检查更新 |
+| POST | `/version/download` | 下载更新 |
+
+### 审计日志
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/audit-logs` | 审计日志列表 |
+
 ### 主机
 
 | 方法 | 端点 | 说明 |
@@ -66,7 +80,7 @@ GET  /api/v1/auth/session   # 检查会话
 | POST | `/hosts/{id}/wake` | WOL 唤醒 |
 | POST | `/hosts/{id}/power` | IPMI 电源控制 |
 | GET | `/hosts/{id}/boot-config` | 预览引导配置 |
-| POST | `/hosts/batch/wake` | 批量唤醒 |
+| POST | `/hosts/batch/wake` | 批量 WOL 唤醒 |
 
 ### 引导配置（Profile）
 
@@ -78,9 +92,10 @@ GET  /api/v1/auth/session   # 检查会话
 | PUT | `/profiles/{id}` | 更新 Profile |
 | DELETE | `/profiles/{id}` | 删除 Profile |
 | POST | `/profiles/from-netboot` | 从 Netboot 创建 |
-| GET | `/profiles/{id}/script-versions` | 脚本版本列表 |
-| GET | `/profiles/{id}/script-diff/{verId}` | 版本差异 |
-| POST | `/profiles/{id}/script-rollback/{verId}` | 版本回滚 |
+| GET | `/profiles/{profileId}/script-versions` | 脚本版本列表 |
+| GET | `/profiles/{profileId}/script-versions/{verId}` | 获取单个脚本版本 |
+| GET | `/profiles/{profileId}/script-diff/{verId}` | 版本差异 |
+| POST | `/profiles/{profileId}/script-rollback/{verId}` | 版本回滚 |
 
 ### 文件管理
 
@@ -105,6 +120,8 @@ GET  /api/v1/auth/session   # 检查会话
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
+| GET | `/settings` | 完整设置（向后兼容） |
+| PUT | `/settings` | 更新完整设置 |
 | GET | `/settings/general` | 通用设置 |
 | PUT | `/settings/general` | 更新通用设置 |
 | GET | `/settings/interfaces` | 接口配置 |
@@ -113,6 +130,7 @@ GET  /api/v1/auth/session   # 检查会话
 | PUT | `/settings/netboot` | 更新 Netboot 设置 |
 | GET | `/settings/logging` | 日志设置 |
 | PUT | `/settings/logging` | 更新日志设置 |
+| GET | `/netboot/cache-stats` | Netboot 缓存统计 |
 
 ### 服务
 
@@ -126,6 +144,8 @@ GET  /api/v1/auth/session   # 检查会话
 | PUT | `/services/dns` | 更新 DNS |
 | GET | `/services/nfs` | NFS 设置 |
 | PUT | `/services/nfs` | 更新 NFS |
+| POST | `/services/nfs/validate-path` | 校验 NFS 路径 |
+| GET | `/services/nfs/browse-path` | 浏览 NFS 路径 |
 | GET | `/services/archmap` | 架构映射 |
 | PUT | `/services/archmap` | 更新架构映射 |
 | GET | `/services/archmap/defaults` | 默认架构映射 |
@@ -151,18 +171,44 @@ GET  /api/v1/auth/session   # 检查会话
 | GET | `/netboot/catalog/{distro}` | 发行版详情 |
 | GET | `/netboot/groups` | 分组列表 |
 | GET | `/netboot/check-files` | 检查文件 |
-| GET | `/netboot/cache-stats` | 缓存统计 |
-| GET/PUT/DELETE | `/netboot/overlays/{distro}` | 覆盖层 |
-| GET/POST/PUT/DELETE | `/netboot/answer-templates` | 应答文件模板 |
-| GET/POST/PUT/DELETE | `/netboot/tasks` | 安装任务 |
+| GET | `/netboot/overlays` | 覆盖层列表 |
+| GET | `/netboot/overlays/{distro}` | 获取覆盖层 |
+| PUT | `/netboot/overlays/{distro}` | 创建/更新覆盖层 |
+| DELETE | `/netboot/overlays/{distro}` | 删除覆盖层 |
+| GET | `/netboot/answer-templates` | 应答文件模板列表 |
+| POST | `/netboot/answer-templates` | 创建应答文件模板 |
+| GET | `/netboot/answer-templates/{id}` | 获取模板 |
+| PUT | `/netboot/answer-templates/{id}` | 更新模板 |
+| DELETE | `/netboot/answer-templates/{id}` | 删除模板 |
+| GET | `/netboot/answer-templates/presets` | 内置预设列表 |
+| POST | `/netboot/answer-templates/validate` | 校验模板 |
+| GET | `/netboot/answer-templates/{id}/versions` | 版本列表 |
+| GET | `/netboot/answer-templates/{id}/versions/{version}` | 获取指定版本 |
+| POST | `/netboot/answer-templates/{id}/preview` | 渲染预览 |
+| POST | `/netboot/answer-templates/{id}/rollback/{version}` | 回滚到指定版本 |
+| POST | `/netboot/answer-templates/{id}/validate` | 校验单条模板 |
+| GET | `/netboot/tasks` | 安装任务列表 |
+| POST | `/netboot/tasks` | 创建安装任务 |
+| GET | `/netboot/tasks/{id}` | 获取任务 |
+| PUT | `/netboot/tasks/{id}` | 更新任务 |
+| DELETE | `/netboot/tasks/{id}` | 删除任务 |
+| GET | `/netboot/task/by-mac/{mac}` | 按 MAC 查询任务（PXE 运行时，免认证） |
+| GET | `/netboot/answer/{task_id}` | 获取应答文件（PXE 运行时，免认证） |
 
 ### 访问控制
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
-| GET/POST/DELETE | `/access/blacklist` | 黑名单 |
-| GET/POST/DELETE | `/access/whitelist` | 白名单 |
-| GET | `/access/unauthorized` | 未授权设备 |
+| GET | `/access/blacklist` | 黑名单列表 |
+| POST | `/access/blacklist` | 添加黑名单 |
+| DELETE | `/access/blacklist/{id}` | 删除黑名单条目 |
+| GET | `/access/whitelist` | 白名单列表 |
+| POST | `/access/whitelist` | 添加白名单 |
+| DELETE | `/access/whitelist/{id}` | 删除白名单条目 |
+| GET | `/access/unauthorized` | 未授权设备列表 |
+| POST | `/access/unauthorized/add-to-whitelist` | 未授权设备加入白名单 |
+| POST | `/access/unauthorized/add-to-blacklist` | 未授权设备加入黑名单 |
+| DELETE | `/access/unauthorized/{id}` | 删除未授权设备记录 |
 
 ### DNS
 
@@ -175,9 +221,14 @@ GET  /api/v1/auth/session   # 检查会话
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
-| GET/POST | `/bmc/configs` | BMC 配置 |
+| GET | `/bmc/configs` | BMC 配置列表 |
+| POST | `/bmc/configs` | 创建 BMC 配置 |
+| GET | `/bmc/configs/{id}` | 获取 BMC 配置 |
+| PUT | `/bmc/configs/{id}` | 更新 BMC 配置 |
+| DELETE | `/bmc/configs/{id}` | 删除 BMC 配置 |
 | POST | `/bmc/configs/import` | CSV 导入 |
 | POST | `/bmc/probe` | 探测 BMC |
+| POST | `/bmc/{id}/refresh` | 刷新 BMC 状态 |
 | POST | `/bmc/{id}/power-on` | 开机 |
 | POST | `/bmc/{id}/power-off` | 关机 |
 | POST | `/bmc/{id}/restart` | 重启 |
@@ -209,27 +260,78 @@ GET  /api/v1/auth/session   # 检查会话
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
-| GET/POST/DELETE | `/wol/history` | 唤醒历史 |
-| GET/POST/DELETE | `/wol/schedules` | 定时任务 |
-| GET | `/wol/interfaces` | WOL 接口 |
+| GET | `/wol/history` | 唤醒历史列表 |
+| GET | `/wol/history/{mac}` | 按 MAC 查询唤醒历史 |
+| DELETE | `/wol/history/{id}` | 删除单条唤醒记录 |
+| DELETE | `/wol/history` | 清空唤醒历史 |
+| POST | `/wol/schedule` | 创建定时唤醒 |
+| GET | `/wol/schedules` | 定时唤醒列表 |
+| DELETE | `/wol/schedule/{id}` | 删除定时唤醒 |
+| GET | `/wol/interfaces` | WOL 可用接口 |
 
 ### OS 镜像
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
-| GET/POST | `/os-images` | 镜像列表/上传 |
-| GET/PUT/DELETE | `/os-images/{id}` | 单条操作 |
-| POST | `/os-images/{id}/extract` | 解压 |
-| POST | `/os-images/{id}/mount` | 挂载 |
-| POST | `/os-images/{id}/unmount` | 卸载 |
+| GET | `/os-images` | 镜像列表 |
+| POST | `/os-images/upload` | 上传镜像 |
+| GET | `/os-images/{id}` | 获取镜像详情 |
+| PUT | `/os-images/{id}` | 更新镜像 |
+| DELETE | `/os-images/{id}` | 删除镜像 |
+| POST | `/os-images/import` | 导入已有镜像文件 |
+| GET | `/os-images/{id}/file` | 下载镜像文件 |
+| POST | `/os-images/{id}/extract` | 解压镜像 |
+| POST | `/os-images/{id}/reprocess` | 重新处理镜像 |
+| POST | `/os-images/{id}/mount` | 挂载镜像 |
+| POST | `/os-images/{id}/unmount` | 卸载镜像 |
 | GET | `/fs/browse` | 文件浏览 |
+
+### 引导加载程序（Bootloader）
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/bootloader/check` | 引导文件完整性检查 |
+| GET | `/bootloader/files` | 引导文件列表 |
+| POST | `/bootloader/check-file` | 检查单个引导文件 |
+
+### 基线（Baseline）
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/baselines` | 基线列表 |
+| POST | `/baselines` | 创建基线 |
+| GET | `/baselines/{id}` | 获取基线 |
+| PUT | `/baselines/{id}` | 更新基线 |
+| DELETE | `/baselines/{id}` | 删除基线 |
+| GET | `/baselines/{id}/scripts` | 基线脚本列表 |
+| PUT | `/baselines/{id}/scripts` | 设置基线脚本 |
+| GET | `/baselines/assigned` | 查询机器已分配的基线 |
+
+### 脚本（Script）
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/scripts` | 脚本列表 |
+| POST | `/scripts` | 创建脚本 |
+| GET | `/scripts/{id}` | 获取脚本 |
+| PUT | `/scripts/{id}` | 更新脚本 |
+| DELETE | `/scripts/{id}` | 删除脚本 |
+
+### 存储（Store）
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/store/catalog` | 社区模板/脚本目录 |
+| GET | `/store/items/{type}/{id}` | 获取目录条目详情 |
+| POST | `/store/import` | 导入目录条目 |
+| POST | `/store/import-local` | 导入本地条目 |
 
 ### 其他
 
 | 方法 | 端点 | 说明 |
 |------|------|------|
 | GET | `/status` | 服务状态 |
-| GET | `/metrics` | Prometheus 指标 |
+| GET | `/metrics` | 指标快照（JSON） |
 | GET | `/events` | 事件列表 |
 | GET | `/events/stream` | 事件流（SSE） |
 | GET | `/logs/stream` | 日志流（SSE） |
@@ -237,5 +339,3 @@ GET  /api/v1/auth/session   # 检查会话
 | GET | `/logs/disk-usage` | 日志磁盘占用 |
 | POST | `/logs/cleanup` | 清理日志 |
 | GET | `/interfaces` | 网络接口 |
-| GET | `/bootloader/check` | 引导文件检查 |
-| GET | `/bootloader/files` | 引导文件列表 |

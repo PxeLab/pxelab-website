@@ -34,7 +34,7 @@
 
 ### TFTP（/services/tftp）
 
-引导文件服务：端口与超时设置、引导文件管理（iPXE / PXELinux / GRUB2 三栏展示架构对应关系）、文件上传与删除。
+引导文件服务：端口与超时设置、根目录、pxelinux/grub 配置文件路径。引导文件的上传、删除与浏览在 [文件管理](files.md)；客户端架构 → 引导文件映射在 **引导选项（/boot-settings）**。
 
 详见 [TFTP 服务参考](../reference/tftp.md)。
 
@@ -46,7 +46,7 @@
 
 ### OS 安装目录（/netboot-catalog）
 
-内置发行版安装菜单：分组启用/禁用、标题编辑、拖拽排序、缓存统计。
+内置发行版安装菜单：发行版启停、覆盖配置、各版本本地文件状态；分组标题与顺序通过 `config.yaml` 的 `catalog_display.groups` 配置。本地缓存统计（文件数 / 占用空间）见 **设置 → Netboot → 本地缓存**。
 
 详见 [网络启动目录](netboot.md)。
 

@@ -8,7 +8,7 @@
 
 ## When to Use
 
-- Clients **jump straight to the OS Install Catalog** (default behavior) → nothing to configure; just confirm the catalog is enabled
+- Clients **jump straight to the OS Install Catalog** → only happens after enabling **Settings → Netboot → Catalog Redirect**; not the default
 - Want a **custom menu** (install a system, boot local disk, diskless boot, etc.) → create Profiles
 - A specific machine should **always install a specific system** → bind a Profile to its MAC
 - Don't want the catalog redirect; full control of the menu → configure the default menu
@@ -33,6 +33,7 @@ When a client requests a boot script, PxeLab answers in this order:
 | `sanboot` | iSCSI SAN boot | Diskless workstations |
 | `wds` | Windows WIM boot | Windows PE / install |
 | `local` | Boot from local disk | Default fallback |
+| `custom` | Fully custom iPXE script | Advanced use |
 
 ## Task 1: Create a Profile
 
@@ -42,12 +43,12 @@ Entry: **Basic Config → Boot Menu (Profiles)** → New. A Profile is one boot 
 |-------|---------|
 | Profile name | Shown in the menu |
 | Architecture | Target client architecture |
-| Boot type | One of the five above |
+| Boot type | One of the six above |
 | Kernel path / Initrd path | For `direct` type (e.g. `vmlinuz` / `initrd.img`) |
 | Command line | Kernel parameters (e.g. `net.ifnames=0 console=tty0`) |
 | URL | Target address for `chain` / `sanboot` (e.g. `iscsi:192.168.1.50::::iqn.2024-01:disk`) |
 
-Every edit saves a **version snapshot** automatically — diff and roll back to any version.
+For **custom script** Profiles, every edit saves a **version snapshot** automatically — diff and roll back to any version (other types don't auto-generate snapshots).
 
 ## Task 2: Bind to a host
 
@@ -55,24 +56,24 @@ Every edit saves a **version snapshot** automatically — diff and roll back to 
 
 ## Task 3: Configure the default menu
 
-**Settings** (bottom of the sidebar) → **Boot Menu**:
+The default menu's entries come from the **default Profile**: **Basic Config → Boot Menu (Profiles)** → open the default Profile → edit its boot entries (local, Profiles, etc.).
 
-- **Menu title** (default `PxeLab Boot Menu`)
+**Settings** (bottom of the sidebar) → **Boot Menu** adjusts:
+
 - **Timeout**: 0 = no auto-select; >0 = auto-select the default entry after timeout
-- **Entries**: add the boot items you need (local, Profiles, etc.)
+- **List all Profiles**: when on, the default menu lists every Profile; otherwise only the default Profile's entry
 
-> Note: the default menu only appears when the host has no Profile AND the catalog redirect is off.
+> Note: with **List all Profiles** on, the default menu title is fixed at `PxeLab Boot Menu`; with it off, the title is the default Profile's name (neither is editable in the UI). The menu only appears when the host has no Profile AND the catalog redirect is off.
 
 ## Task 4: Full customization (custom iPXE script)
 
-**Settings → Netboot → Custom iPXE Script**: once filled, it **fully replaces** all visual configuration (advanced). Available template variables:
+**Settings → Boot Menu → Custom iPXE Script**: once filled, it **fully replaces** all visual configuration (advanced). Available template variables:
 
 <v-pre>
 
 ```
 {{.URL}}         Server URL (e.g. http://192.168.1.10:8080)
 {{.MAC}}         Client MAC address
-{{.NextServer}}  Server IP (without port)
 ```
 
 </v-pre>
@@ -80,7 +81,7 @@ Every edit saves a **version snapshot** automatically — diff and roll back to 
 ## FAQ
 
 **Q: Clients boot straight into the OS Install Catalog and never see the default menu?**
-The catalog redirect is on by default. Disable "redirect" in **Service Config → OS Install Catalog** (or Settings → Netboot).
+The catalog redirect is **off** by default. If it's enabled (**Settings → Netboot → Catalog Redirect**), disable it to return to the default menu.
 
 **Q: A Profile change has no effect?**
 Make sure it's saved; bound hosts use the Profile menu — check the host's association on its detail page.

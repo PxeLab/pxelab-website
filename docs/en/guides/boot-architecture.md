@@ -135,11 +135,11 @@ Boot files are selected automatically by the client architecture from DHCP Optio
 
 | Client architecture | AL code | Boot file |
 |---------------------|---------|-----------|
-| BIOS x86 | 0 | undionly.kpxe |
+| BIOS x86 | 0 | ipxe.pxe / undionly.kpxe |
 | EFI IA32 | 6 | ipxe32.efi |
 | EFI x64 | 7, 9 | ipxe.efi |
 | EFI ARM64 | 11 | ipxe-arm64.efi |
-| EFI RISCV64 | 21 | ipxe-riscv64.efi |
+| EFI RISCV64 | 27 | ipxe-riscv64.efi |
 
 ---
 

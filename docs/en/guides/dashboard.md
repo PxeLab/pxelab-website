@@ -19,7 +19,7 @@ The top row shows 5 core metrics:
 |------|-------------|---------|
 | Online hosts | `hosts.last_online` | Hosts with activity in the last 10 minutes |
 | Running services | `GET /api/v1/services` | Count of services with status=running |
-| Active leases | Prometheus `dhcp.activeLeases` | Current active DHCP lease count |
+| Active leases | `GET /api/v1/metrics` (JSON snapshot) `services.dhcp.dhcp.activeLeases` | Current active DHCP lease count |
 | DNS records | `GET /api/v1/dns/records` | Total DNS record count |
 | Boots today | events (type=BOOT, today) | BOOT events today |
 

@@ -21,11 +21,11 @@ OS 安装目录页，确认「**启用**」开关已打开（默认开启）。�
 
 ## 任务 2：分组管理
 
-目录按分组组织（Linux Distributions、Windows、System Tools、Live CDs 等 10 组），支持：
+目录按分组组织（Linux Distributions、Windows、System Tools、Live CDs 等 10 组），分组从已启用的发行版自动派生；分组的启用状态、显示标题与顺序通过 `config.yaml` 的 `catalog_display.groups` 配置：
 
 - **启用/禁用分组** — 不需要的系统整组隐藏
 - **自定义标题** — 改显示名称
-- **拖拽排序** — 调整分组顺序
+- **调整顺序** — 通过 `order` 字段排序（数值越小越靠前）
 
 ## 任务 3：覆盖层（per-发行版定制）
 

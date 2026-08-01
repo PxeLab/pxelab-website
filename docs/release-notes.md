@@ -36,7 +36,7 @@
 ## v0.3.0
 
 - iPXE 引导脚本系统
-- DHCP 四种模式
+- DHCP 三种模式（server / proxy / off）
 - Web UI 全功能
 - CLI 管理工具
 - 事件总线和实时日志

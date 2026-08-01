@@ -34,7 +34,7 @@ See [NFS Service Reference](../reference/nfs.md).
 
 ### TFTP (/services/tftp)
 
-Boot file service: port and timeout settings, boot file management (iPXE / PXELinux / GRUB2 columns showing architecture mapping), file upload and delete.
+Boot file service: port and timeout settings, root directory, pxelinux/grub config file paths. Boot file upload, delete and browsing live in [File Manager](files.md); client architecture → boot file mapping lives in **Boot Options (/boot-settings)**.
 
 See [TFTP Service Reference](../reference/tftp.md).
 
@@ -46,7 +46,7 @@ See [Architecture Mapping & Secure Boot](../reference/boot-settings.md).
 
 ### OS Install Catalog (/netboot-catalog)
 
-Built-in distribution install menu: group enable/disable, title editing, drag-and-drop ordering, cache stats.
+Built-in distribution install menu: distro enable/disable, overlay config, per-version local file status; group titles and ordering are configured via `catalog_display.groups` in `config.yaml`. Local cache stats (file count / disk usage) are shown in **Settings → Netboot → Local Cache**.
 
 See [Netboot Catalog](netboot.md).
 

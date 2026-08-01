@@ -78,6 +78,6 @@ Step-by-step details (PXELinux/GRUB2 compatibility, architecture mapping, sanboo
 
 | Layer | Technology |
 |-------|------------|
-| Backend | Go 1.23+ (chi router, SQLite/GORM) |
+| Backend | Go 1.25+ (chi router, SQLite/GORM) |
 | Frontend | React 19 + TypeScript + Tailwind CSS 4 + Vite |
 | Packaging | GoReleaser (multi-platform binaries) |

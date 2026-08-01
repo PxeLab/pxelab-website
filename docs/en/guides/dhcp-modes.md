@@ -1,6 +1,6 @@
 # DHCP Modes
 
-PxeLab supports 3 DHCP modes, configured via the `dhcp` field in interface settings.
+PxeLab supports 3 DHCP modes, configured via the `dhcp` field in each subnet's settings (`interfaces[].subnets[].dhcp`). Different subnets on the same interface can use different modes.
 
 ## Quick Reference
 
@@ -71,12 +71,12 @@ When a DHCP request is received, PxeLab determines the mode as follows:
 DHCP Request Received
     │
     ├─ Is it a PXE/iPXE client?
-    │   ├─ Yes → Check interface DHCP mode
+    │   ├─ Yes → Check the subnet's DHCP mode
     │   │       ├─ proxy → Handle as proxy mode
     │   │       ├─ server → Handle as server mode
     │   │       └─ off → Ignore
     │   │
-    │   └─ No → Check interface DHCP mode
+    │   └─ No → Check the subnet's DHCP mode
     │           ├─ server → Handle as server mode (assign IP)
     │           ├─ proxy → Ignore (non-PXE clients ignored in proxy mode)
     │           └─ off → Ignore
@@ -92,8 +92,7 @@ DHCP Request Received
     Company DHCP        PxeLab
   192.168.1.1      192.168.1.100
        │                 │
-       │                 │  dhcp: proxy
-       │                 │  bootloader: ipxe
+       │                 │  subnet dhcp: proxy
        │                 │
        │                 └── PXE clients get boot options
        │
@@ -106,8 +105,7 @@ DHCP Request Received
 ```
     PxeLab (192.168.1.100)
        │
-       │  dhcp: server (default)
-       │  bootloader: ipxe
+       │  subnet dhcp: server (default)
        │
        ├── PXE clients: IP + boot options
        ├── Regular clients: IP + network config
@@ -120,16 +118,16 @@ DHCP Request Received
 interfaces:
   - name: eth0       # Management
     ip: 10.0.0.1
-    dhcp: server     # Management segment DHCP
     subnets:
       - cidr: 10.0.0.0/24
+        dhcp: server # Management segment DHCP
         pool: 10.0.0.100-10.0.0.200
 
   - name: eth1       # Business, PXE overlay
     ip: 192.168.1.100
-    dhcp: proxy      # Don't interfere with company DHCP
     subnets:
       - cidr: 192.168.1.0/24
+        dhcp: proxy  # Don't interfere with company DHCP
 ```
 
 ### Example 4: File Serving Only
@@ -138,14 +136,16 @@ interfaces:
 interfaces:
   - name: eth0
     ip: 192.168.1.100
-    dhcp: off        # DHCP handled by other device
-    tftp: true       # Only provide TFTP
-    http: true       # Only provide HTTP
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: off     # DHCP handled by other device
+    tftp: true        # Only provide TFTP
+    http: true        # Only provide HTTP
     bootloader: grub2
 ```
 
+> **Note:** `tftp`/`http`/`bootloader` are interface-level settings; `dhcp` is a subnet-level setting.
+
 ## Web UI Configuration
 
-In the PxeLab interface, DHCP mode can be set independently for each interface: **Settings → Interfaces**, then the "DHCP Mode" dropdown for each interface.
-
-> **Note:** Subnets under the same interface share that interface's DHCP mode. For different behaviors, use multi-interface configuration.
+In the PxeLab interface, DHCP mode is set per subnet: **Basic Config → Service Config → DHCP**, edit an interface, and pick the "DHCP Mode" in each subnet row. Different subnets under the same interface can have different modes.

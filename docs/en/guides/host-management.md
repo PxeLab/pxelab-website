@@ -9,7 +9,7 @@
 ## When to Use
 
 - A machine should **always install a specific system** → register the host + bind a Profile
-- Bulk onboarding in a server room → CSV import
+- Bulk onboarding in a server room → create via the [Automation API](../development/automation.md)
 - Want **remote wake / out-of-band power control** → register hosts first
 - Want to see **which machines booted recently** → online status and boot counts
 
@@ -28,23 +28,14 @@ Click **New Host**:
 
 > MAC and name are both unique — duplicates are rejected.
 
-## Task 2: Bulk import (CSV)
+There is no built-in CSV import for bulk host registration; create hosts in a loop via the REST API (see [Automation & CI Integration](../development/automation.md)).
 
-Click **Import CSV**, format `mac,name,profile`:
-
-```csv
-aa:bb:cc:dd:ee:01,server-01,ubuntu-install
-aa:bb:cc:dd:ee:02,server-02,centos-install
-```
-
-The import result shows success/failure counts. Duplicate MACs are skipped (or reported — handle per the prompt).
-
-## Task 3: Bind boot behavior
+## Task 2: Bind boot behavior
 
 - **From the detail page**: open the host → associate a Profile → save. The machine then boots straight into that Profile
 - For batch scenarios, use the API (see [Automation & CI Integration](../development/automation.md))
 
-## Task 4: Remote control
+## Task 3: Remote control
 
 From the host detail page you can:
 
@@ -55,7 +46,7 @@ Details: [Wake-on-LAN](wol.md) and [BMC / IPMI](bmc.md).
 
 ## Online Status
 
-A host with boot activity in the last 10 minutes shows "online". The list also shows boot counts and last-seen time — handy for confirming installs/boots succeeded.
+Hosts with boot records show "online" on the detail page. The dashboard's "online hosts" stat counts machines with boot activity in the last 10 minutes. The list also shows boot counts and last-seen time — handy for confirming installs/boots succeeded.
 
 ## API
 

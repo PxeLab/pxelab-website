@@ -64,23 +64,27 @@ curl -s -X DELETE http://localhost:8080/api/v1/hosts/<id>
 ### Profiles (boot config)
 
 ```bash
-# Create a Profile (menu is JSON; type supports direct/chain/wds/sanboot/local)
+# Create a Profile (menu is JSON; type supports menu/direct/chain/wds/sanboot/netboot/local/custom)
 curl -s -X POST http://localhost:8080/api/v1/profiles \
   -H "Content-Type: application/json" \
   -d '{"name":"Install Ubuntu","menu":{"title":"Ubuntu","entries":[{"label":"Install Ubuntu","type":"direct","kernel":"vmlinuz","initrd":"initrd.img"}]}}'
 ```
 
-### Bulk Host Import (CSV)
+### Bulk Operations
+
+There is no `/hosts/import` endpoint — create hosts one by one in a loop for bulk adds; BMC info supports CSV import:
 
 ```bash
-# CSV format: mac,name,profile
-cat > hosts.csv << 'EOF'
-AA:BB:CC:DD:EE:01,server-01,ubuntu-install
-AA:BB:CC:DD:EE:02,server-02,centos-install
-EOF
+# Create hosts one by one
+for m in AA:BB:CC:DD:EE:01 AA:BB:CC:DD:EE:02; do
+  curl -s -X POST http://localhost:8080/api/v1/hosts \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"server\",\"mac\":\"$m\",\"ip\":\"192.168.1.10\"}"
+done
 
-curl -s -X POST http://localhost:8080/api/v1/hosts/import \
-  -F "file=@hosts.csv"
+# Batch import BMC info (CSV; raw CSV body or JSON {"csv":"..."})
+curl -s -X POST http://localhost:8080/api/v1/bmc/configs/import \
+  -d @bmc.csv
 ```
 
 ## Error Handling Cheat Sheet

@@ -28,7 +28,8 @@ Basic Config
 Management
 ├─ Host Management (/hosts → /hosts/:id)
 ├─ Access Control (/access-control)
-├─ Init Scripts (/scripts)
+├─ Init Scripts (/baselines)
+├─ Scripts (/scripts)
 ├─ Install Tasks (/install-tasks)
 ├─ BMC / IPMI (/bmc)
 ├─ Wake-on-LAN (/wol)
@@ -94,7 +95,8 @@ Bottom
 | Page | Entry | What it does | Details |
 |------|-------|--------------|---------|
 | **Access Control** | Management → Access Control | MAC black/whitelist, controlling which devices can join | [Access Control](access-control.md) |
-| **Init Scripts** | Management → Init Scripts | Boot script management (custom script assets) | - |
+| **Init Scripts** | Management → Init Scripts | Boot baseline script management (custom script assets) | - |
+| **Scripts** | Management → Scripts | Script file import and maintenance | - |
 | **Install Tasks** | Management → Install Tasks | Network install task tracking: create, progress, result | [Install Tasks](install-tasks.md) |
 
 ![Install Tasks](/screenshots/install-tasks.png)
@@ -118,7 +120,7 @@ Bottom
 
 | Entry | What it does | Details |
 |-------|--------------|---------|
-| **Settings** (bottom modal) | General config, boot menu, Netboot, service auto-start, log management | [Settings](settings.md) |
+| **Settings** (bottom modal) | General config, boot menu, Netboot, service auto-start, log management, about | [Settings](settings.md) |
 
 ---
 

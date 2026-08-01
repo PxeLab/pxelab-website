@@ -18,8 +18,8 @@
 
 - **五大网络服务内置**：DHCP（server / proxy / off 三种模式）、TFTP、HTTP、DNS、NFSv3，单进程承载全部引导流量
 - **两段式网络引导**：PXE ROM 经 TFTP 加载 [iPXE](glossary.md)，再由 iPXE 经 HTTP 拉取启动菜单；iPXE 为内置定制编译，开箱即用（机制详解见[引导架构与无盘启动](guides/boot-architecture.md)）
-- **全架构覆盖**：x86 BIOS、UEFI x64、ARM64、RISC-V 64、LoongArch64 等 11 种可引导架构，支持 Secure Boot
-- **自动化装机**：内置 64+ 主流发行版安装目录，配套 autoinstall / preseed / kickstart / autounattend 应答文件模板，安装任务全程可追踪
+- **全架构覆盖**：x86 BIOS、EFI IA32/x64、ARM32/ARM64、RISC-V 32/64、LoongArch32/64 共 10 种可引导架构，支持 Secure Boot（x86_64 + ARM64）
+- **自动化装机**：内置 64+ 主流发行版安装目录，配套 preseed / kickstart / autounattend / AutoYaST 应答文件模板，安装任务全程可追踪
 - **现代管理界面**：React Web UI，亮/暗主题，中英双语，实时事件监控
 - **REST API 全覆盖**：所有管理操作均可 API 化，易于接入现有自动化体系
 - **带外管理**：BMC/IPMI 电源控制、WOL 网络唤醒与定时调度
@@ -44,7 +44,7 @@
 | 价值 | 说明 |
 |------|------|
 | **分钟级部署** | 单二进制、零依赖，下载即用——PXE in minutes, not hours |
-| **全架构覆盖** | 11 种可引导客户端架构，含 x86 BIOS/EFI、ARM64、Secure Boot |
+| **全架构覆盖** | 10 种可引导客户端架构，含 x86 BIOS/EFI、ARM64、RISC-V、LoongArch，支持 Secure Boot |
 | **自动化装机** | 64+ 发行版目录 + 应答文件模板，装机任务全程可追踪 |
 | **现代管理体验** | Web UI 中英双语 + REST API 全覆盖，告别命令行与配置文件的割裂 |
 | **平台自由** | Windows / Linux / macOS 均可运行，典型部署内存 ≤ 512 MB |
@@ -57,7 +57,7 @@
 |------|--------|----------------------|-----------------|
 | 安装复杂度 | 单二进制，零依赖 | 手动配置多个服务 | 需要大量依赖 |
 | iPXE 支持 | 内置自定义编译 | 需自行编译 | 需自行集成 |
-| 多架构 | 11 种客户端架构 + Secure Boot | 通常仅 x86 | 有限 |
+| 多架构 | 10 种客户端架构 + Secure Boot | 通常仅 x86 | 有限 |
 | Web 管理 | 内置，全功能 | 无 | 有，但复杂 |
 | DHCP 模式 | server / proxy / off | 通常仅一种 | 有限 |
 | NFS | 内置 NFSv3 | 需外部 NFS | 需外部 |

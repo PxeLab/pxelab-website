@@ -27,7 +27,7 @@ Click **Add Interface** in the top-right corner and fill in:
 | Subnet 1 → DHCP mode | `server (Server DHCP)` |
 | Subnet 1 → Address pool | "+ Add address range" to set the assignment range |
 | Subnet 1 → Gateway / DNS server | Default gateway and DNS for clients (DNS empty = use interface IP) |
-| Subnet 1 → Lease time (seconds) | Default 86400 (1 day) |
+| Subnet 1 → Lease time (seconds) | Default 3600 (1 hour) |
 
 Save, then start the DHCP service (port 67) from the **service status bar**. An interface can hold multiple subnets via "+ Add subnet", each with its own mode and pool.
 
@@ -39,7 +39,7 @@ Create an interface, set the subnet CIDR to your existing network, and pick `pro
 
 ## Task 3: IP reservation (fixed IP)
 
-**Reservations** tab → add a reservation: fill in MAC and IP (hostname and note optional). Server-mode subnets only.
+**Reservations** tab → add a reservation: fill in MAC and IP (hostname and note optional). Reservations take effect when the server-mode DHCP assigns addresses.
 
 - Conflict detection runs automatically: reserved IPs already taken by other reservations or active leases are flagged
 - Use for printers, servers, and other devices that need a fixed IP

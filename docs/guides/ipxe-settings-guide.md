@@ -23,7 +23,7 @@ PxeLab 的 iPXE 引导脚本系统采用**配置驱动决策树**设计。你无
 
 ### 1. 自定义 iPXE 脚本（逃生口）
 
-路径：设置 → Netboot → 自定义 iPXE 脚本
+路径：设置 → 引导菜单 → 自定义 iPXE 脚本
 
 填写后**完全替代**所有下方可视化配置，直接作为客户端引导脚本。用于临时调试或高级定制。
 
@@ -161,20 +161,19 @@ set keep-san 1
 
 ### 5. 安装目录菜单结构
 
-路径：设置 → Netboot → 安装目录菜单结构
-
-控制 `/netboot/menu.ipxe` 的标题和分组顺序。
+控制 `/netboot/menu.ipxe` 的标题与分组显示。
 
 | 选项 | 说明 |
 |------|------|
-| **菜单标题** | 安装目录菜单的标题 |
-| **分组列表** | 10 个内置分组的顺序/启用/标题编辑 |
+| **菜单标题** | 安装目录菜单的标题（设置 → Netboot 中编辑） |
+| **分组列表** | 10 个内置分组，启停/标题/顺序通过 `config.yaml` 的 `catalog_display.groups` 配置 |
 
-**分组列表支持拖拽排序：** 拖拽分组行调整显示顺序。每个分组可配置：
+设置弹窗中可编辑**菜单标题**；分组从已启用的发行版自动派生，其启用状态、显示标题与顺序通过配置文件（`catalog_display.groups`）设置，不支持在 UI 中拖拽排序。每个分组可配置：
 
 - **内部名称**（只读）— 如 `linux`、`bsd`、`windows`
 - **显示标题** — 例如将 `Linux Distributions` 改为 `Linux 发行版`
 - **启用开关** — 禁用后该分组不显示在菜单中
+- **顺序** — `order` 数值越小越靠前
 
 默认分组：
 
@@ -273,7 +272,7 @@ netboot:
   boot:
     default_menu:
       title: "PxeLab Boot Menu"
-      timeout: 5000
+      timeout: 5
       default: 0
       entries:
         - label: "Boot from local disk"

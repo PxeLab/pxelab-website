@@ -31,13 +31,14 @@ PxeLab 将所有服务打包为单个可执行文件：
 
 ## 2. 全架构覆盖
 
-支持 11 种可引导客户端 CPU 架构，远超同类工具：
+支持 10 种可引导客户端 CPU 架构，远超同类工具：
 
 | 架构类别 | 支持的架构 |
 |---------|-----------|
-| **x86** | BIOS (legacy), EFI x86-64 |
-| **ARM** | ARM64 (EFI), ARM (EFI) |
-| **其他** | EFI IA32, EFI x86-64 Compressed, EFI BC, EFI ARM64, EFI ARM64 HTTP, EFI x86-64 HTTP, EFI ARM64 TFTP |
+| **x86** | Intel x86PC（BIOS/legacy）、EFI IA32、EFI x86-64、EFI Byte Code (BC) |
+| **ARM** | EFI ARM32、EFI ARM64 |
+| **RISC-V** | EFI RISC-V 32、EFI RISC-V 64 |
+| **LoongArch** | EFI LoongArch32、EFI LoongArch64 |
 | **Secure Boot** | x86_64 + ARM64 安全启动 |
 
 **实际意义**：
@@ -53,7 +54,7 @@ iPXE（PXE 的增强版，见[术语表](glossary.md)）是功能强大的网络
 
 PxeLab 内置自定义编译的 iPXE：
 
-- 预编译所有 11 种架构的 iPXE 二进制
+- 预编译所有 10 种架构的 iPXE 二进制
 - 嵌入式引导脚本，开箱即用
 - 支持自定义脚本替换
 - 版本管理和差异对比
@@ -80,7 +81,7 @@ PxeLab 内置自定义编译的 iPXE：
 
 **管理能力**：
 - 仪表板：全局概览，服务状态，流量图表
-- 主机管理：CRUD、分组、Profile 绑定
+- 主机管理：CRUD、Profile 绑定
 - 引导菜单：Profile 管理、脚本版本控制
 - OS 安装目录：内置发行版、自定义分组
 - 硬件管理：WOL、BMC/IPMI 控制
@@ -136,7 +137,7 @@ nfs:
 | 优势 | 传统方案 | PxeLab |
 |------|---------|--------|
 | 部署复杂度 | 高（多服务） | 低（单二进制） |
-| 架构支持 | 有限 | 11 种 + Secure Boot |
+| 架构支持 | 有限 | 10 种 + Secure Boot |
 | iPXE | 需自行编译 | 内置 |
 | 管理界面 | 命令行/复杂 Web | 现代 Web UI |
 | DHCP 灵活性 | 有限 | 3 种模式 |

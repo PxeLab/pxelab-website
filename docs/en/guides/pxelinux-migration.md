@@ -76,4 +76,4 @@ Once translated, bind the Profile to hosts (or make it the default menu), and cl
 Check the iPXE boot file is reachable: the `KERNEL http://server/boot/ipxe.efi` address returned by `pxelinux.cfg` must be accessible (HTTP service running).
 
 **Q: Some legacy config syntax isn't supported?**
-The parser covers common syntax; unsupported constructs are ignored. For heavy customizations, migrate to Profiles or a custom iPXE script (Settings → Netboot → Custom iPXE Script).
+The parser covers common syntax; unsupported constructs are ignored. For heavy customizations, migrate to Profiles or a custom iPXE script (Settings → Boot Menu → Custom iPXE Script).

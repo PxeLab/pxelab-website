@@ -23,7 +23,7 @@ When a client requests the boot script (`GET /boot/ipxe/script?mac=xx:xx:xx:xx:x
 
 ### 1. Custom iPXE Script (Escape Hatch)
 
-Path: Settings → Netboot → Custom iPXE Script
+Path: Settings → Boot Menu → Custom iPXE Script
 
 When filled in, it **completely replaces** all visual configuration below and is served directly as the client boot script. Use it for temporary debugging or advanced customization.
 
@@ -161,20 +161,19 @@ set keep-san 1
 
 ### 5. Catalog Menu Structure
 
-Path: Settings → Netboot → Catalog Menu Structure
-
-Controls the title and group ordering of `/netboot/menu.ipxe`.
+Controls the title and group display of `/netboot/menu.ipxe`.
 
 | Option | Description |
 |--------|-------------|
-| **Menu title** | Title of the install catalog menu |
-| **Group list** | Order/enabled/title editing of the 10 built-in groups |
+| **Menu title** | Title of the install catalog menu (editable in Settings → Netboot) |
+| **Group list** | 10 built-in groups; enable/disable, title, and order are configured via `catalog_display.groups` in `config.yaml` |
 
-**The group list supports drag-and-drop sorting:** drag group rows to adjust display order. Each group can be configured with:
+The settings modal lets you edit the **menu title**; groups are derived automatically from enabled distros, and their enable state, display title, and order are configured in the config file (`catalog_display.groups`) — drag-and-drop sorting is not available in the UI. Each group can be configured with:
 
 - **Internal name** (read-only) — e.g. `linux`, `bsd`, `windows`
 - **Display title** — e.g. change `Linux Distributions` to `My Linux Distros`
 - **Enabled toggle** — disabled groups are hidden from the menu
+- **Order** — lower `order` values come first
 
 Default groups:
 
@@ -273,7 +272,7 @@ netboot:
   boot:
     default_menu:
       title: "PxeLab Boot Menu"
-      timeout: 5000
+      timeout: 5
       default: 0
       entries:
         - label: "Boot from local disk"

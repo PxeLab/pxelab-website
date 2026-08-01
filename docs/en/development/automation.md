@@ -22,8 +22,8 @@ Host MACs are unique; duplicate creation returns 409. The correct pattern for ba
 BASE=http://localhost:8080/api/v1
 
 while IFS=, read -r mac name profile; do
-  # 1. Check whether the MAC already exists
-  exists=$(curl -s "$BASE/hosts?mac=$mac" | grep -c "\"mac\":\"$mac\"")
+  # 1. Check whether the MAC already exists (search matches name/mac/ip)
+  exists=$(curl -s "$BASE/hosts?search=$mac" | grep -c "\"mac\":\"$mac\"")
   if [ "$exists" -gt 0 ]; then
     echo "skip $mac (exists)"
     continue
@@ -79,7 +79,7 @@ Key points:
 # Service status → monitoring
 curl -s http://localhost:8080/api/v1/status
 
-# Prometheus metrics (standard format)
+# Metrics snapshot (JSON format)
 curl -s http://localhost:8080/api/v1/metrics
 
 # Host list → CMDB sync

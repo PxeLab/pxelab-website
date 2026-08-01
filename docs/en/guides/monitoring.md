@@ -33,7 +33,6 @@ Use for multi-person change audits and retrospection.
 ## Live Log (Monitoring → Live Log)
 
 - **SSE live stream**, multi-panel, filter by service, color-coded per service
-- **Historical log files** list and **disk usage** stats
-- **Manual cleanup** of old logs
+- Shows **current runtime logs only**; no persisted browsing
 
-Log levels, rotation, etc.: [Logging Reference](../reference/logging.md).
+Log levels, rotation, historical files and disk cleanup live in **Settings → Logging**; see [Logging Reference](../reference/logging.md).

@@ -135,11 +135,11 @@ PXELinux 配置文件解析器（`internal/boot/pxelinux/`）完整支持：
 
 | 客户端架构 | AL 码 | 引导文件 |
 |-----------|-------|---------|
-| BIOS x86 | 0 | undionly.kpxe |
+| BIOS x86 | 0 | ipxe.pxe / undionly.kpxe |
 | EFI IA32 | 6 | ipxe32.efi |
 | EFI x64 | 7, 9 | ipxe.efi |
 | EFI ARM64 | 11 | ipxe-arm64.efi |
-| EFI RISCV64 | 21 | ipxe-riscv64.efi |
+| EFI RISCV64 | 27 | ipxe-riscv64.efi |
 
 ---
 

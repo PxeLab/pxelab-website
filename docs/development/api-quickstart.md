@@ -64,23 +64,27 @@ curl -s -X DELETE http://localhost:8080/api/v1/hosts/<id>
 ### 引导配置（Profile）
 
 ```bash
-# 创建 Profile（菜单为 JSON，type 支持 direct/chain/wds/sanboot/local）
+# 创建 Profile（菜单为 JSON，type 支持 menu/direct/chain/wds/sanboot/netboot/local/custom）
 curl -s -X POST http://localhost:8080/api/v1/profiles \
   -H "Content-Type: application/json" \
   -d '{"name":"Install Ubuntu","menu":{"title":"Ubuntu","entries":[{"label":"Install Ubuntu","type":"direct","kernel":"vmlinuz","initrd":"initrd.img"}]}}'
 ```
 
-### 批量导入主机（CSV）
+### 批量操作
+
+没有 `/hosts/import` 端点，批量添加主机可循环调用创建接口；批量 BMC 信息则支持 CSV 导入：
 
 ```bash
-# CSV 格式：mac,name,profile
-cat > hosts.csv << 'EOF'
-AA:BB:CC:DD:EE:01,server-01,ubuntu-install
-AA:BB:CC:DD:EE:02,server-02,centos-install
-EOF
+# 逐台创建主机
+for m in AA:BB:CC:DD:EE:01 AA:BB:CC:DD:EE:02; do
+  curl -s -X POST http://localhost:8080/api/v1/hosts \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"server\",\"mac\":\"$m\",\"ip\":\"192.168.1.10\"}"
+done
 
-curl -s -X POST http://localhost:8080/api/v1/hosts/import \
-  -F "file=@hosts.csv"
+# 批量导入 BMC 信息（CSV，裸 CSV body 或 JSON {"csv":"..."}）
+curl -s -X POST http://localhost:8080/api/v1/bmc/configs/import \
+  -d @bmc.csv
 ```
 
 ## 错误处理速查

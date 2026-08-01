@@ -1,6 +1,6 @@
 # Architecture Mapping & Secure Boot
 
-> 11 CPU architecture support, Secure Boot chain, and chain_to_ipxe.
+> 10 CPU architecture support, Secure Boot chain, and chain_to_ipxe.
 
 **Related**: [Boot Config](../guides/boot-config.md) | [iPXE Build](../development/ipxe-build.md)
 
@@ -8,7 +8,7 @@
 
 ## Supported Client Architectures
 
-PxeLab supports 11 CPU architectures, auto-detected via DHCP Option 93:
+PxeLab supports 10 CPU architectures, auto-detected via DHCP Option 93:
 
 | Architecture | AL Code | Boot File | Secure Boot |
 |-------------|---------|-----------|-------------|

@@ -14,7 +14,7 @@
 
 | 操作系统 | 架构 | 说明 |
 |---------|------|------|
-| Linux | amd64, arm64, armv7 | 推荐用于生产环境 |
+| Linux | amd64, arm64 | 推荐用于生产环境 |
 | Windows | amd64, arm64 | 支持 Windows 10+ |
 | macOS | arm64, amd64 | 支持 macOS 12+ |
 
@@ -89,18 +89,29 @@ ProxyDHCP 适合已有 DHCP 服务器的环境，无需修改现有 DHCP 配置�
 
 ### Q: 如何配置多网卡？
 
-**A:** 每个网络接口可以独立配置 DHCP 模式：
+**A:** 每个网络接口可以独立配置 DHCP 模式（DHCP 模式配置在接口的子网下）：
 
 ```yaml
-dhcp:
-  interfaces:
-    - name: eth0
-      mode: server
-      subnet: 192.168.1.0/24
-    - name: eth1
-      mode: proxy
-    - name: eth2
-      mode: off
+interfaces:
+  - name: eth0
+    ip: 192.168.1.1
+    auto_start: true
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: server          # server: 完整 DHCP 服务
+        pool: 192.168.1.100-192.168.1.200
+  - name: eth1
+    ip: 10.0.0.1
+    auto_start: true
+    subnets:
+      - cidr: 10.0.0.0/24
+        dhcp: proxy           # proxy: 仅提供 PXE 引导信息
+  - name: eth2
+    ip: 172.16.0.1
+    auto_start: true
+    subnets:
+      - cidr: 172.16.0.0/24
+        dhcp: off             # off: 该子网关闭 DHCP
 ```
 
 ### Q: DHCP 端口 67 被占用怎么办？
@@ -108,11 +119,15 @@ dhcp:
 **A:** 两种解决方案：
 
 1. **停止占用端口的服务**（推荐）
-2. **使用 ProxyDHCP 模式**（端口 4011，通常不冲突）
+2. **改用 ProxyDHCP 模式**（端口 4011，通常不冲突），在子网配置中把 DHCP 模式设为 `proxy`：
 
 ```yaml
-dhcp:
-  mode: proxy  # 使用 4011 端口
+interfaces:
+  - name: eth0
+    ip: 192.168.1.1
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: proxy           # 使用 4011 端口，不占用 67
 ```
 
 ---
@@ -131,7 +146,7 @@ PxeLab 内置预编译的 iPXE，无需自行编译。
 
 ### Q: 如何自定义引导菜单？
 
-**A:** 在 Web UI 中：**设置 → Netboot → 自定义 iPXE 脚本**
+**A:** 在 Web UI 中：**设置 → 引导菜单 → 自定义 iPXE 脚本**
 
 ```ipxe
 #!ipxe
@@ -165,11 +180,14 @@ PxeLab 支持 x86_64 和 ARM64 架构的 Secure Boot。在 Web UI 中：**设置
 
 | 类型 | 说明 | 典型用途 |
 |------|------|---------|
+| menu | 内置引导菜单（Profile 列表） | 默认引导项 |
 | direct | 直接加载内核 + initrd | Linux 安装 |
 | chain | 链式加载到另一个脚本 | 多级引导 |
 | wds | Windows WDS 部署 | Windows 安装 |
 | sanboot | iSCSI SAN 引导 | 无盘工作站 |
+| netboot | 进入 OS 安装目录 | 网络装机 |
 | local | 本地硬盘引导 | 默认引导项 |
+| custom | 自定义 iPXE 脚本 | 高级场景 |
 
 ---
 
@@ -186,19 +204,19 @@ PxeLab 支持 x86_64 和 ARM64 架构的 Secure Boot。在 Web UI 中：**设置
 
 ### Q: 如何批量导入主机？
 
-**A:** 通过 REST API 或 CSV 导入：
+**A:** PxeLab 没有 `/hosts/import` 端点。可通过 REST API 逐台创建，或使用 BMC 的 CSV 批量导入：
 
 ```bash
-# CSV 格式
-mac,name,profile
-AA:BB:CC:DD:EE:01,server-01,ubuntu-install
-AA:BB:CC:DD:EE:02,server-02,centos-install
+# 逐台创建主机（REST API）
+curl -X POST http://localhost:8080/api/v1/hosts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"server-01","mac":"AA:BB:CC:DD:EE:01","ip":"192.168.1.10"}'
 ```
 
 ```bash
-# API 导入
-curl -X POST http://localhost:8080/api/v1/hosts/import \
-  -F "file=@hosts.csv"
+# 批量导入 BMC 信息（CSV，裸 CSV body 或 JSON {"csv":"..."}）
+curl -X POST http://localhost:8080/api/v1/bmc/configs/import \
+  -d @bmc.csv
 ```
 
 ### Q: Profile 脚本版本管理是什么？
@@ -259,7 +277,7 @@ PxeLab 提供预设模板，支持变量替换和自定义。
 | power off | 关机 |
 | power cycle | 重启 |
 | power status | 查询电源状态 |
-| SOL | 串口重定向（远程终端） |
+| set boot device | 设置下次启动设备（PXE / 硬盘 / 光驱等） |
 
 支持 CSV 批量导入 BMC 信息，适合大规模部署。
 
@@ -269,7 +287,7 @@ PxeLab 提供预设模板，支持变量替换和自定义。
 
 ### Q: PxeLab 能支持多少台主机？
 
-**A:** 取决于硬件配置：
+**A:** 取决于硬件配置（下表为经验估算值，实际以实测为准）：
 
 | 配置 | 建议主机数 |
 |------|-----------|
@@ -285,18 +303,18 @@ DHCP 和 TFTP 是主要性能瓶颈，大规模部署建议使用高性能硬件
 **A:** 三种监控方式：
 
 1. **Web UI 仪表盘**：实时查看服务状态、流量、事件
-2. **Prometheus 指标**：`GET /api/v1/metrics`
+2. **指标快照**：`GET /api/v1/metrics`（JSON 格式）
 3. **日志**：实时日志流 + 审计日志
 
 ### Q: 数据存储在哪里？
 
-**A:** 默认存储在用户目录：
+**A:** 默认存储在用户主目录的 `.pxelab` 文件夹（全平台统一，没有 per-platform 路径差异）：
 
 | 平台 | 路径 |
 |------|------|
 | Linux | `~/.pxelab/` |
-| macOS | `~/Library/Application Support/pxelab/` |
-| Windows | `%APPDATA%\pxelab\` |
+| macOS | `~/.pxelab/`（即 `/Users/<用户名>/.pxelab/`） |
+| Windows | `~/.pxelab/`（即 `C:\Users\<用户名>\.pxelab\`） |
 
 可通过 `--data-dir` 参数自定义。
 

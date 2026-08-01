@@ -76,4 +76,4 @@ PxeLab 内置 PXELinux 配置文件解析器（支持 `default`、`label`、`ker
 检查 iPXE 引导文件是否可用：`pxelinux.cfg` 返回的 `KERNEL http://server/boot/ipxe.efi` 地址应能被客户端访问（HTTP 服务运行中）。
 
 **Q: 部分老配置语法不支持？**
-解析器覆盖常用语法；不支持的语法按忽略处理。复杂定制建议迁移到 Profile 或自定义 iPXE 脚本（设置 → Netboot → 自定义 iPXE 脚本）。
+解析器覆盖常用语法；不支持的语法按忽略处理。复杂定制建议迁移到 Profile 或自定义 iPXE 脚本（设置 → 引导菜单 → 自定义 iPXE 脚本）。

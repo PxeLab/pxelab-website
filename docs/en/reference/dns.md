@@ -10,8 +10,8 @@
 
 PxeLab has a built-in DNS server supporting:
 
-- **Upstream forwarding** — Forward unmatched queries to upstream DNS
-- **Local resolution** — A / AAAA / CNAME records
+- **Local resolution** — A / AAAA / CNAME / TXT / MX records
+- **Upstream forwarding** — Forward unmatched queries to upstream when configured
 - **Subnet-aware** — Return server IP based on client source subnet
 - **Auto-records** — Auto-create `@` A record and server name A record on startup
 
@@ -19,9 +19,11 @@ PxeLab has a built-in DNS server supporting:
 |--------|---------|-------------|
 | Port | 53 | UDP |
 | Local domain | pxelab.local | Suffix domain |
-| Upstream DNS | System default | Forward target |
+| Upstream DNS | Empty (no forwarding) | Comma- or whitespace-separated `host:port` list, e.g. `8.8.8.8:53 1.1.1.1:53`; when empty, only local records are answered and no forwarding happens |
 
-Web UI: **Service Config → DNS**
+> **Note**: The upstream DNS defaults to empty, i.e. no queries are forwarded by default — only local records are returned. Configure upstream addresses explicitly to enable forwarding.
+
+Web UI: **Service Config → DNS** (`/services/dns`)
 
 ---
 
@@ -37,4 +39,4 @@ PUT    /api/v1/dns/records/{id}     # Update record
 DELETE /api/v1/dns/records/{id}     # Delete record
 ```
 
-Supported record types: A, AAAA, CNAME
+Supported record types: A, AAAA, CNAME, TXT, MX

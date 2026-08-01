@@ -18,8 +18,8 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 
 - **Five network services built in**: DHCP (server / proxy / off modes), TFTP, HTTP, DNS, and NFSv3 — one process carries the entire boot flow
 - **Two-stage network boot**: the PXE ROM loads iPXE over TFTP, then iPXE pulls the boot menu over HTTP; iPXE ships as a built-in custom build, zero manual setup (mechanics: [Boot Architecture & Diskless](guides/boot-architecture.md))
-- **Every architecture**: 11 bootable client architectures including x86 BIOS, UEFI x64, ARM64, RISC-V 64, and LoongArch64, with Secure Boot support
-- **Automated provisioning**: built-in catalog of 64+ mainstream distros with autoinstall / preseed / kickstart / autounattend answer-file templates, and end-to-end install task tracking
+- **Every architecture**: 10 bootable client architectures — x86 BIOS, EFI IA32/x64, ARM32/ARM64, RISC-V 32/64, LoongArch32/64 — with Secure Boot (x86_64 + ARM64)
+- **Automated provisioning**: built-in catalog of 64+ mainstream distros with preseed / kickstart / autounattend / AutoYaST answer-file templates, and end-to-end install task tracking
 - **Modern management UI**: React Web UI with light/dark themes, bilingual (EN/中文), and real-time event monitoring
 - **Full REST API**: every management operation is API-accessible, ready for your automation stack
 - **Out-of-band ops**: BMC/IPMI power control, Wake-on-LAN with scheduling
@@ -44,7 +44,7 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 | Value | Description |
 |-------|-------------|
 | **Deploy in minutes** | Single binary, zero dependencies — PXE in minutes, not hours |
-| **Every architecture** | 11 bootable client architectures including x86 BIOS/EFI, ARM64, with Secure Boot |
+| **Every architecture** | 10 bootable client architectures including x86 BIOS/EFI, ARM64, RISC-V, LoongArch, with Secure Boot |
 | **Automated provisioning** | 64+ distro catalog plus answer-file templates, with end-to-end task tracking |
 | **Modern management** | Bilingual Web UI plus full REST API — no more split between CLI and config files |
 | **Platform freedom** | Runs on Windows / Linux / macOS; typical deployment uses ≤ 512 MB RAM |
@@ -57,7 +57,7 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 |---------|--------|---------------------------|-----------------|
 | Setup complexity | Single binary, zero deps | Manual multi-service config | Heavy dependencies |
 | iPXE support | Built-in custom compilation | Self-compile required | Self-integration required |
-| Multi-arch | 11 client archs + Secure Boot | Usually x86 only | Limited |
+| Multi-arch | 10 client archs + Secure Boot | Usually x86 only | Limited |
 | Web management | Built-in, full-featured | None | Yes, but complex |
 | DHCP modes | server / proxy / off | Usually one mode | Limited |
 | NFS | Built-in NFSv3 | External NFS needed | External needed |

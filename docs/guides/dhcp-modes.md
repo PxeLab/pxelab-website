@@ -1,6 +1,6 @@
 # DHCP 模式说明
 
-PxeLab 支持 3 种 DHCP 模式，在接口配置中通过 `dhcp` 字段设置。
+PxeLab 支持 3 种 DHCP 模式，在**子网配置**中通过 `dhcp` 字段设置（`interfaces[].subnets[].dhcp`）。同一接口下的不同子网可分别设置不同模式。
 
 ## 快速对照
 
@@ -118,12 +118,12 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
 收到 DHCP 请求
     │
     ├─ 是否为 PXE/iPXE 客户端？
-    │   ├─ 是 → 检查接口 DHCP 模式
+    │   ├─ 是 → 检查所在子网的 DHCP 模式
     │   │       ├─ proxy → proxy 模式处理
     │   │       ├─ server → server 模式处理
     │   │       └─ off → 不处理
     │   │
-    │   └─ 否 → 检查接口 DHCP 模式
+    │   └─ 否 → 检查所在子网的 DHCP 模式
     │           ├─ server → server 模式处理（分配 IP）
     │           ├─ proxy → 不处理（非 PXE 客户端在 proxy 下被忽略）
     │           └─ off → 不处理
@@ -139,8 +139,7 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
     公司 DHCP          PxeLab
   192.168.1.1      192.168.1.100
        │                 │
-       │                 │  dhcp: proxy
-       │                 │  bootloader: ipxe
+       │                 │  subnet dhcp: proxy
        │                 │
        │                 └── PXE 客户端提供引导选项
        │
@@ -153,8 +152,7 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
 ```
     PxeLab (192.168.1.100)
        │
-       │  dhcp: server（默认）
-       │  bootloader: ipxe
+       │  subnet dhcp: server（默认）
        │
        ├── PXE 客户端：分配 IP + 引导选项
        ├── 普通客户端：分配 IP + 网络配置
@@ -167,16 +165,16 @@ PxeLab 在该接口上**完全关闭 DHCP 功能**，不处理任何 DHCP 请求
 interfaces:
   - name: eth0       # 管理口
     ip: 10.0.0.1
-    dhcp: server     # 管理网段自建 DHCP
     subnets:
       - cidr: 10.0.0.0/24
+        dhcp: server     # 管理网段自建 DHCP
         pool: 10.0.0.100-10.0.0.200
 
   - name: eth1       # 业务口，叠加 PXE
     ip: 192.168.1.100
-    dhcp: proxy      # 不干扰公司 DHCP
     subnets:
       - cidr: 192.168.1.0/24
+        dhcp: proxy      # 不干扰公司 DHCP
 ```
 
 ### 示例 4：仅提供文件服务
@@ -185,14 +183,15 @@ interfaces:
 interfaces:
   - name: eth0
     ip: 192.168.1.100
-    dhcp: off        # DHCP 由其他设备负责
     tftp: true       # 仅提供 TFTP
     http: true       # 仅提供 HTTP
-    bootloader: grub2
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: off    # DHCP 由其他设备负责
 ```
 
 ## Web 界面配置
 
-PxeLab 界面上对每个接口可以独立设置 DHCP 模式：「设置 → 接口」，每个接口的「DHCP 模式」下拉框。
+在 **基础配置 → 服务配置 → DHCP** 中编辑接口的子网，每个子网有独立的「DHCP 模式」下拉框（server / proxy / off）。
 
-> **注意：** 同接口下的子网共享该接口的 DHCP 模式。如需要多个不同行为，通过多接口配置实现。
+> **注意：** DHCP 模式是**子网级**配置——同一接口下的多个子网可以各自设置不同模式（例如管理网段 `server` + 业务网段 `proxy`），互不影响。

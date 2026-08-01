@@ -67,7 +67,7 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 **A:** 检查清单：
 
-1. DHCP 服务是否运行：`curl localhost:8080/api/v1/services | jq .dhcp.status`
+1. DHCP 服务是否运行：`curl localhost:8080/api/v1/services | jq '.[] | select(.name|startswith("dhcp")) | .status'`
 2. 端口 67 是否被占用：`netstat -tlnp | grep :67`
 3. 防火墙是否放行：`iptables -L -n | grep 67`
 4. 网络接口配置是否正确

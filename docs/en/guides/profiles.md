@@ -35,7 +35,7 @@ Don't want to fill kernel/initrd by hand? Select a distro in the OS Install Cata
 
 ## Task 3: Version management
 
-Every Profile edit (especially `custom`-type scripts) saves a version snapshot:
+Every edit of a `custom`-type script saves a version snapshot:
 
 - **History**: Profile detail → versions
 - **Diff**: compare current vs. historical versions

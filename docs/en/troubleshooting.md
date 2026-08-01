@@ -67,7 +67,7 @@ curl -X POST http://localhost:8080/api/v1/network/traceroute \
 
 **A:** Checklist:
 
-1. Is DHCP service running: `curl localhost:8080/api/v1/services | jq .dhcp.status`
+1. Is DHCP service running: `curl localhost:8080/api/v1/services | jq '.[] | select(.name|startswith("dhcp")) | .status'`
 2. Is port 67 occupied: `netstat -tlnp | grep :67`
 3. Are firewall rules allowing it: `iptables -L -n | grep 67`
 4. Is network interface configured correctly

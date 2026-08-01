@@ -14,7 +14,7 @@
 
 | OS | Architecture | Notes |
 |----|-------------|-------|
-| Linux | amd64, arm64, armv7 | Recommended for production |
+| Linux | amd64, arm64 | Recommended for production |
 | Windows | amd64, arm64 | Windows 10+ required |
 | macOS | arm64, amd64 | macOS 12+ required |
 
@@ -89,18 +89,29 @@ ProxyDHCP is ideal for environments with existing DHCP servers — no changes to
 
 ### Q: How to configure multiple NICs?
 
-**A:** Each network interface can have independent DHCP mode:
+**A:** Each network interface can have an independent DHCP mode (the mode is configured under each interface's subnets):
 
 ```yaml
-dhcp:
-  interfaces:
-    - name: eth0
-      mode: server
-      subnet: 192.168.1.0/24
-    - name: eth1
-      mode: proxy
-    - name: eth2
-      mode: off
+interfaces:
+  - name: eth0
+    ip: 192.168.1.1
+    auto_start: true
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: server          # server: full DHCP service
+        pool: 192.168.1.100-192.168.1.200
+  - name: eth1
+    ip: 10.0.0.1
+    auto_start: true
+    subnets:
+      - cidr: 10.0.0.0/24
+        dhcp: proxy           # proxy: PXE boot info only
+  - name: eth2
+    ip: 172.16.0.1
+    auto_start: true
+    subnets:
+      - cidr: 172.16.0.0/24
+        dhcp: off             # off: DHCP disabled on this subnet
 ```
 
 ### Q: DHCP port 67 is occupied, what to do?
@@ -108,11 +119,15 @@ dhcp:
 **A:** Two solutions:
 
 1. **Stop the service occupying the port** (recommended)
-2. **Use ProxyDHCP mode** (port 4011, usually not conflicting)
+2. **Switch to ProxyDHCP mode** (port 4011, usually not conflicting) — set the DHCP mode to `proxy` in the subnet config:
 
 ```yaml
-dhcp:
-  mode: proxy  # Uses port 4011
+interfaces:
+  - name: eth0
+    ip: 192.168.1.1
+    subnets:
+      - cidr: 192.168.1.0/24
+        dhcp: proxy           # Uses port 4011, does not occupy 67
 ```
 
 ---
@@ -131,7 +146,7 @@ PxeLab includes pre-compiled iPXE — no self-compilation needed.
 
 ### Q: How to customize the boot menu?
 
-**A:** In Web UI: **Settings → Netboot → Custom iPXE Script**
+**A:** In Web UI: **Settings → Boot Menu → Custom iPXE Script**
 
 ```ipxe
 #!ipxe
@@ -165,11 +180,14 @@ PxeLab supports Secure Boot for x86_64 and ARM64. In Web UI: **Settings → Boot
 
 | Type | Description | Typical Use |
 |------|-------------|-------------|
+| menu | Built-in boot menu (Profile list) | Default boot entry |
 | direct | Directly load kernel + initrd | Linux installation |
 | chain | Chain-load to another script | Multi-stage boot |
 | wds | Windows WDS deployment | Windows installation |
 | sanboot | iSCSI SAN boot | Diskless workstations |
+| netboot | Enter the OS Install Catalog | Network installation |
 | local | Local disk boot | Default boot entry |
+| custom | Custom iPXE script | Advanced scenarios |
 
 ---
 
@@ -186,19 +204,19 @@ One host binds to one profile, which determines its boot behavior.
 
 ### Q: How to batch import hosts?
 
-**A:** Via REST API or CSV:
+**A:** There is no `/hosts/import` endpoint. Create hosts one by one via the REST API, or use BMC's CSV batch import:
 
 ```bash
-# CSV format
-mac,name,profile
-AA:BB:CC:DD:EE:01,server-01,ubuntu-install
-AA:BB:CC:DD:EE:02,server-02,centos-install
+# Create hosts one by one (REST API)
+curl -X POST http://localhost:8080/api/v1/hosts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"server-01","mac":"AA:BB:CC:DD:EE:01","ip":"192.168.1.10"}'
 ```
 
 ```bash
-# API import
-curl -X POST http://localhost:8080/api/v1/hosts/import \
-  -F "file=@hosts.csv"
+# Batch import BMC info (CSV; raw CSV body or JSON {"csv":"..."})
+curl -X POST http://localhost:8080/api/v1/bmc/configs/import \
+  -d @bmc.csv
 ```
 
 ### Q: What is Profile script versioning?
@@ -259,7 +277,7 @@ Scheduled wake tasks are also supported.
 | power off | Power off |
 | power cycle | Restart |
 | power status | Query power status |
-| SOL | Serial over LAN (remote terminal) |
+| set boot device | Set the next boot device (PXE / disk / optical, etc.) |
 
 CSV batch import for BMC info is supported, ideal for large-scale deployments.
 
@@ -269,7 +287,7 @@ CSV batch import for BMC info is supported, ideal for large-scale deployments.
 
 ### Q: How many hosts can PxeLab support?
 
-**A:** Depends on hardware configuration:
+**A:** Depends on hardware configuration (estimates below — verify against real deployments):
 
 | Config | Recommended Hosts |
 |--------|------------------|
@@ -285,18 +303,18 @@ DHCP and TFTP are main performance bottlenecks — use high-performance hardware
 **A:** Three monitoring methods:
 
 1. **Web UI Dashboard**: Real-time service status, traffic, events
-2. **Prometheus Metrics**: `GET /api/v1/metrics`
+2. **Metrics snapshot**: `GET /api/v1/metrics` (JSON format)
 3. **Logs**: Real-time log stream + audit logs
 
 ### Q: Where is data stored?
 
-**A:** Default storage locations:
+**A:** Defaults to a `.pxelab` folder in the user's home directory (the same on all platforms — no per-OS path differences):
 
 | Platform | Path |
 |----------|------|
 | Linux | `~/.pxelab/` |
-| macOS | `~/Library/Application Support/pxelab/` |
-| Windows | `%APPDATA%\pxelab\` |
+| macOS | `~/.pxelab/` (i.e. `/Users/<username>/.pxelab/`) |
+| Windows | `~/.pxelab/` (i.e. `C:\Users\<username>\.pxelab\`) |
 
 Customizable via `--data-dir` flag.
 

@@ -49,7 +49,7 @@ Key points:
 - **Split by VLAN**: one PxeLab per client subnet (proxy mode layered on the existing DHCP), spreading boot load horizontally
 - **Centralized storage**: ISOs and boot files live in one place (NFS/file store); every PxeLab mounts the same copy
 - **Isolated management network**: separate management and business interfaces so PxeLab traffic doesn't cross the business network
-- **Monitoring**: feed Prometheus metrics (`/api/v1/metrics`); watch lease counts, boot traffic, and NFS connections; use the dashboard for real-time visibility
+- **Monitoring**: feed the metrics snapshot (`/api/v1/metrics`, JSON format); watch lease counts, boot traffic, and NFS connections; use the dashboard for real-time visibility
 - **Logging**: configure log rotation (size/days/backups) to prevent unbounded log growth
 
 ## Mass Deployment Tips
@@ -70,4 +70,4 @@ See the capacity table: roughly 500 on 4 cores / 2 GB. Above that, split across 
 First confirm clients use HTTP rather than TFTP (iPXE defaults to HTTP); check Netboot caching is enabled; stagger batches at high concurrency.
 
 **Q: How do I find the bottleneck?**
-Watch per-service traffic and events on the dashboard; pinpoint DHCP/TFTP/NFS peaks via Prometheus metrics; verify link quality with Network Diagnostics.
+Watch per-service traffic and events on the dashboard; pinpoint DHCP/TFTP/NFS peaks via the metrics snapshot (`/api/v1/metrics`); verify link quality with Network Diagnostics.

@@ -1,6 +1,6 @@
 # 架构映射与 Secure Boot
 
-> 11 种 CPU 架构支持、Secure Boot 链与 chain_to_ipxe。
+> 10 种 CPU 架构支持、Secure Boot 链与 chain_to_ipxe。
 
 **相关文档**: [引导配置](../guides/boot-config.md) | [iPXE 编译](../development/ipxe-build.md)
 
@@ -8,7 +8,7 @@
 
 ## 支持的客户端架构
 
-PxeLab 支持 11 种 CPU 架构，通过 DHCP Option 93 自动检测：
+PxeLab 支持 10 种 CPU 架构，通过 DHCP Option 93 自动检测：
 
 | 架构 | AL 码 | 引导文件 | Secure Boot |
 |------|-------|---------|-------------|

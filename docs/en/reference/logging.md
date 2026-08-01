@@ -25,15 +25,15 @@ Configure in the `log` section of `config.yaml`:
 log:
   level: info                    # Log level
   format: text                   # text / json
-  file: ""                       # Log file path (empty=default ~/.pxelab/logs/)
-  max_size_mb: 0                 # Max file size (MB), 0=unlimited
-  max_backups: 0                 # Number of rotated files to keep
-  max_age_days: 0                # Retention days
-  compress: false                # gzip compress old logs
-  cleanup_interval: 0            # Cleanup check interval (hours)
+  file: ""                       # Log file path (empty=default ~/.pxelab/logs/pxelab.log)
+  max_size_mb: 100                # Max file size (MB), 0=unlimited
+  max_backups: 5                  # Number of rotated files to keep, 0=unlimited
+  max_age_days: 30                # Retention days, 0=unlimited
+  compress: true                  # gzip compress old logs
+  cleanup_interval: 24            # Cleanup check interval (hours), 0=no auto-cleanup
 ```
 
-Web UI: **Sidebar bottom → Settings → Log Management**
+Web UI: **Settings → Log Management** (rotation changes require service restart)
 
 ---
 
@@ -42,6 +42,7 @@ Web UI: **Sidebar bottom → Settings → Log Management**
 - Default path: `~/.pxelab/logs/pxelab.log`
 - Format: Text (one log entry per line)
 - Contains: timestamp, level, service name, message
+- Written to both stderr (terminal) and file
 
 ---
 
@@ -53,6 +54,8 @@ PxeLab has built-in log rotation supporting:
 - **Age-based cleanup**: Auto-delete logs older than `max_age_days`
 - **Backup limit**: Keep up to `max_backups` rotated files
 - **gzip compression**: Auto-compress old logs when `compress: true`
+
+The Log Management UI also supports manual log cleanup (by retention days/backups).
 
 ---
 
@@ -71,21 +74,23 @@ grep "HTTP" ~/.pxelab/logs/pxelab.log
 grep "ERROR" ~/.pxelab/logs/pxelab.log
 
 # Web UI
-# Sidebar → Monitoring → Logs (real-time SSE stream, filterable by service)
+# Sidebar → Monitoring → Logs (real-time SSE stream)
 ```
 
 ---
 
-## Prometheus Metrics
+## Service Metrics
 
-PxeLab provides Prometheus metrics endpoint:
+PxeLab provides a metrics snapshot endpoint (JSON format, not Prometheus text format):
 
 ```
 GET /api/v1/metrics
 ```
 
-Included service metrics:
-- DHCP active leases
-- HTTP requests (by status code)
-- TFTP transfers
-- DNS queries
+Returns a `services` map; each service includes:
+
+- **Common metrics**: requests, errors, bytes in/out, active connections, rejected, request rate, error rate, bandwidth, latency (5-minute window)
+- **DHCP extras**: Offer/Ack/Nak/Decline/Discover counts, active leases, architecture & platform breakdown
+- **HTTP extras**: 2xx/3xx/4xx/5xx status counts, request duration
+
+Services with registered metrics: `http`, `tftp`, `dns`, `dhcp`, `nfs`, `wol`.

@@ -14,36 +14,78 @@ Every iPXE binary embeds the same boot script: it runs DHCP, then loads the boot
 
 ```bash
 #!ipxe
-dhcp || goto dhcp_failed
-isset proxydhcp/next-server && goto use_proxy
+# PxeLab embedded iPXE script
+# This script is compiled into iPXE binaries via EMBED= parameter
+# It chains to the PxeLab HTTP server for dynamic boot menu generation
 
-:use_dhcp
-set next-server ${dhcp-server}
-goto chain
+:netboot
+dhcp net0 || goto dhcp_failed
 
-:use_proxy
-set next-server ${proxydhcp/next-server}
+# Determine server address from DHCP
+isset ${next-server} && set pxelab-server ${next-server}
+isset ${proxydhcp/next-server} && set pxelab-server ${proxydhcp/next-server}
+isset ${pxelab-server} || set pxelab-server ${dhcp-server}
 
-:chain
-chain http://${next-server}:8080/boot/ipxe/script?mac=${net0/mac} || goto tftp_fallback
-exit
+# Build chain URL
+set pxelab-url http://${pxelab-server}:8080/boot/ipxe/script?mac=${net0/mac}
 
-:tftp_fallback
-chain tftp://${next-server}/boot/menu.ipxe || shell
-exit
+# Chain to PxeLab server
+chain ${pxelab-url} || goto failsafe
 
 :dhcp_failed
+echo DHCP failed - no network configuration available
+goto failsafe
+
+:failsafe
+echo
+echo Connection to PxeLab server failed.
+echo
+menu Failsafe Menu
+item --gap System Operations
+item retry        Retry network boot
+item netconfig    Manual network configuration
+item localboot    Boot from local disk
+item debug        iPXE Debug Shell
+choose failsafe_choice || goto localboot
+goto ${failsafe_choice}
+
+:retry
+goto netboot
+
+:netconfig
+echo
+echo Manual Network Configuration:
+echo
+ifstat
+echo
+echo -n Interface number [0 for net0]: && read net-dev
+isset ${net-dev} || set net-dev 0
+echo -n IP address: && read net${net-dev}/ip
+echo -n Subnet mask: && read net${net-dev}/netmask
+echo -n Gateway: && read net${net-dev}/gateway
+echo -n DNS server: && read dns
+ifopen net${net-dev}
+echo
+echo Attempting chainload...
+goto netboot
+
+:localboot
+exit
+
+:debug
+echo Type "exit" to return to menu
 shell
+goto failsafe
 ```
 
 Script logic:
 
-1. **DHCP first** — run `dhcp` to get an IP, also receiving the ProxyDHCP OFFER if one exists
-2. **`isset proxydhcp/next-server`** — detect whether ProxyDHCP data is present (note: `isset` takes a setting name — no `${}` wrapping)
+1. **DHCP first** — run `dhcp net0` to get an IP, also receiving the ProxyDHCP OFFER if one exists; on failure, go to the failsafe menu
+2. **Three-level server address resolution** — try `${next-server}` (plain DHCP siaddr), then `${proxydhcp/next-server}` (ProxyDHCP siaddr), then `${dhcp-server}` (fallback), storing the result in a dedicated `pxelab-server` variable
 3. **Proxy mode** — `proxydhcp/next-server` exists → use it as the PxeLab address (the ProxyDHCP siaddr field)
 4. **Server mode** — no proxy data → use `${dhcp-server}` (PxeLab is the DHCP server itself)
-5. **TFTP fallback** — if HTTP chain-loading fails, try TFTP
-6. **DHCP failure** — drop into the iPXE shell for manual debugging
+5. **HTTP chain-load** — chain to the PxeLab dynamic boot menu over HTTP; on failure, go to the failsafe menu
+6. **Failsafe menu** — offers retry, manual network configuration, local boot, and debug shell for on-site troubleshooting
 
 **Benefits**: no hardcoded IPs, no reliance on `${next-server}` scope priority, no dependence on the `PXE_STACK` compile option. One script serves both proxy and server modes.
 
@@ -83,29 +125,73 @@ cd ipxe/src
 
 ### 2) Create the embedded script
 
+The repo ships `boot/embedd.ipxe` (PxeLab's official embedded script) — copy it or use it as a reference:
+
 ```bash
 cat > embedd.ipxe << "IPXE_EOF"
 #!ipxe
-dhcp || goto dhcp_failed
-isset proxydhcp/next-server && goto use_proxy
+# PxeLab embedded iPXE script
+# This script is compiled into iPXE binaries via EMBED= parameter
+# It chains to the PxeLab HTTP server for dynamic boot menu generation
 
-:use_dhcp
-set next-server ${dhcp-server}
-goto chain
+:netboot
+dhcp net0 || goto dhcp_failed
 
-:use_proxy
-set next-server ${proxydhcp/next-server}
+# Determine server address from DHCP
+isset ${next-server} && set pxelab-server ${next-server}
+isset ${proxydhcp/next-server} && set pxelab-server ${proxydhcp/next-server}
+isset ${pxelab-server} || set pxelab-server ${dhcp-server}
 
-:chain
-chain http://${next-server}:8080/boot/ipxe/script?mac=${net0/mac} || goto tftp_fallback
-exit
+# Build chain URL
+set pxelab-url http://${pxelab-server}:8080/boot/ipxe/script?mac=${net0/mac}
 
-:tftp_fallback
-chain tftp://${next-server}/boot/menu.ipxe || shell
-exit
+# Chain to PxeLab server
+chain ${pxelab-url} || goto failsafe
 
 :dhcp_failed
+echo DHCP failed - no network configuration available
+goto failsafe
+
+:failsafe
+echo
+echo Connection to PxeLab server failed.
+echo
+menu Failsafe Menu
+item --gap System Operations
+item retry        Retry network boot
+item netconfig    Manual network configuration
+item localboot    Boot from local disk
+item debug        iPXE Debug Shell
+choose failsafe_choice || goto localboot
+goto ${failsafe_choice}
+
+:retry
+goto netboot
+
+:netconfig
+echo
+echo Manual Network Configuration:
+echo
+ifstat
+echo
+echo -n Interface number [0 for net0]: && read net-dev
+isset ${net-dev} || set net-dev 0
+echo -n IP address: && read net${net-dev}/ip
+echo -n Subnet mask: && read net${net-dev}/netmask
+echo -n Gateway: && read net${net-dev}/gateway
+echo -n DNS server: && read dns
+ifopen net${net-dev}
+echo
+echo Attempting chainload...
+goto netboot
+
+:localboot
+exit
+
+:debug
+echo Type "exit" to return to menu
 shell
+goto failsafe
 IPXE_EOF
 ```
 

@@ -24,7 +24,7 @@
 ### iPXE 支持
 
 - 自定义编译 iPXE，嵌入式引导脚本
-- 11 种可引导客户端 CPU 架构：x86 BIOS、EFI x86-64、ARM64 等
+- 10 种可引导客户端 CPU 架构：x86 BIOS、EFI IA32/x86-64、ARM32/64、RISC-V 32/64、LoongArch32/64
 - Secure Boot 支持（x86_64 和 ARM64）
 - 架构自动检测：根据 DHCP Option 93 客户端架构自动选择引导文件
 
@@ -60,11 +60,11 @@
 - v1 版本，完整的 CRUD 操作
 - JSON 请求/响应格式
 - Cookie 会话认证
-- `/api/v1/metrics` Prometheus 指标端点
+- `/api/v1/metrics` 指标快照端点（JSON）
 
 ### 主机管理
 
-- 主机增删改查、分组
+- 主机增删改查
 - 绑定 Profile（引导菜单），MAC 地址管理
 - 在线状态跟踪、WOL 唤醒、BMC/IPMI 电源控制
 
@@ -72,7 +72,7 @@
 
 - 引导配置（Profile），支持脚本版本管理
 - 差异对比、回滚
-- 支持 direct / chain / wds / sanboot / local 五种引导类型
+- 支持 menu / direct / chain / wds / sanboot / netboot / local / custom 八种引导类型
 
 ### 脚本与模板市场
 
@@ -81,8 +81,8 @@
 
 ### OS 安装目录
 
-- 10 个预置 Linux 发行版分组
-- 拖拽排序
+- 内置 64+ 主流发行版与工具，按 Linux / Live / 工具 / BSD / Unix / DOS / Windows 等 10 个预置分组组织
+- 分组按配置顺序排序
 - 自定义分组和条目
 - 应答文件模板集成
 
@@ -114,7 +114,7 @@
 | **实时日志** | 多面板 SSE 日志流，按服务过滤 |
 | **访问控制** | MAC 黑白名单 |
 | **网络诊断** | Ping / Traceroute（支持流式输出） |
-| **Prometheus 指标** | 完整的性能和状态指标 |
+| **指标快照** | 完整的性能和状态指标（JSON） |
 | **日志轮转** | 按大小/天数/备份数自动轮转 |
 | **系统托盘** | 后台运行，系统托盘图标 |
 

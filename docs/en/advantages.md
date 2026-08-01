@@ -31,13 +31,14 @@ PxeLab packages everything into a single executable:
 
 ## 2. Full Architecture Coverage
 
-Supports 11 bootable client CPU architectures, far exceeding similar tools:
+Supports 10 bootable client CPU architectures, far exceeding similar tools:
 
 | Category | Supported Architectures |
 |----------|------------------------|
-| **x86** | BIOS (legacy), EFI x86-64 |
-| **ARM** | ARM64 (EFI), ARM (EFI) |
-| **Other** | EFI IA32, EFI x86-64 Compressed, EFI BC, EFI ARM64, EFI ARM64 HTTP, EFI x86-64 HTTP, EFI ARM64 TFTP |
+| **x86** | Intel x86PC (BIOS/legacy), EFI IA32, EFI x86-64, EFI Byte Code (BC) |
+| **ARM** | EFI ARM32, EFI ARM64 |
+| **RISC-V** | EFI RISC-V 32, EFI RISC-V 64 |
+| **LoongArch** | EFI LoongArch32, EFI LoongArch64 |
 | **Secure Boot** | x86_64 + ARM64 secure boot |
 
 **Practical Impact**:
@@ -53,7 +54,7 @@ iPXE is a powerful network boot firmware, but traditionally requires self-compil
 
 PxeLab includes pre-compiled iPXE:
 
-- Pre-compiled iPXE binaries for all 11 architectures
+- Pre-compiled iPXE binaries for all 10 architectures
 - Embedded boot scripts, ready to use
 - Custom script replacement supported
 - Version management and diff comparison
@@ -80,7 +81,7 @@ Say goodbye to command-line config files:
 
 **Management Capabilities**:
 - Dashboard: global overview, service status, traffic charts
-- Host management: CRUD, grouping, profile binding
+- Host management: CRUD, profile binding
 - Boot menu: profile management, script versioning
 - OS Install Catalog: built-in distros, custom groups
 - Hardware: WOL, BMC/IPMI control
@@ -136,7 +137,7 @@ nfs:
 | Advantage | Traditional Solution | PxeLab |
 |-----------|---------------------|--------|
 | Setup complexity | High (multi-service) | Low (single binary) |
-| Architecture support | Limited | 11 archs + Secure Boot |
+| Architecture support | Limited | 10 archs + Secure Boot |
 | iPXE | Self-compile | Built-in |
 | Management UI | CLI / complex Web | Modern Web UI |
 | DHCP flexibility | Limited | 3 modes |

@@ -36,7 +36,7 @@
 ## v0.3.0
 
 - iPXE boot script system
-- DHCP four modes
+- DHCP three modes (server / proxy / off)
 - Full-featured Web UI
 - CLI management tools
 - Event bus and real-time logs

@@ -24,7 +24,7 @@
 ### iPXE Support
 
 - Custom-compiled iPXE with embedded boot scripts
-- 11 bootable client CPU architectures: x86 BIOS, EFI x86-64, ARM64, etc.
+- 10 bootable client CPU architectures: x86 BIOS, EFI IA32/x86-64, ARM32/64, RISC-V 32/64, LoongArch32/64
 - Secure Boot support (x86_64 and ARM64)
 - Auto architecture detection via DHCP Option 93
 
@@ -60,11 +60,11 @@
 - v1 with full CRUD operations
 - JSON request/response format
 - Cookie-based session authentication
-- `/api/v1/metrics` Prometheus metrics endpoint
+- `/api/v1/metrics` metrics snapshot endpoint (JSON)
 
 ### Host Management
 
-- Host CRUD, grouping
+- Host CRUD
 - Profile binding (boot menu), MAC address management
 - Online status tracking, WOL wake, BMC/IPMI power control
 
@@ -72,7 +72,7 @@
 
 - Boot configuration (Profile) with script versioning
 - Diff comparison, rollback
-- Supports direct / chain / wds / sanboot / local boot types
+- Supports menu / direct / chain / wds / sanboot / netboot / local / custom boot types
 
 ### Scripts & Template Marketplace
 
@@ -81,8 +81,8 @@
 
 ### OS Install Catalog
 
-- 10 preset Linux distro groups
-- Drag-and-drop sorting
+- 64+ mainstream distros and tools organized into 10 preset groups: Linux / Live / Tools / BSD / Unix / DOS / Windows, etc.
+- Groups sorted by configured order
 - Custom groups and entries
 - Answer file template integration
 
@@ -114,7 +114,7 @@
 | **Live Log** | Multi-panel SSE log stream, filter by service |
 | **Access Control** | MAC whitelist/blacklist |
 | **Network Diagnostics** | Ping / Traceroute (streaming output) |
-| **Prometheus Metrics** | Full performance and status metrics |
+| **Metrics Snapshot** | Full performance and status metrics (JSON) |
 | **Log Rotation** | Auto-rotation by size/days/backups |
 | **System Tray** | Background mode with tray icon |
 

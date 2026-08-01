@@ -19,7 +19,7 @@
 |------|---------|------|
 | 在线主机 | `hosts.last_online` | 最近 10 分钟内有记录的主机数 |
 | 运行中服务 | `GET /api/v1/services` | status=running 的服务数 |
-| 活跃租约 | Prometheus `dhcp.activeLeases` | 当前 DHCP 活跃租约数 |
+| 活跃租约 | `GET /api/v1/metrics`（JSON 快照）`services.dhcp.dhcp.activeLeases` | 当前 DHCP 活跃租约数 |
 | DNS 记录数 | `GET /api/v1/dns/records` | 总 DNS 记录数 |
 | 今日引导次数 | events（type=BOOT, 今天） | 当天 BOOT 事件数 |
 

@@ -20,8 +20,8 @@ PxeLab 把 PXE 所需的 **DHCP、TFTP、HTTP、DNS、NFS** 五个网络服务�
 
 | 项目 | 要求 |
 |------|------|
-| **操作系统** | Windows 10+ / Linux（kernel 3.10+）/ macOS 12+ |
-| **硬件架构** | amd64 / arm64（Linux 另支持 armv7） |
+| **操作系统** | Windows 10+ / Linux / macOS 12+ |
+| **硬件架构** | amd64 / arm64 |
 | **内存 / 磁盘** | ≥ 512 MB / ≥ 1 GB |
 | **网络** | 运行 DHCP 需要管理员/root 权限（端口 67） |
 
@@ -33,21 +33,39 @@ PxeLab 把 PXE 所需的 **DHCP、TFTP、HTTP、DNS、NFS** 五个网络服务�
 
 ### 方式一：下载 Release（推荐）
 
-从 GitHub Releases 下载对应平台的二进制：
+从 GitHub Releases 下载对应平台的二进制（文件名包含版本号，下面以 `v0.1.0` 为例）：
 
 ```bash
 # Linux amd64
-wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_linux_amd64.tar.gz
-tar xzf pxelab_linux_amd64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/download/v0.1.0/pxelab_v0.1.0_linux_amd64.tar.gz
+tar xzf pxelab_v0.1.0_linux_amd64.tar.gz
 
 # macOS arm64
-wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_darwin_arm64.tar.gz
-tar xzf pxelab_darwin_arm64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/download/v0.1.0/pxelab_v0.1.0_darwin_arm64.tar.gz
+tar xzf pxelab_v0.1.0_darwin_arm64.tar.gz
 ```
 
-Windows：下载 `pxelab_windows_amd64.zip`，解压得到 `pxelab.exe`。
+Windows：下载 `pxelab_v0.1.0_windows_amd64.zip`，解压得到 `pxelab.exe`。
 
-### 方式二：从源码编译
+> Release 资产命名规则为 `pxelab_<版本>_<系统>_<架构>`（Windows 为 zip，其余为 tar.gz）。下载前请到 [Releases](https://github.com/PxeLab/pxelab/releases) 页面确认最新版本号，把示例 URL 中的 `v0.1.0` 替换成实际版本。
+
+### 方式二：包管理器
+
+```bash
+# Debian / Ubuntu（deb 包）
+sudo apt install ./pxelab_v0.1.0_linux_amd64.deb
+
+# RHEL / Rocky / AlmaLinux（rpm 包）
+sudo rpm -Uvh pxelab_v0.1.0_linux_amd64.rpm
+
+# macOS（Homebrew）
+brew tap pxelab/homebrew-tap
+brew install pxelab
+```
+
+deb / rpm 包安装后会自动注册 systemd 服务 `pxelab.service`，并写入配置 `/etc/pxelab/config.yaml`。
+
+### 方式三：从源码编译
 
 ```bash
 git clone https://github.com/PxeLab/pxelab.git
@@ -55,7 +73,7 @@ cd pxelab
 make build          # 生成 bin/pxelab
 ```
 
-### 方式三：Docker
+### 方式四：Docker
 
 容器镜像在 Roadmap 中，暂未提供。
 
@@ -75,7 +93,7 @@ pxelab.exe
 
 ![PxeLab 仪表板](/screenshots/dashboard.png)
 
-顶部的**服务状态栏**显示各服务的运行状态：默认只启动了 HTTP 服务，DHCP / TFTP / DNS / NFS 会在你配置并启动后变绿。
+顶部的**服务状态栏**显示各服务的运行状态：默认启动 HTTP 服务；DHCP 与 ProxyDHCP 会以回退模式自动尝试启动（监听 `0.0.0.0:67` / `0.0.0.0:4011`，需要 root 权限，未配置子网时不分配地址）；TFTP / DNS / NFS 默认停止，会在你配置并启动后变绿。
 
 > **Windows**：PxeLab 默认以系统托盘模式运行，托盘图标提供打开浏览器、查看数据目录、退出等功能。
 

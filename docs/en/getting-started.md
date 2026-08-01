@@ -20,8 +20,8 @@ PxeLab packages the five network services PXE needs — **DHCP, TFTP, HTTP, DNS,
 
 | Item | Requirement |
 |------|-------------|
-| **OS** | Windows 10+ / Linux (kernel 3.10+) / macOS 12+ |
-| **Architecture** | amd64 / arm64 (Linux also supports armv7) |
+| **OS** | Windows 10+ / Linux / macOS 12+ |
+| **Architecture** | amd64 / arm64 |
 | **RAM / Disk** | ≥ 512 MB / ≥ 1 GB |
 | **Network** | Admin/root rights needed to run DHCP (port 67) |
 
@@ -33,21 +33,39 @@ No other dependencies — one file, download and run.
 
 ### Option 1: Download a Release (recommended)
 
-Grab the binary for your platform from GitHub Releases:
+Grab the binary for your platform from GitHub Releases (asset names include the version — `v0.1.0` used below as an example):
 
 ```bash
 # Linux amd64
-wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_linux_amd64.tar.gz
-tar xzf pxelab_linux_amd64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/download/v0.1.0/pxelab_v0.1.0_linux_amd64.tar.gz
+tar xzf pxelab_v0.1.0_linux_amd64.tar.gz
 
 # macOS arm64
-wget https://github.com/PxeLab/pxelab/releases/latest/download/pxelab_darwin_arm64.tar.gz
-tar xzf pxelab_darwin_arm64.tar.gz
+wget https://github.com/PxeLab/pxelab/releases/download/v0.1.0/pxelab_v0.1.0_darwin_arm64.tar.gz
+tar xzf pxelab_v0.1.0_darwin_arm64.tar.gz
 ```
 
-Windows: download `pxelab_windows_amd64.zip` and extract `pxelab.exe`.
+Windows: download `pxelab_v0.1.0_windows_amd64.zip` and extract `pxelab.exe`.
 
-### Option 2: Build from Source
+> Release assets follow the naming pattern `pxelab_<version>_<os>_<arch>` (zip on Windows, tar.gz elsewhere). Check the [Releases](https://github.com/PxeLab/pxelab/releases) page for the latest version and replace `v0.1.0` in the example URLs accordingly.
+
+### Option 2: Package Manager
+
+```bash
+# Debian / Ubuntu (deb package)
+sudo apt install ./pxelab_v0.1.0_linux_amd64.deb
+
+# RHEL / Rocky / AlmaLinux (rpm package)
+sudo rpm -Uvh pxelab_v0.1.0_linux_amd64.rpm
+
+# macOS (Homebrew)
+brew tap pxelab/homebrew-tap
+brew install pxelab
+```
+
+The deb / rpm packages register the systemd service `pxelab.service` and write the config to `/etc/pxelab/config.yaml` on install.
+
+### Option 3: Build from Source
 
 ```bash
 git clone https://github.com/PxeLab/pxelab.git
@@ -55,7 +73,7 @@ cd pxelab
 make build          # produces bin/pxelab
 ```
 
-### Option 3: Docker
+### Option 4: Docker
 
 Container images are on the roadmap — not available yet.
 
@@ -75,7 +93,7 @@ Once started, open **`http://localhost:8080`** in a browser — you'll see the d
 
 ![PxeLab dashboard](/screenshots/dashboard.png)
 
-The **service status bar** at the top shows each service's state: by default only HTTP runs; DHCP / TFTP / DNS / NFS turn green once you configure and start them.
+The **service status bar** at the top shows each service's state: HTTP runs by default; DHCP and ProxyDHCP also try to start automatically in fallback mode (listening on `0.0.0.0:67` / `0.0.0.0:4011`, needs root, no addresses assigned until subnets are configured); TFTP / DNS / NFS are stopped by default and turn green once you configure and start them.
 
 > **Windows**: PxeLab runs in the system tray by default — the tray icon offers open browser, open data directory, and quit.
 
