@@ -137,7 +137,7 @@ boot:
 
 # ── Netboot ──
 netboot:
-  enabled: true
+  enabled: false              # Global switch (off by default, must be enabled manually)
   default_boot: "menu"           # Default boot mode (default "menu")
   fallback_online: true          # Fall back to online mode when catalog unavailable
   menu_title: "[OS] Netboot OS Install Catalog"

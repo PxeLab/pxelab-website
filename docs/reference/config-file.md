@@ -136,7 +136,7 @@ boot:
 
 # ── Netboot ──
 netboot:
-  enabled: true
+  enabled: false               # 全局开关（默认关闭，需手动启用）
   default_boot: "menu"           # 默认启动方式（默认 "menu"）
   fallback_online: true          # 目录不可用时回退在线模式
   menu_title: "[OS] Netboot OS Install Catalog"

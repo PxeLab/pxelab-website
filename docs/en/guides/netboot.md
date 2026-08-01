@@ -17,7 +17,7 @@ Entry: **Basic Config → Service Config → OS Install Catalog**; or **Settings
 
 ## Task 1: Make sure the catalog is enabled
 
-On the OS Install Catalog page, confirm the "**enabled**" toggle is on (default). Once enabled, the client boot menu shows the **[OS] Netboot OS Install Catalog** entry.
+On the OS Install Catalog page, turn the "**enabled**" toggle on (**off by default** — must be enabled manually). Once enabled, the client boot menu shows the **[OS] Netboot OS Install Catalog** entry.
 
 ## Task 2: Group management
 

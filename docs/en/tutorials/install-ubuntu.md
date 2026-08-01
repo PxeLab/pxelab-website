@@ -42,7 +42,7 @@ Save, then check the **service status bar** at the top: the DHCP service should 
 
 ## Step 2: Make sure the OS Install Catalog is enabled
 
-Go to **Basic Config → Service Config → OS Install Catalog** and confirm the "enabled" toggle is on (it is by default).
+Go to **Basic Config → Service Config → OS Install Catalog** and turn the "enabled" toggle on (**off by default** — must be enabled manually).
 
 PxeLab ships an install catalog for 64+ mainstream distributions (Ubuntu, Debian, CentOS, Windows, and more). Once the client boots, it sees this catalog in the menu and picks what to install.
 
