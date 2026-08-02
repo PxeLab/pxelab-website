@@ -10,26 +10,11 @@
 
 ### Q: PxeLab 支持哪些操作系统？
 
-**A:** PxeLab 支持以下平台：
-
-| 操作系统 | 架构 | 说明 |
-|---------|------|------|
-| Linux | amd64, arm64 | 推荐用于生产环境 |
-| Windows | amd64, arm64 | 支持 Windows 10+ |
-| macOS | arm64, amd64 | 支持 macOS 12+ |
+**A:** 支持 Windows 10+ / Linux / macOS 12+，架构 amd64 / arm64。完整系统要求见[快速开始：系统要求](getting-started.md#系统要求)。
 
 ### Q: 需要安装什么依赖？
 
-**A:** 无需任何依赖。PxeLab 是单个可执行文件，下载后直接运行。
-
-```bash
-# Linux/macOS
-chmod +x pxelab
-./pxelab
-
-# Windows
-pxelab.exe
-```
+**A:** 无需任何依赖。PxeLab 是单个可执行文件，下载后直接运行——安装步骤见[快速开始：下载与安装](getting-started.md#下载与安装)。
 
 ### Q: 如何以系统服务方式运行？
 

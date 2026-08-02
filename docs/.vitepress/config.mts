@@ -20,34 +20,49 @@ interface SidebarGroupDef {
   collapsed?: boolean
 }
 
-const sidebarDef: Record<string, SidebarGroupDef[]> = {
-  '/': [
-    {
-      zh: '产品',
-      en: 'Product',
-      items: [
-        { zh: '产品定位', en: 'Product Overview', link: '/product' },
-        { zh: '功能特性', en: 'Features', link: '/features' },
-        { zh: '优势能力', en: 'Advantages', link: '/advantages' },
-        { zh: '常见问题', en: 'FAQ', link: '/faq' },
-      ],
-    },
-    {
-      zh: '快速开始',
-      en: 'Getting Started',
-      items: [
-        { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
-        { zh: '术语表', en: 'Glossary', link: '/glossary' },
-      ],
-    },
-    {
-      zh: '故障排查',
-      en: 'Troubleshooting',
-      items: [
-        { zh: '故障排查', en: 'Troubleshooting', link: '/troubleshooting' },
-      ],
-    },
+// 顶层页面各自的侧边栏(按页面细分,避免产品/快速开始共用同一组导航)
+const productGroup: SidebarGroupDef = {
+  zh: '产品',
+  en: 'Product',
+  items: [
+    { zh: '产品定位', en: 'Product Overview', link: '/product' },
+    { zh: '功能特性', en: 'Features', link: '/features' },
+    { zh: '常见问题', en: 'FAQ', link: '/faq' },
   ],
+}
+
+const quickStartGroup: SidebarGroupDef = {
+  zh: '快速开始',
+  en: 'Getting Started',
+  items: [
+    { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
+  ],
+}
+
+const glossaryGroup: SidebarGroupDef = {
+  zh: '参考',
+  en: 'Reference',
+  items: [
+    { zh: '术语表', en: 'Glossary', link: '/glossary' },
+    { zh: '版本历史', en: 'Release Notes', link: '/release-notes' },
+  ],
+}
+
+const troubleshootingGroup: SidebarGroupDef = {
+  zh: '故障排查',
+  en: 'Troubleshooting',
+  items: [
+    { zh: '故障排查', en: 'Troubleshooting', link: '/troubleshooting' },
+  ],
+}
+
+const sidebarDef: Record<string, SidebarGroupDef[]> = {
+  '/product': [productGroup],
+  '/features': [productGroup],
+  '/faq': [productGroup],
+  '/getting-started': [quickStartGroup],
+  '/glossary': [glossaryGroup],
+  '/troubleshooting': [troubleshootingGroup],
   '/tutorials/': [
     {
       zh: '教程',
@@ -201,7 +216,7 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '产品', link: '/product', activeMatch: '/product|features|advantages|faq' },
+          { text: '产品', link: '/product', activeMatch: '/product|features|faq' },
           { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
           { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
@@ -228,7 +243,7 @@ export default defineConfig({
       description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
-          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|advantages|faq' },
+          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|faq' },
           { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
           { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },

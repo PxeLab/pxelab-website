@@ -2,7 +2,7 @@
 
 > 一个二进制，多种架构，下载即用。PXE in minutes, all-in-one binary.
 
-**相关文档**: [快速开始](getting-started.md) | [功能特性](features.md) | [优势能力](advantages.md)
+**相关文档**: [快速开始](getting-started.md) | [功能特性](features.md) | [术语表](glossary.md)
 
 ---
 
@@ -56,8 +56,7 @@ PXE（Preboot eXecution Environment，预启动执行环境）是一种让电脑
 | **自动化装机** | 64+ 发行版目录 + 应答文件模板，装机任务全程可追踪 |
 | **现代管理体验** | Web UI 中英双语 + REST API 全覆盖，告别命令行与配置文件的割裂 |
 | **平台自由** | Windows / Linux / macOS 均可运行，典型部署内存 ≤ 512 MB |
-
----
+| **灵活 DHCP** | server / proxy / off 三种模式，每个网络接口独立配置，适配已有 DHCP 环境 |
 
 ## 方案对比
 
@@ -76,12 +75,4 @@ PXE（Preboot eXecution Environment，预启动执行环境）是一种让电脑
 
 ## 快速体验
 
-```bash
-# 下载并运行
-./pxelab
-
-# 打开浏览器访问
-open http://localhost:8080
-```
-
-首次启动后，PxeLab 会自动初始化默认配置。通过 Web UI 即可完成所有网络引导服务的配置和管理。
+想上手试试？看[快速开始](getting-started.md)：下载、启动、完成第一次网络装机，15 分钟搞定。

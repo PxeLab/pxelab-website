@@ -86,19 +86,19 @@ The **service status bar** at the top shows each service's state: **only the HTT
 Get a computer that supports network boot (bare metal or an existing machine — either works) and follow along:
 
 **Step 1: Create an interface and subnet**
-Go to **Basic Config → Service Config → DHCP**, click **Add Interface** in the top-right corner, fill in the interface name, IP address, and in "Subnet 1" set the network (`192.168.50.0/24`), address pool, gateway, DNS — keep the DHCP mode at **server**. Save, then start the DHCP service from the service status bar.
+Go to **Basic Config → Service Config → DHCP**, click **Add Interface**, set the network (`192.168.50.0/24`), address pool, gateway, DNS — keep the DHCP mode at **server**. Save, then start the DHCP service.
 
 **Step 2: Enable the OS Install Catalog (Netboot)**
-Go to **Basic Config → Service Config → OS Install Catalog** and turn the "enabled" toggle on (**off by default** — must be enabled manually). Only then does the **[OS] Netboot OS Install Catalog** entry appear in the client's boot menu; it decides which operating systems clients see after booting.
+Go to **Basic Config → Service Config → OS Install Catalog** and turn the "enabled" toggle on (**off by default** — must be enabled manually). This adds the **[OS] Netboot OS Install Catalog** entry to the client's boot menu.
 
 **Step 3: Boot the client and enter network boot**
 Power the client on and enter its boot menu (common keys: F12 / F11 / Esc — varies by vendor), then choose **network boot (PXE Boot / Network Boot)**.
 
 **Step 4: Pick a system in the boot menu**
-When the menu appears, choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → start the install. (If the entry is missing, go back to Step 2 and confirm the OS Install Catalog is enabled.)
+Choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → start the install.
 
 **Step 5: Verify**
-Back on the dashboard: the new host shows up in the "Online hosts" list; **Management → Install Tasks** shows the install record for this machine. After the install finishes, the client boots normally from its local disk.
+Back on the dashboard: the new host shows up in the "Online hosts" list; **Management → Install Tasks** shows the install record for this machine.
 
 > Want every detail? See [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md).
 

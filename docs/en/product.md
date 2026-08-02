@@ -2,7 +2,7 @@
 
 > One binary, every architecture, ready to run. PXE in minutes, all-in-one binary.
 
-**Docs**: [Getting Started](/en/getting-started) | [Features](/en/features) | [Advantages](/en/advantages)
+**Docs**: [Getting Started](/en/getting-started) | [Features](/en/features) | [Glossary](/en/glossary)
 
 ---
 
@@ -56,6 +56,7 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 | **Automated provisioning** | 64+ distro catalog plus answer-file templates, with end-to-end task tracking |
 | **Modern management** | Bilingual Web UI plus full REST API — no more split between CLI and config files |
 | **Platform freedom** | Runs on Windows / Linux / macOS; typical deployment uses ≤ 512 MB RAM |
+| **Flexible DHCP** | server / proxy / off modes, independently configured per network interface — slots into existing DHCP environments |
 
 ---
 
@@ -76,12 +77,4 @@ Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd
 
 ## Quick Start
 
-```bash
-# Download and run
-./pxelab
-
-# Open browser
-open http://localhost:8080
-```
-
-On first start, PxeLab auto-initializes default configuration. All network boot services can be configured and managed through the Web UI.
+Want to try it? See [Getting Started](/en/getting-started): download, launch, and finish your first network install in 15 minutes.
