@@ -20,50 +20,25 @@ interface SidebarGroupDef {
   collapsed?: boolean
 }
 
-// 顶层页面各自的侧边栏(按页面细分,避免产品/快速开始共用同一组导航)
-const productGroup: SidebarGroupDef = {
-  zh: '产品',
-  en: 'Product',
-  items: [
-    { zh: '产品定位', en: 'Product Overview', link: '/product' },
-    { zh: '功能特性', en: 'Features', link: '/features' },
-    { zh: '常见问题', en: 'FAQ', link: '/faq' },
-  ],
-}
-
-const quickStartGroup: SidebarGroupDef = {
-  zh: '快速开始',
-  en: 'Getting Started',
-  items: [
-    { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
-  ],
-}
-
-const glossaryGroup: SidebarGroupDef = {
-  zh: '参考',
-  en: 'Reference',
-  items: [
-    { zh: '术语表', en: 'Glossary', link: '/glossary' },
-    { zh: '版本历史', en: 'Release Notes', link: '/release-notes' },
-  ],
-}
-
-const troubleshootingGroup: SidebarGroupDef = {
-  zh: '故障排查',
-  en: 'Troubleshooting',
-  items: [
-    { zh: '故障排查', en: 'Troubleshooting', link: '/troubleshooting' },
-  ],
-}
-
+// 全局侧边栏:所有页面显示同一套完整导航(一级二级平铺,无下拉)
 const sidebarDef: Record<string, SidebarGroupDef[]> = {
-  '/product': [productGroup],
-  '/features': [productGroup],
-  '/faq': [productGroup],
-  '/getting-started': [quickStartGroup],
-  '/glossary': [glossaryGroup],
-  '/troubleshooting': [troubleshootingGroup],
-  '/tutorials/': [
+  '/': [
+    {
+      zh: '产品',
+      en: 'Product',
+      items: [
+        { zh: '产品定位', en: 'Product Overview', link: '/product' },
+        { zh: '功能特性', en: 'Features', link: '/features' },
+        { zh: '常见问题', en: 'FAQ', link: '/faq' },
+      ],
+    },
+    {
+      zh: '快速开始',
+      en: 'Getting Started',
+      items: [
+        { zh: '快速开始', en: 'Getting Started', link: '/getting-started' },
+      ],
+    },
     {
       zh: '教程',
       en: 'Tutorials',
@@ -73,20 +48,12 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: '教程 3：搭建无盘工作站', en: 'Tutorial 3: Build a Diskless Workstation', link: '/tutorials/diskless-workstation' },
       ],
     },
-  ],
-  '/guides/': [
     {
-      zh: '概览',
-      en: 'Overview',
+      zh: '使用指南',
+      en: 'Guides',
       items: [
         { zh: '界面速览', en: 'UI Overview', link: '/guides/web-ui' },
         { zh: '仪表盘', en: 'Dashboard', link: '/guides/dashboard' },
-      ],
-    },
-    {
-      zh: '基础配置',
-      en: 'Basic Configuration',
-      items: [
         { zh: '服务配置', en: 'Service Config', link: '/guides/services' },
         { zh: '文件管理', en: 'Files', link: '/guides/files' },
         { zh: '引导配置', en: 'Profiles', link: '/guides/profiles' },
@@ -95,25 +62,15 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: '引导菜单配置', en: 'Boot Config', link: '/guides/boot-config' },
         { zh: '网络启动目录', en: 'Netboot Catalog', link: '/guides/netboot' },
         { zh: 'OS 镜像管理', en: 'OS Images', link: '/guides/os-images' },
-      ],
-    },
-    {
-      zh: '管理',
-      en: 'Management',
-      items: [
         { zh: '主机管理', en: 'Host Management', link: '/guides/host-management' },
         { zh: '访问控制', en: 'Access Control', link: '/guides/access-control' },
         { zh: '安装任务', en: 'Install Tasks', link: '/guides/install-tasks' },
         { zh: 'BMC 带外管理', en: 'BMC / IPMI', link: '/guides/bmc' },
         { zh: 'WOL 网络唤醒', en: 'Wake-on-LAN', link: '/guides/wol' },
         { zh: '网络诊断', en: 'Network Diagnostics', link: '/guides/network-diagnostics' },
-      ],
-    },
-    {
-      zh: '监控',
-      en: 'Monitoring',
-      items: [
         { zh: '监控', en: 'Monitoring', link: '/guides/monitoring' },
+        { zh: '设置', en: 'Settings', link: '/guides/settings' },
+        { zh: '部署模式', en: 'Deployment', link: '/guides/deployment' },
       ],
     },
     {
@@ -129,16 +86,6 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
       ],
     },
     {
-      zh: '其他',
-      en: 'Others',
-      items: [
-        { zh: '设置', en: 'Settings', link: '/guides/settings' },
-        { zh: '部署模式', en: 'Deployment', link: '/guides/deployment' },
-      ],
-    },
-  ],
-  '/development/': [
-    {
       zh: '开发指南',
       en: 'Development',
       items: [
@@ -148,26 +95,27 @@ const sidebarDef: Record<string, SidebarGroupDef[]> = {
         { zh: '参与开发', en: 'Contributing', link: '/development/contributing' },
       ],
     },
-  ],
-  '/reference/': [
     {
-      zh: '服务参考',
-      en: 'Service Reference',
+      zh: '参考文档',
+      en: 'Reference',
       items: [
         { zh: 'TFTP 服务', en: 'TFTP Service', link: '/reference/tftp' },
         { zh: 'DNS 服务', en: 'DNS Service', link: '/reference/dns' },
         { zh: 'NFS 服务', en: 'NFS Service', link: '/reference/nfs' },
         { zh: '架构映射与 Secure Boot', en: 'Architecture Mapping & Secure Boot', link: '/reference/boot-settings' },
-      ],
-    },
-    {
-      zh: '配置参考',
-      en: 'Configuration Reference',
-      items: [
         { zh: '配置文件', en: 'Config File', link: '/reference/config-file' },
         { zh: 'REST API', en: 'REST API', link: '/reference/api-reference' },
         { zh: '环境变量与 CLI', en: 'Environment Variables & CLI', link: '/reference/environment-variables' },
         { zh: '日志配置', en: 'Logging', link: '/reference/logging' },
+      ],
+    },
+    {
+      zh: '其他',
+      en: 'Others',
+      items: [
+        { zh: '术语表', en: 'Glossary', link: '/glossary' },
+        { zh: '版本历史', en: 'Release Notes', link: '/release-notes' },
+        { zh: '故障排查', en: 'Troubleshooting', link: '/troubleshooting' },
       ],
     },
   ],
@@ -216,57 +164,7 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          {
-            text: '开始使用',
-            activeMatch: '/product|/features|/faq|/getting-started|/tutorials/|/reference/',
-            items: [
-              {
-                text: '产品',
-                items: [
-                  { text: '产品定位', link: '/product' },
-                  { text: '功能特性', link: '/features' },
-                  { text: '常见问题', link: '/faq' },
-                ],
-              },
-              {
-                text: '快速开始',
-                items: [
-                  { text: '快速开始', link: '/getting-started' },
-                ],
-              },
-              {
-                text: '教程',
-                items: [
-                  { text: '教程 1：给裸机装 Ubuntu', link: '/tutorials/install-ubuntu' },
-                  { text: '教程 2：在现有 DHCP 网络上叠加 PXE', link: '/tutorials/add-pxe-to-existing-dhcp' },
-                  { text: '教程 3：搭建无盘工作站', link: '/tutorials/diskless-workstation' },
-                ],
-              },
-              {
-                text: '参考文档',
-                items: [
-                  {
-                    text: '服务参考',
-                    items: [
-                      { text: 'TFTP 服务', link: '/reference/tftp' },
-                      { text: 'DNS 服务', link: '/reference/dns' },
-                      { text: 'NFS 服务', link: '/reference/nfs' },
-                      { text: '架构映射与 Secure Boot', link: '/reference/boot-settings' },
-                    ],
-                  },
-                  {
-                    text: '配置参考',
-                    items: [
-                      { text: '配置文件', link: '/reference/config-file' },
-                      { text: 'REST API', link: '/reference/api-reference' },
-                      { text: '环境变量与 CLI', link: '/reference/environment-variables' },
-                      { text: '日志配置', link: '/reference/logging' },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+          { text: '开始使用', link: '/getting-started', activeMatch: '/product|/features|/faq|/getting-started|/tutorials/|/reference/' },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
           { text: '开发指南', link: '/development/contributing', activeMatch: '/development/' },
           { text: '网站首页', link: 'https://www.pxelab.com/' },
@@ -290,57 +188,7 @@ export default defineConfig({
       description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
-          {
-            text: 'Getting Started',
-            activeMatch: '/en/product|/en/features|/en/faq|/en/getting-started|/en/tutorials/|/en/reference/',
-            items: [
-              {
-                text: 'Product',
-                items: [
-                  { text: 'Product Overview', link: '/en/product' },
-                  { text: 'Features', link: '/en/features' },
-                  { text: 'FAQ', link: '/en/faq' },
-                ],
-              },
-              {
-                text: 'Getting Started',
-                items: [
-                  { text: 'Getting Started', link: '/en/getting-started' },
-                ],
-              },
-              {
-                text: 'Tutorials',
-                items: [
-                  { text: 'Tutorial 1: Install Ubuntu on a Bare Metal Machine', link: '/en/tutorials/install-ubuntu' },
-                  { text: 'Tutorial 2: Layer PXE onto an Existing DHCP Network', link: '/en/tutorials/add-pxe-to-existing-dhcp' },
-                  { text: 'Tutorial 3: Build a Diskless Workstation', link: '/en/tutorials/diskless-workstation' },
-                ],
-              },
-              {
-                text: 'Reference',
-                items: [
-                  {
-                    text: 'Service Reference',
-                    items: [
-                      { text: 'TFTP Service', link: '/en/reference/tftp' },
-                      { text: 'DNS Service', link: '/en/reference/dns' },
-                      { text: 'NFS Service', link: '/en/reference/nfs' },
-                      { text: 'Architecture Mapping & Secure Boot', link: '/en/reference/boot-settings' },
-                    ],
-                  },
-                  {
-                    text: 'Configuration Reference',
-                    items: [
-                      { text: 'Config File', link: '/en/reference/config-file' },
-                      { text: 'REST API', link: '/en/reference/api-reference' },
-                      { text: 'Environment Variables & CLI', link: '/en/reference/environment-variables' },
-                      { text: 'Logging', link: '/en/reference/logging' },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+          { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/product|/en/features|/en/faq|/en/getting-started|/en/tutorials/|/en/reference/' },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
           { text: 'Development', link: '/en/development/contributing', activeMatch: '/en/development/' },
           { text: 'Website', link: 'https://www.pxelab.com/' },
