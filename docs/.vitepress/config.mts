@@ -216,13 +216,60 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '产品', link: '/product', activeMatch: '/product|features|faq' },
-          { text: '快速开始', link: '/getting-started', activeMatch: '/getting-started' },
-          { text: '教程', link: '/tutorials/install-ubuntu', activeMatch: '/tutorials/' },
+          {
+            text: '开始使用',
+            activeMatch: '/product|/features|/faq|/getting-started|/tutorials/|/reference/',
+            items: [
+              {
+                text: '产品',
+                items: [
+                  { text: '产品定位', link: '/product' },
+                  { text: '功能特性', link: '/features' },
+                  { text: '常见问题', link: '/faq' },
+                ],
+              },
+              {
+                text: '快速开始',
+                items: [
+                  { text: '快速开始', link: '/getting-started' },
+                ],
+              },
+              {
+                text: '教程',
+                items: [
+                  { text: '教程 1：给裸机装 Ubuntu', link: '/tutorials/install-ubuntu' },
+                  { text: '教程 2：在现有 DHCP 网络上叠加 PXE', link: '/tutorials/add-pxe-to-existing-dhcp' },
+                  { text: '教程 3：搭建无盘工作站', link: '/tutorials/diskless-workstation' },
+                ],
+              },
+              {
+                text: '参考文档',
+                items: [
+                  {
+                    text: '服务参考',
+                    items: [
+                      { text: 'TFTP 服务', link: '/reference/tftp' },
+                      { text: 'DNS 服务', link: '/reference/dns' },
+                      { text: 'NFS 服务', link: '/reference/nfs' },
+                      { text: '架构映射与 Secure Boot', link: '/reference/boot-settings' },
+                    ],
+                  },
+                  {
+                    text: '配置参考',
+                    items: [
+                      { text: '配置文件', link: '/reference/config-file' },
+                      { text: 'REST API', link: '/reference/api-reference' },
+                      { text: '环境变量与 CLI', link: '/reference/environment-variables' },
+                      { text: '日志配置', link: '/reference/logging' },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
           { text: '使用指南', link: '/guides/dashboard', activeMatch: '/guides/' },
           { text: '开发指南', link: '/development/contributing', activeMatch: '/development/' },
-          { text: '参考文档', link: '/reference/api-reference', activeMatch: '/reference/' },
-          { text: '网站首页', link: 'https://pxelab.com' },
+          { text: '网站首页', link: 'https://www.pxelab.com/' },
         ],
         sidebar: zhSidebar,
         outline: [2, 3],
@@ -243,13 +290,60 @@ export default defineConfig({
       description: 'PXE in minutes, all-in-one binary — all-in-one PXE network boot server',
       themeConfig: {
         nav: [
-          { text: 'Product', link: '/en/product', activeMatch: '/en/product|features|faq' },
-          { text: 'Getting Started', link: '/en/getting-started', activeMatch: '/en/getting-started' },
-          { text: 'Tutorials', link: '/en/tutorials/install-ubuntu', activeMatch: '/en/tutorials/' },
+          {
+            text: 'Getting Started',
+            activeMatch: '/en/product|/en/features|/en/faq|/en/getting-started|/en/tutorials/|/en/reference/',
+            items: [
+              {
+                text: 'Product',
+                items: [
+                  { text: 'Product Overview', link: '/en/product' },
+                  { text: 'Features', link: '/en/features' },
+                  { text: 'FAQ', link: '/en/faq' },
+                ],
+              },
+              {
+                text: 'Getting Started',
+                items: [
+                  { text: 'Getting Started', link: '/en/getting-started' },
+                ],
+              },
+              {
+                text: 'Tutorials',
+                items: [
+                  { text: 'Tutorial 1: Install Ubuntu on a Bare Metal Machine', link: '/en/tutorials/install-ubuntu' },
+                  { text: 'Tutorial 2: Layer PXE onto an Existing DHCP Network', link: '/en/tutorials/add-pxe-to-existing-dhcp' },
+                  { text: 'Tutorial 3: Build a Diskless Workstation', link: '/en/tutorials/diskless-workstation' },
+                ],
+              },
+              {
+                text: 'Reference',
+                items: [
+                  {
+                    text: 'Service Reference',
+                    items: [
+                      { text: 'TFTP Service', link: '/en/reference/tftp' },
+                      { text: 'DNS Service', link: '/en/reference/dns' },
+                      { text: 'NFS Service', link: '/en/reference/nfs' },
+                      { text: 'Architecture Mapping & Secure Boot', link: '/en/reference/boot-settings' },
+                    ],
+                  },
+                  {
+                    text: 'Configuration Reference',
+                    items: [
+                      { text: 'Config File', link: '/en/reference/config-file' },
+                      { text: 'REST API', link: '/en/reference/api-reference' },
+                      { text: 'Environment Variables & CLI', link: '/en/reference/environment-variables' },
+                      { text: 'Logging', link: '/en/reference/logging' },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
           { text: 'Guides', link: '/en/guides/dashboard', activeMatch: '/en/guides/' },
           { text: 'Development', link: '/en/development/contributing', activeMatch: '/en/development/' },
-          { text: 'Reference', link: '/en/reference/api-reference', activeMatch: '/en/reference/' },
-          { text: 'Website', link: 'https://pxelab.com' },
+          { text: 'Website', link: 'https://www.pxelab.com/' },
         ],
         sidebar: enSidebar,
         outline: [2, 3],

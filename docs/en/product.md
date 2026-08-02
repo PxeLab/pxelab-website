@@ -6,19 +6,35 @@
 
 ---
 
-## What Is PXE?
-
-PXE (Preboot eXecution Environment) is a mechanism that lets a computer **load its operating system directly from the network at boot time** — no USB drive, no optical drive, not even a system on the local disk.
-
-A typical scenario: 20 bare metal machines arrive in the server room, and all of them need systems installed within half a day. Installing them one by one with USB drives is not realistic. PXE lets every machine fetch its system image from the network automatically at power-on, turning mass installation into a manageable task.
-
----
-
 ## What is PxeLab
 
 **PxeLab** is an all-in-one PXE network boot platform: it packs DHCP, TFTP, HTTP, DNS, and NFS into a single zero-dependency binary, managed from a modern Web UI and REST API — from power-on to a ready OS, no USB sticks, no per-machine toil.
 
 Traditional PXE setups mean installing and tuning several daemons by hand (dhcpd / dnsmasq, tftpd-hpa, hand-written iPXE scripts…), with configs scattered everywhere, stale documentation, and debugging that feels like voodoo. PxeLab collapses all of that into one file: **download, run, open your browser, and start provisioning within minutes.**
+
+---
+
+## With So Many Tools, Why Build Another?
+
+Network boot is not a new field, and tools already exist: **pxesrv**, **netboot.xyz**, **Cobbler**… plus, in China, **CloudBoot** (a promising idea, unfortunately unmaintained for ~10 years), **Ventoy** (focused on USB boot), and **iVentoy** (a newer PXE tool emphasizing native ISO boot). Each has its own niche:
+
+| Tool | Niche |
+|------|-------|
+| **pxesrv / Tiny PXE Server** | Lightweight single-file PXE boot service for Windows |
+| **netboot.xyz** | Cross-distro network boot menu — jump into live environments or installers |
+| **Cobbler / Foreman** | Datacenter-grade provisioning platforms — powerful but dependency-heavy |
+| **CloudBoot** | Early cloud-provisioning tool from China; ahead of its time, unmaintained for ~10 years |
+| **Ventoy** | USB-boot focused: drop an ISO onto a USB drive and boot — not network-oriented |
+| **iVentoy** | Newer PXE tool pushing native ISO boot — the Ventoy experience, over the network |
+
+Those tools each solve "one piece of the puzzle." PxeLab is doing something different: **packaging the PXE-related components and open-source projects into a single binary.**
+
+- **One file, full stack**: DHCP, TFTP, HTTP, DNS, NFS, and iPXE all built in, cross-platform (Windows / Linux / macOS) — download and run
+- **Build the whole PXE stack fast**: no more installing and tuning dhcpd, tftpd-hpa, and iPXE scripts one by one — a complete boot chain in minutes
+- **Simplified underneath, DIY on top**: DHCP modes, boot menus, answer-file templates collapse into toggles and forms in the Web UI, while custom iPXE scripts and PXELinux compatibility stay open
+- **Built to extend**: full REST API plus PxeLab Hub community sharing — works out of the box, or slots into your own automation
+
+In one sentence: **others solve "one piece of the chain"; PxeLab delivers "the whole PXE chain"** — cross-platform, out of the box, and never locked away from DIY or extension.
 
 ---
 
