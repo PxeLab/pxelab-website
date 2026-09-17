@@ -2,7 +2,7 @@
 
 > Goal: from downloading PxeLab to your first network install in 15 minutes.
 
-**Docs**: [Product Overview](product.md) | [Glossary](glossary.md) | [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) | [Troubleshooting](troubleshooting.md)
+**Docs**: [Product Overview](product.md) | [Glossary](glossary.md) | [Tutorial 1: Install Ubuntu via the Native Netboot Boot Menu](tutorials/install-ubuntu.md) | [Troubleshooting](troubleshooting.md)
 
 ---
 
@@ -100,13 +100,13 @@ Choose **[OS] Netboot OS Install Catalog** → Ubuntu → pick a version → sta
 **Step 5: Verify**
 Back on the dashboard: the new host shows up in the "Online hosts" list; **Management → Install Tasks** shows the install record for this machine.
 
-> Want every detail? See [Tutorial 1: Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md).
+> Want every detail? See [Tutorial 1: Install Ubuntu via the Native Netboot Boot Menu](tutorials/install-ubuntu.md).
 
 ---
 
 ## Next Steps
 
-- **Tutorials**: [Install Ubuntu on a Bare Metal Machine](tutorials/install-ubuntu.md) · [Layer PXE onto an Existing DHCP Network](tutorials/add-pxe-to-existing-dhcp.md) · [Build a Diskless Workstation](tutorials/diskless-workstation.md)
+- **Tutorials**: [Install Ubuntu via the Native Netboot Boot Menu](tutorials/install-ubuntu.md) · [Layer PXE onto an Existing DHCP Network](tutorials/add-pxe-to-existing-dhcp.md) · [Build a Diskless Workstation](tutorials/diskless-workstation.md)
 - **Guides**: go deep per feature ([DHCP Config](guides/dhcp.md), [Boot Menu Config](guides/boot-config.md), [Host Management](guides/host-management.md)…)
 - **API automation**: [REST API Quick Start](development/api-quickstart.md) · [Automation & CI Integration](development/automation.md)
 - **Stuck?**: [Troubleshooting](troubleshooting.md) · [FAQ](faq.md)

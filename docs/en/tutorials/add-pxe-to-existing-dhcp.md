@@ -77,4 +77,4 @@ If all is well, the PxeLab boot menu appears within a few seconds — from here 
 ## Going further
 
 - **Protocol differences between proxy and server** (Option 60, yiaddr=0 recognition): see [DHCP Modes](../guides/dhcp-modes.md)
-- **The full install flow**: [Tutorial 1: Install Ubuntu on a Bare Metal Machine](install-ubuntu.md)
+- **The full install flow**: [Tutorial 1: Install Ubuntu via the Native Netboot Boot Menu](install-ubuntu.md)

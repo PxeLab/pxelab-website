@@ -17,7 +17,7 @@
 
 | 文档 | 说明 |
 |------|------|
-| [教程 1：给裸机装 Ubuntu](tutorials/install-ubuntu.md) | server 模式端到端装机 |
+| [教程 1：使用 Netboot 原生引导菜单安装 Ubuntu](tutorials/install-ubuntu.md) | 开启 OS 安装目录，经 netboot 原生引导菜单装机 |
 | [教程 2：在现有 DHCP 网络叠加 PXE](tutorials/add-pxe-to-existing-dhcp.md) | proxy 模式叠加 |
 | [教程 3：搭建无盘工作站](tutorials/diskless-workstation.md) | iSCSI sanboot |
 

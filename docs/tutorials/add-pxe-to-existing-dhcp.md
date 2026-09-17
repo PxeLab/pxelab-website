@@ -77,4 +77,4 @@
 ## 更进一步
 
 - **proxy 与 server 的协议差异**（Option 60、yiaddr=0 的识别机制）：见[DHCP 模式详解](../guides/dhcp-modes.md)
-- **完整装机流程**：[教程 1：给一台裸机安装 Ubuntu](install-ubuntu.md)
+- **完整装机流程**：[教程 1：使用 Netboot 原生引导菜单安装 Ubuntu](install-ubuntu.md)

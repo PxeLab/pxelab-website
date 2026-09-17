@@ -2,7 +2,7 @@
 
 > 目标：15 分钟内，从下载 PxeLab 到完成第一次网络装机。
 
-**相关文档**: [产品定位](product.md) | [术语表](glossary.md) | [教程 1：给裸机装 Ubuntu](tutorials/install-ubuntu.md) | [故障排查](troubleshooting.md)
+**相关文档**: [产品定位](product.md) | [术语表](glossary.md) | [教程 1：使用 Netboot 原生引导菜单安装 Ubuntu](tutorials/install-ubuntu.md) | [故障排查](troubleshooting.md)
 
 ---
 
@@ -91,13 +91,13 @@ pxelab.exe --mode server
 4. **选择系统**：在引导菜单选择 **[OS] Netboot OS Install Catalog** → Ubuntu → 版本 → 开始安装。
 5. **验证**：回到仪表板，新主机出现在「在线主机」列表，**管理 → 安装任务**页能看到安装记录。
 
-> 想每个细节都走一遍？看[教程 1：给一台裸机安装 Ubuntu](tutorials/install-ubuntu.md)。
+> 想每个细节都走一遍？看[教程 1：使用 Netboot 原生引导菜单安装 Ubuntu](tutorials/install-ubuntu.md)。
 
 ---
 
 ## 下一步
 
-- **教程**：[给裸机装 Ubuntu](tutorials/install-ubuntu.md) · [在现有 DHCP 网络叠加 PXE](tutorials/add-pxe-to-existing-dhcp.md) · [搭建无盘工作站](tutorials/diskless-workstation.md)
+- **教程**：[使用 Netboot 原生引导菜单安装 Ubuntu](tutorials/install-ubuntu.md) · [在现有 DHCP 网络叠加 PXE](tutorials/add-pxe-to-existing-dhcp.md) · [搭建无盘工作站](tutorials/diskless-workstation.md)
 - **使用指南**：按功能深度了解（[DHCP 配置](guides/dhcp.md)、[引导菜单配置](guides/boot-config.md)、[主机管理](guides/host-management.md)…）
 - **API 自动化**：[REST API 快速上手](development/api-quickstart.md) · [自动化与 CI 集成](development/automation.md)
 - **遇到问题**：[故障排查](troubleshooting.md) · [常见问题](faq.md)

@@ -10,12 +10,12 @@ hero:
       text: Getting Started
       link: /en/getting-started
     - theme: alt
-      text: 'Tutorial 1: Install Ubuntu on a Bare Metal Machine'
+      text: 'Tutorial 1: Install Ubuntu via the Native Netboot Boot Menu'
       link: /en/tutorials/install-ubuntu
 
 features:
   - title: Tutorials
-    details: 'Scenario-driven: install Ubuntu on bare metal, layer PXE onto an existing DHCP network, build diskless workstations'
+    details: 'Scenario-driven: install Ubuntu via the native Netboot boot menu, layer PXE onto an existing DHCP network, build diskless workstations'
     link: /en/tutorials/install-ubuntu
   - title: Guides
     details: 'Go deep per feature: UI overview, service config, DHCP, boot menu, host management, advanced topics'

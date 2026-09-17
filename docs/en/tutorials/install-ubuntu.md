@@ -1,4 +1,4 @@
-# Tutorial 1: Install Ubuntu on a Bare Metal Machine
+# Tutorial 1: Install Ubuntu via the Native Netboot Boot Menu
 
 > ⏱ Time: 15 minutes ｜ Level: Beginner ｜ Audience: First-time PxeLab users
 > Prerequisites: PxeLab is running (see [Getting Started](../getting-started.md)), a computer that supports network boot, and network connectivity between client and server
@@ -44,7 +44,7 @@ Save, then check the **service status bar** at the top: the DHCP service should 
 
 Go to **Basic Config → Service Config → OS Install Catalog** and turn the "enabled" toggle on (**off by default** — must be enabled manually).
 
-PxeLab ships an install catalog for 64+ mainstream distributions (Ubuntu, Debian, CentOS, Windows, and more). Once the client boots, it sees this catalog in the menu and picks what to install.
+PxeLab ships the **netboot.xyz** boot menu, covering 64+ mainstream distributions (Ubuntu, Debian, CentOS, Windows, and more). Once enabled, the client sees the **[OS] Netboot OS Install Catalog** entry in its boot menu — inside, the client automatically downloads the boot files **over the internet** from each distribution's official sources and starts the installer. No ISO images or manual boot-file uploads required.
 
 ## Step 3: Boot the client and enter network boot
 

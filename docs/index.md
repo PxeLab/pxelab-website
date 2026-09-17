@@ -10,12 +10,12 @@ hero:
       text: 快速开始
       link: /getting-started
     - theme: alt
-      text: 教程 1：给裸机装 Ubuntu
+      text: 教程 1：使用 Netboot 原生引导菜单安装 Ubuntu
       link: /tutorials/install-ubuntu
 
 features:
   - title: 教程
-    details: 从场景出发：给裸机装 Ubuntu、在现有 DHCP 网络上叠加 PXE、搭建无盘工作站
+    details: 从场景出发：使用 Netboot 原生引导菜单安装 Ubuntu、在现有 DHCP 网络上叠加 PXE、搭建无盘工作站
     link: /tutorials/install-ubuntu
   - title: 使用指南
     details: 按功能深度了解：界面速览、服务配置、DHCP、引导菜单、主机管理、进阶主题
